@@ -58,15 +58,6 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "tabs" */ '../views/tabs.vue'),
             },
             {
-                path: '/donate',
-                name: 'donate',
-                meta: {
-                    title: '鼓励作者',
-                    permiss: '14',
-                },
-                component: () => import(/* webpackChunkName: "donate" */ '../views/donate.vue'),
-            },
-            {
                 path: '/permission',
                 name: 'permission',
                 meta: {
@@ -137,6 +128,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "import" */ '../views/import.vue'),
             },
+            {
+                path: '/add_goods',
+                name: 'goods',
+                meta: {
+                    title: '添加商品',
+                },
+                component: () => import(/* webpackChunkName: "import" */ '../views/goods/index.vue'),
+            },
         ],
     },
     {
@@ -145,7 +144,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
             title: '登录',
         },
-        component: () => import(/* webpackChunkName: "login" */ '../views/login.vue'),
+        component: () => import(/* webpackChunkName: "login" */ '../views/login/login.vue'),
     },
     {
         path: '/403',

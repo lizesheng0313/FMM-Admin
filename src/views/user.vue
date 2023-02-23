@@ -46,19 +46,12 @@
 			</el-col>
 		</el-row>
 		<el-dialog title="裁剪图片" v-model="dialogVisible" width="600px">
-			<vue-cropper
-				ref="cropper"
-				:src="imgSrc"
-				:ready="cropImage"
-				:zoom="cropImage"
-				:cropmove="cropImage"
-				style="width: 100%; height: 400px"
-			></vue-cropper>
+			<vue-cropper ref="cropper" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage"
+				style="width: 100%; height: 400px"></vue-cropper>
 
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button class="crop-demo-btn" type="primary"
-						>选择图片
+					<el-button class="crop-demo-btn" type="primary">选择图片
 						<input class="crop-input" type="file" name="image" accept="image/*" @change="setImage" />
 					</el-button>
 					<el-button type="primary" @click="saveAvatar">上传并保存</el-button>
@@ -72,7 +65,7 @@
 import { reactive, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-import avatar from '../assets/img/img.jpg';
+import avatar from '../assets/images/img.jpg';
 
 const name = localStorage.getItem('ms_username');
 const form = reactive({
@@ -80,7 +73,7 @@ const form = reactive({
 	new: '',
 	desc: '不可能！我的代码怎么可能会有bug！'
 });
-const onSubmit = () => {};
+const onSubmit = () => { };
 
 const avatarImg = ref(avatar);
 const imgSrc = ref('');
@@ -122,6 +115,7 @@ const saveAvatar = () => {
 	text-align: center;
 	padding: 35px 0;
 }
+
 .info-image {
 	position: relative;
 	margin: auto;
@@ -146,22 +140,27 @@ const saveAvatar = () => {
 	opacity: 0;
 	transition: opacity 0.3s ease;
 }
+
 .info-edit i {
 	color: #eee;
 	font-size: 25px;
 }
+
 .info-image:hover .info-edit {
 	opacity: 1;
 }
+
 .info-name {
 	margin: 15px 0 10px;
 	font-size: 24px;
 	font-weight: 500;
 	color: #262626;
 }
+
 .crop-demo-btn {
 	position: relative;
 }
+
 .crop-input {
 	position: absolute;
 	width: 100px;

@@ -40,7 +40,9 @@
 					<el-col :span="8">
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-1">
-								<el-icon class="grid-con-icon"><User /></el-icon>
+								<el-icon class="grid-con-icon">
+									<User />
+								</el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">1234</div>
 									<div>用户访问量</div>
@@ -51,7 +53,9 @@
 					<el-col :span="8">
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-2">
-								<el-icon class="grid-con-icon"><ChatDotRound /></el-icon>
+								<el-icon class="grid-con-icon">
+									<ChatDotRound />
+								</el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">321</div>
 									<div>系统消息</div>
@@ -62,7 +66,9 @@
 					<el-col :span="8">
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-3">
-								<el-icon class="grid-con-icon"><Goods /></el-icon>
+								<el-icon class="grid-con-icon">
+									<Goods />
+								</el-icon>
 								<div class="grid-cont-right">
 									<div class="grid-num">5000</div>
 									<div>商品数量</div>
@@ -87,12 +93,9 @@
 						</el-table-column>
 						<el-table-column>
 							<template #default="scope">
-								<div
-									class="todo-item"
-									:class="{
-										'todo-item-del': scope.row.status
-									}"
-								>
+								<div class="todo-item" :class="{
+									'todo-item-del': scope.row.status
+								}">
 									{{ scope.row.title }}
 								</div>
 							</template>
@@ -119,7 +122,7 @@
 <script setup lang="ts" name="dashboard">
 import Schart from 'vue-schart';
 import { reactive } from 'vue';
-import imgurl from '../assets/img/img.jpg';
+import imgurl from '../assets/images/img.jpg';
 
 const name = localStorage.getItem('ms_username');
 const role: string = name === 'admin' ? '超级管理员' : '普通用户';
