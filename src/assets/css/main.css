@@ -30,14 +30,12 @@ a {
     padding-bottom: 30px;
     -webkit-transition: left .3s ease-in-out;
     transition: left .3s ease-in-out;
-    background: #f0f0f0;
+    background: #fff;
 }
 
 .content {
     width: auto;
-    height: 100%;
-    padding: 10px;
-    overflow-y: scroll;
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -46,9 +44,8 @@ a {
 }
 
 .container {
-    padding: 30px;
+    padding: 10px;
     background: #fff;
-    border: 1px solid #ddd;
     border-radius: 5px;
 }
 
@@ -63,6 +60,8 @@ a {
 .pagination {
     margin: 20px 0;
     text-align: right;
+    display:flex;
+    justify-content: flex-end;
 }
 
 .plugins-tips {
@@ -93,9 +92,15 @@ a {
 }
 
 /*BaseForm*/
-
+.form-warp{
+    width: 800px;
+    margin:0 auto;
+}
 .form-box {
-    width: 600px;
+    padding: 35px 35px 15px;
+    margin: 20px auto;
+    height: 700px;
+    overflow: auto;
 }
 
 .form-box .line {
@@ -134,4 +139,13 @@ a {
 
 [hidden]{
     display: none !important;
+}
+
+.card-header{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.title{
+    font-weight:bold;
 }

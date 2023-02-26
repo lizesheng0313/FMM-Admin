@@ -1,163 +1,195 @@
 <template>
-  <div class="container">
-    <div class="form-box">
-      <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
-        <el-form-item label="商品分类" prop="classiFication">
-          <el-cascader :options="options" v-model="form.classiFication"></el-cascader>
-        </el-form-item>
-        <el-form-item label="商品名称" prop="goodsName">
-          <el-input v-model="form.goodsName"></el-input>
-        </el-form-item>
-        <el-form-item label="副名称" prop="goodsSubName">
-          <el-input v-model="form.goodsSubName"></el-input>
-        </el-form-item>
-        <el-form-item label="商品品牌" prop="brand">
-          <el-select v-model="form.brand" placeholder="请选择">
-            <el-option key="小明" label="小明" value="小明"></el-option>
-            <el-option key="小红" label="小红" value="小红"></el-option>
-            <el-option key="小白" label="小白" value="小白"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="商品介绍" prop="introduction">
-          <el-input type="textarea" rows="5" v-model="form.introduction"></el-input>
-        </el-form-item>
-        <el-form-item label="商品货号" prop="number">
-          <el-input v-model="form.number"></el-input>
-        </el-form-item>
-        <el-form-item label="商品售价" prop="price">
-          <el-input v-model="form.price" type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="商品原价" prop="originPrice">
-          <el-input v-model="form.originPrice" type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="商品库存" prop="quantity">
-          <el-input v-model="form.quantity" type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="排序" prop="order">
-          <el-input v-model="form.order" type="number"></el-input>
-        </el-form-item>
-        <el-form-item label="商品上架" prop="shelf">
-          <el-switch v-model="form.online"></el-switch>
-        </el-form-item>
-        <template>
-          <el-form-item label="新品" prop="shelf">
-            <el-switch v-model="form.new"></el-switch>
-          </el-form-item>
-          <el-form-item label="推荐" prop="shelf">
-            <el-switch v-model="form.recommend"></el-switch>
-          </el-form-item>
+  <div>
+    <div class="container">
+      <div class="handle-box">
+        <el-select v-model="query.address" placeholder="品牌" class="handle-select mr10">
+          <el-option key="1" label="广东省" value="广东省"></el-option>
+          <el-option key="2" label="湖南省" value="湖南省"></el-option>
+        </el-select>
+        <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+      </div>
+      <el-card>
+        <template #header>
+          <div class="card-header">
+            <span class="title">商品列表</span>
+            <el-button class="button" type="primary" @click="() => {
+              $router.push('/goods/add')
+            }">添加</el-button>
+          </div>
         </template>
-        <el-form-item label="属性类型" prop="attribute">
-          <el-select v-model="form.attribute" placeholder="请选择">
-            <el-option key="小明" label="小明" value="小明"></el-option>
-            <el-option key="小红" label="小红" value="小红"></el-option>
-            <el-option key="小白" label="小白" value="小白"></el-option>
-          </el-select>
+        <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+          <el-table-column prop="id" label="id" width="80" align="center"></el-table-column>
+          <el-table-column label="商品图片" align="center">
+            <template #default="scope">
+              <el-image class="table-td-thumb" :src="scope.row.picture" :z-index="10"
+                :preview-src-list="[scope.row.picture]" preview-teleported>
+              </el-image>
+            </template>
+          </el-table-column>
+          <el-table-column label="名称" prop="name" align="center"></el-table-column>
+          <el-table-column label="价格/货号" align="center">
+            <template #default="scope">
+              <div>
+                价格：￥{{ scope.row.price }}
+              </div>
+              <div>
+                货号：{{ scope.row.number }}
+              </div>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="标签">
+          <template #default="scope">￥{{ scope.row.money }}</template>
+        </el-table-column> -->
+          <!-- <el-table-column prop="address" label="排序"></el-table-column> -->
+          <el-table-column align="center" prop="volume" label="销量"></el-table-column>
+          <el-table-column label="操作" width="220" align="center">
+            <template #default="scope">
+              <el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
+                编辑
+              </el-button>
+              <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)" v-permiss="16">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
+            :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
+        </div>
+      </el-card>
+    </div>
+
+    <!-- 编辑弹出框 -->
+    <el-dialog title="编辑" v-model="editVisible" width="30%">
+      <el-form label-width="70px">
+        <el-form-item label="用户名">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <!-- <el-upload class="avatar-uploader" action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-          :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-          <el-icon v-else class="avatar-uploader-icon">
-            <Plus />
-          </el-icon>
-        </el-upload> -->
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit(formRef)">提交</el-button>
+        <el-form-item label="地址">
+          <el-input v-model="form.address"></el-input>
         </el-form-item>
       </el-form>
-    </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="editVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveEdit">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
-<script setup lang="ts" name="baseform">
-import { reactive, ref } from 'vue';
-import { ElMessage } from 'element-plus';
-import type { FormInstance, FormRules } from 'element-plus';
+<script setup lang="ts" name="basetable">
+import { ref, reactive } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
+import { fetchGoodsList } from '../../api/goods/index';
 
-const options = [
-  {
-    value: 'guangdong',
-    label: '广东省',
-    children: [
-      {
-        value: 'guangzhou',
-        label: '广州市',
-        children: [
-          {
-            value: 'tianhe',
-            label: '天河区',
-          },
-          {
-            value: 'haizhu',
-            label: '海珠区',
-          },
-        ],
-      },
-      {
-        value: 'dongguan',
-        label: '东莞市',
-        children: [
-          {
-            value: 'changan',
-            label: '长安镇',
-          },
-          {
-            value: 'humen',
-            label: '虎门镇',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'hunan',
-    label: '湖南省',
-    children: [
-      {
-        value: 'changsha',
-        label: '长沙市',
-        children: [
-          {
-            value: 'yuelu',
-            label: '岳麓区',
-          },
-        ],
-      },
-    ],
-  },
-];
-const rules: FormRules = {
-  goodsName: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-};
-const formRef = ref<FormInstance>();
-const form = reactive({
-  classiFication: '',
-  goodsName: '',
-  goodsSubName: '',
-  brand: '',
-  introduction: '',
-  number: '',
-  price: '',
-  originPrice: '',
-  quantity: '',
-  order: '小红',
-  new: false,
-  recommend: false,
-  online: false,
-  attribute: '',
+interface TableItem {
+  id: number;
+  name: string;
+  money: string;
+  state: string;
+  date: string;
+  address: string;
+}
+
+const query = reactive({
+  address: '',
+  name: '',
+  pageIndex: 1,
+  pageSize: 10
 });
-// 提交
-const onSubmit = (formEl: FormInstance | undefined) => {
-  // 表单校验
-  if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      console.log(form);
-      ElMessage.success('提交成功！');
-    } else {
-      return false;
-    }
+const tableData = ref<TableItem[]>([]);
+const pageTotal = ref(0);
+
+
+// 获取表格数据
+const getData = () => {
+  fetchGoodsList().then(res => {
+    tableData.value = res.data.list;
+    pageTotal.value = res.data.total;
   });
 };
+getData();
 
+// 查询操作
+const handleSearch = () => {
+  query.pageIndex = 1;
+  getData();
+};
+// 分页导航
+const handlePageChange = (val: number) => {
+  query.pageIndex = val;
+  getData();
+};
+
+// 删除操作
+const handleDelete = (index: number) => {
+  // 二次确认删除
+  ElMessageBox.confirm('确定要删除吗？', '提示', {
+    type: 'warning'
+  })
+    .then(() => {
+      ElMessage.success('删除成功');
+      tableData.value.splice(index, 1);
+    })
+    .catch(() => { });
+};
+
+// 表格编辑时弹窗和保存
+const editVisible = ref(false);
+let form = reactive({
+  name: '',
+  address: ''
+});
+let idx: number = -1;
+const handleEdit = (index: number, row: any) => {
+  idx = index;
+  form.name = row.name;
+  form.address = row.address;
+  editVisible.value = true;
+};
+const saveEdit = () => {
+  editVisible.value = false;
+  ElMessage.success(`修改第 ${idx + 1} 行成功`);
+  tableData.value[idx].name = form.name;
+  tableData.value[idx].address = form.address;
+};
 </script>
+
+<style scoped>
+.handle-box {
+  margin-bottom: 20px;
+}
+
+.handle-select {
+  width: 120px;
+}
+
+.handle-input {
+  width: 300px;
+}
+
+.table {
+  width: 100%;
+  font-size: 14px;
+}
+
+.red {
+  color: #F56C6C;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.table-td-thumb {
+  display: block;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+}
+</style>

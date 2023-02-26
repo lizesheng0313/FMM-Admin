@@ -7,6 +7,7 @@ specifiers:
   axios: ^0.27.2
   element-plus: ^2.2.14
   md-editor-v3: ^2.2.1
+  path: ^0.12.7
   pinia: ^2.0.20
   typescript: ^4.6.4
   unplugin-auto-import: ^0.11.2
@@ -26,6 +27,7 @@ dependencies:
   axios: registry.npmjs.org/axios/0.27.2
   element-plus: registry.npmjs.org/element-plus/2.2.32_vue@3.2.47
   md-editor-v3: registry.npmjs.org/md-editor-v3/2.8.1
+  path: registry.npmjs.org/path/0.12.7
   pinia: registry.npmjs.org/pinia/2.0.32_typescript@4.9.5+vue@3.2.47
   vue: registry.npmjs.org/vue/3.2.47
   vue-cropperjs: registry.npmjs.org/vue-cropperjs/5.0.0_vue@3.2.47
@@ -968,6 +970,12 @@ packages:
       function-bind: registry.npmjs.org/function-bind/1.1.1
     dev: true
 
+  registry.npmjs.org/inherits/2.0.3:
+    resolution: {integrity: sha512-x00IRNXNy63jwGkJmzPigoySHbaqpNuzKbBOmzK+g2OdZpQ9w+sxCN+VSB3ja7IAge2OP2qpfxTjeNcyjmW1uw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz}
+    name: inherits
+    version: 2.0.3
+    dev: false
+
   registry.npmjs.org/is-binary-path/2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/is-binary-path/-/is-binary-path-2.1.0.tgz}
     name: is-binary-path
@@ -1171,6 +1179,15 @@ packages:
     version: 1.0.7
     dev: true
 
+  registry.npmjs.org/path/0.12.7:
+    resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/path/-/path-0.12.7.tgz}
+    name: path
+    version: 0.12.7
+    dependencies:
+      process: registry.npmjs.org/process/0.11.10
+      util: registry.npmjs.org/util/0.10.4
+    dev: false
+
   registry.npmjs.org/pathe/1.1.0:
     resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/pathe/-/pathe-1.1.0.tgz}
     name: pathe
@@ -1229,6 +1246,13 @@ packages:
       nanoid: registry.npmjs.org/nanoid/3.3.4
       picocolors: registry.npmjs.org/picocolors/1.0.0
       source-map-js: registry.npmjs.org/source-map-js/1.0.2
+
+  registry.npmjs.org/process/0.11.10:
+    resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/process/-/process-0.11.10.tgz}
+    name: process
+    version: 0.11.10
+    engines: {node: '>= 0.6.0'}
+    dev: false
 
   registry.npmjs.org/queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz}
@@ -1450,6 +1474,14 @@ packages:
       webpack-sources: registry.npmjs.org/webpack-sources/3.2.3
       webpack-virtual-modules: registry.npmjs.org/webpack-virtual-modules/0.5.0
     dev: true
+
+  registry.npmjs.org/util/0.10.4:
+    resolution: {integrity: sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/util/-/util-0.10.4.tgz}
+    name: util
+    version: 0.10.4
+    dependencies:
+      inherits: registry.npmjs.org/inherits/2.0.3
+    dev: false
 
   registry.npmjs.org/vite-plugin-vue-setup-extend/0.4.0_vite@3.2.5:
     resolution: {integrity: sha512-WMbjPCui75fboFoUTHhdbXzu4Y/bJMv5N9QT9a7do3wNMNHHqrk+Tn2jrSJU0LS5fGl/EG+FEDBYVUeWIkDqXQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/vite-plugin-vue-setup-extend/-/vite-plugin-vue-setup-extend-0.4.0.tgz}

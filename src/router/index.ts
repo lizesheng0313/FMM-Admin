@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
-import { usePermissStore } from '../store/permiss';
+// import { usePermissStore } from '../store/permiss';
 import Home from '../views/home.vue';
 
 const routes: RouteRecordRaw[] = [
@@ -17,7 +17,30 @@ const routes: RouteRecordRaw[] = [
                 name: 'dashboard',
                 meta: {
                     title: '系统首页',
-                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+            },
+            {
+                path: '/permission/user_mangae',
+                name: 'userManage',
+                meta: {
+                    title: '用户管理',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+            },
+            {
+                path: '/permission/menu_manage',
+                name: 'menuManage',
+                meta: {
+                    title: '菜单管理',
+                },
+                component: () => import(/* webpackChunkName: "dashboard" */ '../views/permission/menu/index.vue'),
+            },
+            {
+                path: '/permission/role_manage',
+                name: 'roleManage',
+                meta: {
+                    title: '角色管理',
                 },
                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
             },
@@ -129,12 +152,20 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "import" */ '../views/import.vue'),
             },
             {
-                path: '/add_goods',
+                path: '/goods/goods_list',
                 name: 'goods',
+                meta: {
+                    title: '商品列表',
+                },
+                component: () => import(/* webpackChunkName: "import" */ '../views/goods/index.vue'),
+            },
+            {
+                path: '/goods/add',
+                name: 'addGoods',
                 meta: {
                     title: '添加商品',
                 },
-                component: () => import(/* webpackChunkName: "import" */ '../views/goods/index.vue'),
+                component: () => import('../views/goods/add.vue'),
             },
         ],
     },
@@ -164,15 +195,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} | vue-manage-system`;
     const role = localStorage.getItem('ms_username');
-    const permiss = usePermissStore();
-    if (!role && to.path !== '/login') {
-        next('/login');
-    } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
-        // 如果没有权限，则进入403
-        next('/403');
-    } else {
+    // const permiss = usePermissStore();
+    // if (!role && to.path !== '/login') {
+    //     next('/login');
+    // // } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
+    //     // 如果没有权限，则进入403
+    //     // next('/403');
+    // } else {
         next();
-    }
+    // }
 });
 
 export default router;

@@ -1,23 +1,28 @@
+/*
+ * @Author: lizesheng
+ * @Date: 2023-02-22 16:41:23
+ * @LastEditors: lizesheng
+ * @LastEditTime: 2023-02-26 12:44:00
+ * @important: 重要提醒
+ * @Description: 备注内容
+ * @FilePath: /vue-manage-system/src/store/permiss.ts
+ */
 import { defineStore } from 'pinia';
 
-interface ObjectList {
-	[key: string]: string[];
-}
-
-export const usePermissStore = defineStore('permiss', {
+export const useMenuStore = defineStore('menu', {
 	state: () => {
-		const keys = localStorage.getItem('ms_keys');
+		const menu = sessionStorage.getItem('menu');
 		return {
-			key: keys ? JSON.parse(keys) : <string[]>[],
-			defaultList: <ObjectList>{
-				admin: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'],
-				user: ['1', '2', '3', '11', '13', '14', '15']
-			}
+			menu: menu ? JSON.parse(menu) : <string[]>[],
 		};
 	},
-	actions: {
-		handleSet(val: string[]) {
-			this.key = val;
-		}
-	}
+});
+
+export const useConstantStore = defineStore('constant', {
+	state: () => {
+		const constant = sessionStorage.getItem('constant');
+		return {
+			key: constant ? JSON.parse(constant) : <string[]>[],
+		};
+	},
 });

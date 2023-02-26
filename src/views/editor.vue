@@ -1,3 +1,12 @@
+<!--
+ * @Author: lizesheng
+ * @Date: 2023-02-22 16:41:23
+ * @LastEditors: lizesheng
+ * @LastEditTime: 2023-02-26 19:40:25
+ * @important: 重要提醒
+ * @Description: 备注内容
+ * @FilePath: /vue-manage-system/src/views/editor.vue
+-->
 <template>
 	<div class="container">
 		<div class="plugins-tips">

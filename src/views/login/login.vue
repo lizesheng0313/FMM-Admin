@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-23 10:15:51
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-23 11:52:20
+ * @LastEditTime: 2023-02-26 12:51:44
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/views/login/login.vue
@@ -39,13 +39,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRefs } from 'vue';
+import { ref, reactive } from 'vue';
 import { useTagsStore } from '../../store/tags';
-import { usePermissStore } from '../../store/permiss';
+// import { usePermissStore } from '../../store/permiss';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
+import { fetchMenu } from '../../api/permission/index'
 
 interface LoginInfo {
 	username: string;
@@ -54,8 +55,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: 'admin',
-	password: '123123'
+	username: '',
+	password: ''
 });
 
 const rules: FormRules = {
@@ -69,20 +70,18 @@ const rules: FormRules = {
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 };
 const state = reactive({ flag: false })
-const permiss = usePermissStore();
+// const permiss = usePermissStore();
 const login = ref<FormInstance>();
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
-	formEl.validate((valid: boolean) => {
+	formEl.validate(async (valid: boolean) => {
 		if (valid) {
+			await fetchMenu().then(res => {
+				sessionStorage.setItem('menu', JSON.stringify(res?.data?.list || []))
+			})
 			ElMessage.success('登录成功');
-			localStorage.setItem('ms_username', param.username);
-			const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];
-			permiss.handleSet(keys);
-			localStorage.setItem('ms_keys', JSON.stringify(keys));
-			router.push('/');
+			router.push('/dashboard');
 		} else {
-			ElMessage.error('登录成功');
 			return false;
 		}
 	});

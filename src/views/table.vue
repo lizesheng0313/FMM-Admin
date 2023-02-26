@@ -18,22 +18,15 @@
 				</el-table-column>
 				<el-table-column label="头像(查看大图)" align="center">
 					<template #default="scope">
-						<el-image
-							class="table-td-thumb"
-							:src="scope.row.thumb"
-							:z-index="10"
-							:preview-src-list="[scope.row.thumb]"
-							preview-teleported
-						>
+						<el-image class="table-td-thumb" :src="scope.row.thumb" :z-index="10" :preview-src-list="[scope.row.thumb]"
+							preview-teleported>
 						</el-image>
 					</template>
 				</el-table-column>
 				<el-table-column prop="address" label="地址"></el-table-column>
 				<el-table-column label="状态" align="center">
 					<template #default="scope">
-						<el-tag
-							:type="scope.row.state === '成功' ? 'success' : scope.row.state === '失败' ? 'danger' : ''"
-						>
+						<el-tag :type="scope.row.state === '成功' ? 'success' : scope.row.state === '失败' ? 'danger' : ''">
 							{{ scope.row.state }}
 						</el-tag>
 					</template>
@@ -52,14 +45,8 @@
 				</el-table-column>
 			</el-table>
 			<div class="pagination">
-				<el-pagination
-					background
-					layout="total, prev, pager, next"
-					:current-page="query.pageIndex"
-					:page-size="query.pageSize"
-					:total="pageTotal"
-					@current-change="handlePageChange"
-				></el-pagination>
+				<el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
+					:page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
 			</div>
 		</div>
 
@@ -87,7 +74,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
-import { fetchData } from '../api/index';
+// import { fetchData } from '../api/index';
 
 interface TableItem {
 	id: number;
@@ -108,10 +95,10 @@ const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
 // 获取表格数据
 const getData = () => {
-	fetchData().then(res => {
-		tableData.value = res.data.list;
-		pageTotal.value = res.data.pageTotal || 50;
-	});
+	// fetchData().then(res => {
+	// 	tableData.value = res.data.list;
+	// 	pageTotal.value = res.data.pageTotal || 50;
+	// });
 };
 getData();
 
@@ -136,7 +123,7 @@ const handleDelete = (index: number) => {
 			ElMessage.success('删除成功');
 			tableData.value.splice(index, 1);
 		})
-		.catch(() => {});
+		.catch(() => { });
 };
 
 // 表格编辑时弹窗和保存
@@ -172,16 +159,20 @@ const saveEdit = () => {
 .handle-input {
 	width: 300px;
 }
+
 .table {
 	width: 100%;
 	font-size: 14px;
 }
+
 .red {
 	color: #F56C6C;
 }
+
 .mr10 {
 	margin-right: 10px;
 }
+
 .table-td-thumb {
 	display: block;
 	margin: auto;
