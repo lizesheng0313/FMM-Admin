@@ -2,17 +2,18 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-26 22:18:32
+ * @LastEditTime: 2023-03-01 18:10:55
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/goods/index.ts
  */
 import request from '../../utils/request';
 
-export const fetchGoodsList= () => {
+export const fetchGoodsList= (params:any) => {
     return request({
         url: '/api/manage/getGoods',
-        method: 'get'
+        method: 'get',
+        params
     });
 };
 export const fetchClassiFication= () => {
@@ -35,3 +36,20 @@ export const fetchUpdateGoods= (data:any) => {
         data
     });
 };
+
+export const fetchGoodsGetDetails= (params:any) => {
+    return request({
+        url: '/api/manage/getDetails',
+        method: 'get',
+        params
+    });
+};
+
+export const fetchDeleteGoodsInfo= (data:any) => {
+    return request({
+        url: '/api/manage/deleteGoods',
+        method: 'post',
+        data
+    });
+};
+

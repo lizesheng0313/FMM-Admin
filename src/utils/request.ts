@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-26 22:22:04
+ * @LastEditTime: 2023-02-27 10:17:44
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/utils/request.ts
@@ -26,7 +26,6 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
     (response: AxiosResponse) => {
-        console.log(response,'----response')
         if (response?.data?.code === 0) {
             return response.data
         } else {

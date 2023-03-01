@@ -9,7 +9,6 @@ body,
 .wrapper {
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 body {
@@ -22,26 +21,24 @@ a {
 
 
 .content-box {
-    position: absolute;
-    left: 250px;
-    right: 0;
-    top: 70px;
-    bottom: 0;
-    padding-bottom: 30px;
-    -webkit-transition: left .3s ease-in-out;
-    transition: left .3s ease-in-out;
+    transition: all .8s ease-in-out;
     background: #fff;
+    flex:1;
+    min-height: 100vh;
+
+}
+.content-collapse{
+    max-width: calc(100vw - 250px);
+    transition: all .8s ease-in-out;
 }
 
 .content {
     width: auto;
     padding: 20px;
     box-sizing: border-box;
+    min-height: 100vh;
 }
 
-.content-collapse {
-    left: 65px;
-}
 
 .container {
     padding: 10px;
@@ -97,10 +94,8 @@ a {
     margin:0 auto;
 }
 .form-box {
-    padding: 35px 35px 15px;
+    padding: 15px 35px 70px 35px;
     margin: 20px auto;
-    height: 700px;
-    overflow: auto;
 }
 
 .form-box .line {

@@ -7,7 +7,7 @@
           <el-option key="2" label="湖南省" value="湖南省"></el-option>
         </el-select>
         <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-        <el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
       </div>
       <el-card>
         <template #header>
@@ -22,12 +22,29 @@
           <el-table-column prop="id" label="id" width="80" align="center"></el-table-column>
           <el-table-column label="商品图片" align="center">
             <template #default="scope">
-              <el-image class="table-td-thumb" :src="scope.row.picture" :z-index="10"
-                :preview-src-list="[scope.row.picture]" preview-teleported>
+              <el-image class="table-td-thumb" style="width: 80px; height: 80px"
+                :src="scope.row.pictureList ? scope.row.pictureList[0] : ''" :z-index="10" fit="contain"
+                :preview-src-list="[scope.row.pictureList ? scope.row.pictureList[0] : '']" preview-teleported>
               </el-image>
             </template>
           </el-table-column>
           <el-table-column label="名称" prop="name" align="center"></el-table-column>
+          <el-table-column label="标签" align="center">
+            <template #default="scope">
+              <div class="label-box">
+                <el-switch inactive-text="上架" :active-value="1" :inactive-value="0"
+                  @click="handleUpdateGoods('online', scope.row.online, scope.row.id)"
+                  v-model="scope.row.online"></el-switch>
+                <el-switch inactive-text="新品" :active-value="1" :inactive-value="0"
+                  @click="handleUpdateGoods('latest', scope.row.latest, scope.row.id)"
+                  v-model="scope.row.latest"></el-switch>
+                <el-switch inactive-text="推荐" :active-value="1" :inactive-value="0"
+                  @click="handleUpdateGoods('recommend', scope.row.recommend, scope.row.id)"
+                  v-model="scope.row.recommend"></el-switch>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
           <el-table-column label="价格/货号" align="center">
             <template #default="scope">
               <div>
@@ -38,17 +55,13 @@
               </div>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="标签">
-          <template #default="scope">￥{{ scope.row.money }}</template>
-        </el-table-column> -->
-          <!-- <el-table-column prop="address" label="排序"></el-table-column> -->
           <el-table-column align="center" prop="volume" label="销量"></el-table-column>
           <el-table-column label="操作" width="220" align="center">
             <template #default="scope">
-              <el-button text :icon="Edit" @click="handleEdit(scope.$index, scope.row)" v-permiss="15">
+              <el-button text :icon="Edit" @click="handleEdit(scope.row.id)" v-permiss="15">
                 编辑
               </el-button>
-              <el-button text :icon="Delete" class="red" @click="handleDelete(scope.$index)" v-permiss="16">
+              <el-button text :icon="Delete" class="red" @click="handleDelete(scope.row.id)" v-permiss="16">
                 删除
               </el-button>
             </template>
@@ -60,32 +73,16 @@
         </div>
       </el-card>
     </div>
-
-    <!-- 编辑弹出框 -->
-    <el-dialog title="编辑" v-model="editVisible" width="30%">
-      <el-form label-width="70px">
-        <el-form-item label="用户名">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="地址">
-          <el-input v-model="form.address"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="editVisible = false">取 消</el-button>
-          <el-button type="primary" @click="saveEdit">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts" name="basetable">
 import { ref, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Delete, Edit, Search, Plus } from '@element-plus/icons-vue';
-import { fetchGoodsList } from '../../api/goods/index';
+import { Delete, Edit, } from '@element-plus/icons-vue';
+import { fetchGoodsList, fetchDeleteGoodsInfo, fetchUpdateGoods } from '../../api/goods/index';
+import { useRouter } from 'vue-router';
+import { formatDateTime } from '../../utils/utils'
 
 interface TableItem {
   id: number;
@@ -104,11 +101,11 @@ const query = reactive({
 });
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
-
+const router = useRouter();
 
 // 获取表格数据
 const getData = () => {
-  fetchGoodsList().then(res => {
+  fetchGoodsList(query).then(res => {
     tableData.value = res.data.list;
     pageTotal.value = res.data.total;
   });
@@ -127,40 +124,48 @@ const handlePageChange = (val: number) => {
 };
 
 // 删除操作
-const handleDelete = (index: number) => {
+const handleDelete = (id: number) => {
   // 二次确认删除
   ElMessageBox.confirm('确定要删除吗？', '提示', {
     type: 'warning'
   })
     .then(() => {
-      ElMessage.success('删除成功');
-      tableData.value.splice(index, 1);
+      fetchDeleteGoodsInfo({
+        id
+      }).then(res => {
+        ElMessage.success('删除成功');
+        getData();
+      })
     })
     .catch(() => { });
 };
 
-// 表格编辑时弹窗和保存
-const editVisible = ref(false);
-let form = reactive({
-  name: '',
-  address: ''
-});
-let idx: number = -1;
-const handleEdit = (index: number, row: any) => {
-  idx = index;
-  form.name = row.name;
-  form.address = row.address;
-  editVisible.value = true;
-};
-const saveEdit = () => {
-  editVisible.value = false;
-  ElMessage.success(`修改第 ${idx + 1} 行成功`);
-  tableData.value[idx].name = form.name;
-  tableData.value[idx].address = form.address;
-};
+const handleEdit = (id: string) => {
+  router.push({ path: '/goods/add', query: { id } })
+}
+
+interface ElementPlusObject {
+  [key: string]: any;
+}
+
+function handleUpdateGoods(key: string, row: number, id: string) {
+  const map: ElementPlusObject = {
+    online: '上架',
+    latest: '新品',
+    recommend: '推荐'
+  }
+  fetchUpdateGoods({
+    [key]: row,
+    id,
+  }).then(() => {
+    row === 1 ?
+      ElMessage.success(`${map[key]}成功`) : ElMessage.success(`取消${map[key]}成功`)
+  })
+}
+
 </script>
 
-<style scoped>
+<style scoped sass>
 .handle-box {
   margin-bottom: 20px;
 }
@@ -191,5 +196,21 @@ const saveEdit = () => {
   margin: auto;
   width: 40px;
   height: 40px;
+}
+
+.label-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+
+:deep(.el-switch) {
+  color: #909399;
+}
+
+:deep(.el-switch__label) {
+  color: #909399;
 }
 </style>

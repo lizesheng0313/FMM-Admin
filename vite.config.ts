@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-24 19:37:32
+ * @LastEditTime: 2023-03-01 17:29:35
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/vite.config.ts
@@ -14,6 +14,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import { resolve } from 'path'  
+import sass from 'sass'
 
 export default defineConfig({
 	base: './',
@@ -25,8 +26,15 @@ export default defineConfig({
 		}),
 		Components({
 			resolvers: [ElementPlusResolver()]
-		})
+		}),
 	],
+	css: {
+    preprocessorOptions: {
+      sass: {
+        implementation: sass,
+      },
+    },
+  },
 	optimizeDeps: {
 		include: ['schart.js']
 	},
@@ -36,6 +44,8 @@ export default defineConfig({
     }
   },
 	server:{
+		// 开启热更新
+    hmr: true,
 		proxy:{
 			'/api': {
 				target: 'http://127.0.0.1:7002',

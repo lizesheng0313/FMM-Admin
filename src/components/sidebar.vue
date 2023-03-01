@@ -1,8 +1,17 @@
+<!--
+ * @Author: lizesheng
+ * @Date: 2023-02-22 16:41:23
+ * @LastEditors: lizesheng
+ * @LastEditTime: 2023-03-01 11:07:59
+ * @important: 重要提醒
+ * @Description: 备注内容
+ * @FilePath: /vue-manage-system/src/components/sidebar.vue
+-->
 <template>
     <div class="sidebar">
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="sidebar.collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
-            <template v-for="item in menu">
+            <template v-for="item in menuStore.menu">
                 <template v-if="item.children">
                     <el-sub-menu :index="item.menuUrl" :key="item.id">
                         <template #title>
@@ -44,7 +53,8 @@ import { useSidebarStore } from '../store/sidebar';
 import { useMenuStore } from '../store/permiss'
 import { useRoute } from 'vue-router';
 
-const menu = useMenuStore().menu
+const menuStore = useMenuStore()
+
 const route = useRoute();
 const onRoutes = computed(() => {
     return route.path;
@@ -56,12 +66,8 @@ const sidebar = useSidebarStore();
 
 <style scoped>
 .sidebar {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 70px;
-    bottom: 0;
-    overflow-y: scroll;
+    flex: 0;
+    max-width: 250px;
 }
 
 .sidebar::-webkit-scrollbar {

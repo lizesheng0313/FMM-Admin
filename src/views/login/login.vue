@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-23 10:15:51
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-26 12:51:44
+ * @LastEditTime: 2023-02-27 10:44:21
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/views/login/login.vue
@@ -41,12 +41,12 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useTagsStore } from '../../store/tags';
-// import { usePermissStore } from '../../store/permiss';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
 import { fetchMenu } from '../../api/permission/index'
+import { useMenuStore } from '../../store/permiss'
 
 interface LoginInfo {
 	username: string;
@@ -70,14 +70,14 @@ const rules: FormRules = {
 	password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 };
 const state = reactive({ flag: false })
-// const permiss = usePermissStore();
 const login = ref<FormInstance>();
+const menuStore = useMenuStore()
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async (valid: boolean) => {
 		if (valid) {
 			await fetchMenu().then(res => {
-				sessionStorage.setItem('menu', JSON.stringify(res?.data?.list || []))
+				menuStore.increment(res?.data?.list || [])
 			})
 			ElMessage.success('登录成功');
 			router.push('/dashboard');
