@@ -10,14 +10,14 @@
             <el-form-item label="商品名称" prop="name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="主图" prop="pictureList" class="picture-list">
+            <el-form-item label="主图" prop="pctureList" class="picture-list">
               <div v-for="(imageUrl, index) in form.pictureList" :key="index" class="picture-add-item">
                 <div class="delete" @click="handleDeleteImg(index)">
                   <el-icon>
                     <Delete />
                   </el-icon>
                 </div>
-                <el-image :preview-src-list="form.pictureList" fit="cover" style="width: 148px; height: 148px"
+                <el-image :preview-src-list="form.pictureList" fit="contain" style="width: 148px; height: 148px"
                   :src="imageUrl" :initial-index="index"></el-image>
               </div>
               <div class="add_image">
@@ -27,6 +27,49 @@
                   </template>
                 </el-input>
               </div>
+            </el-form-item>
+            <el-form-item prop="specification" label="商品规格">
+              <div class="box-card">
+                <div v-for="(item, index) in specification" :key="index" class="box-card-item">
+                  <span class="name">{{ item.name }}</span>
+                  <el-tag v-for="(tag, i) in item.tag" :key="tag" class="mx-1" closable @close="handleClose(index, i)">
+                    {{ tag }}
+                  </el-tag>
+                  <el-input v-if="inputVisible[index]" :ref="inputRef => inputRefs[index] = inputRef" v-model="inputValue"
+                    class="spce-input" size="small" @keyup.enter="handleInputConfirm(index)"
+                    @blur="handleInputConfirm(index)" />
+                  <el-button v-else size="small" @click="showInput(index)">
+                    + New Tag
+                  </el-button>
+                  <el-button size="small" class="del-margin" type="danger" @click="handleDeleteSpec(index)">删除</el-button>
+                </div>
+                <div class="footer-group">
+                  <el-input size="small" v-model="spacName" placeholder="请输入规格"></el-input>
+                  <el-button size="small" type="primary" @click="handleAddSpecif" class="add-spec">新增规格</el-button>
+                  <el-button size="small" type="primary" @click="handleSku" class="add-spec">生成SKU</el-button>
+                </div>
+              </div>
+              <el-table :data="skuTable" style="width: 100%" v-if="skuTable.length > 0">
+                <el-table-column v-for="(column, index) in columns" :key="index" :prop="column.prop"
+                  :label="column.label"></el-table-column>
+                <el-table-column prop="sku_price" label="价格">
+                  <template #default="{ row }">
+                    <el-input v-model="row.sku_price"
+                      :rules="[{ required: true, message: '请输入价格', trigger: 'blur' }]"></el-input>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="sku_stock" label="库存">
+                  <template #default="{ row }">
+                    <el-input v-model="row.sku_stock"
+                      :rules="[{ required: true, message: '库存', trigger: 'blur' }]"></el-input>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作">
+                  <template #default="scope">
+                    <el-button size="small" type="danger" @click="handleDelete(scope.$index)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-form-item>
             <el-form-item label="商品货号" prop="number">
               <el-input v-model="form.number"></el-input>
@@ -49,7 +92,6 @@
             <el-form-item>
               <div class="mgb20" ref="editor"></div>
             </el-form-item>
-
             <el-form-item>
               <el-button plain @click=router.back()>取消</el-button>
               <el-button type="primary" @click="onSubmit(formRef)">提交</el-button>
@@ -62,32 +104,106 @@
 </template>
 
 <script setup lang="ts" >
-import { reactive, ref, onMounted, onBeforeUnmount } from 'vue';
+import { reactive, ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import WangEditor from 'wangeditor';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElInput } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { fetchClassiFication, fetchAddGoods, fetchGoodsGetDetails, fetchUpdateGoods } from '../../api/goods/index'
 import { useRouter } from 'vue-router';
 import { Plus } from '@element-plus/icons-vue';
 import { isImageUrl } from '../../utils/utils'
+import { Specification, Classification, Form, Columns } from './d'
 
-interface Classification {
-  label: string,
-  value: number
-}
-interface Form {
-  classiFication: string;
-  name: string;
-  introduction: string;
-  number: string;
-  price: string;
-  originPrice: string;
-  quantity: string;
-  order: string;
-  pictureList: string[]; // 明确指定为 string 类型的数组
-  volume: number;
+// 规格 
+const inputValue = ref('')
+const spacName = ref('')
+const specification = ref<Specification[]>([
+]);
+const inputVisible = ref(<boolean[]>[])
+const inputRefs = ref<(any)[]>([]);
+const skuTable = ref<[]>([])
+const columns = ref<Columns[]>([
+
+])
+const handleAddSpecif = () => {
+  if (spacName.value) {
+    specification.value.push({
+      name: `${spacName.value}:`,
+      tag: []
+    })
+    spacName.value = ''
+  }
 }
 
+const handleClose = (index: number, i: number) => {
+  const row = specification.value[index]
+  row.tag.splice(i, 1)[0]; // 删除指定位置的元素，并返回删除的元素
+}
+
+const showInput = (index: number) => {
+  inputVisible.value[index] = true
+  nextTick(() => {
+    inputRefs.value[index]?.focus();
+  });
+}
+const handleDeleteSpec = (index: number) => {
+  specification.value.splice(index, 1)
+}
+const handleInputConfirm = (index: number) => {
+  const row = specification.value[index]
+  if (inputValue.value) {
+    row.tag.push(inputValue.value)
+  }
+  inputVisible.value[index] = false
+  inputValue.value = ''
+}
+
+function getColumns() {
+  const labelName = specification.value.map(item => ({ name: item.name }));
+  columns.value = []
+  labelName.forEach((item, index) => {
+    columns.value.push({
+      prop: 'name' + index,
+      label: item.name
+    })
+  })
+}
+
+const handleSku = () => {
+  getColumns()
+  // 将笛卡尔积转换为对象
+  skuTable.value = []
+  skuTable.value = cartesian(...specification.value.map(item => item.tag))
+    .map((item) => {
+      const obj = {};
+      item.forEach((tag, i) => {
+        obj[`name${i}`] = tag;
+        obj[item.name] = tag;
+      });
+      return obj;
+    });
+  console.log(skuTable.value, '----skuTable')
+}
+
+// 生成笛卡尔积
+const cartesian = function (...args) {
+  return args.reduce((prev, curr) => {
+    let res = [];
+    prev.forEach((p) => {
+      curr.forEach((c) => {
+        res.push(p.concat(c));
+      });
+    });
+    return res;
+  }, [[]]);
+};
+
+
+
+function handleDelete(index: number) {
+  skuTable.value.splice(index, 1)
+}
+// 规格结束
 const options = reactive<{ list: Classification[] }>({ list: [] });
 const router = useRouter();
 const imageAddress = ref('')
@@ -244,5 +360,55 @@ const onSubmit = (formEl: FormInstance | undefined) => {
 :deep(.el-form-item__content) {
   align-items: flex-start;
 }
+
+.box-card {
+  width: 100%;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  background: #f8f9fc;
+  padding: 10px;
+
+  .name {
+    margin-right: 10px;
+  }
+
+  .box-card-item {
+    display: flex;
+    align-items: center;
+
+    :deep(.el-tag) {
+      margin-right: 5px;
+    }
+
+    :deep(.el-input) {
+      width: 80px;
+      height: 24px;
+    }
+  }
+
+}
+
+.spce-input {
+  width: 80.81px !important;
+}
+
+.del-margin {
+  margin: 0;
+  margin-left: 12px;
+}
+
+.footer-group {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+
+  .el-input {
+    width: 80px;
+    height: 24px;
+    margin-right: 5px;
+
+  }
+}
 </style>>
+
 
