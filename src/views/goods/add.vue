@@ -31,7 +31,7 @@
             <el-form-item prop="specification" label="商品规格">
               <div class="box-card">
                 <div v-for="(item, index) in specification" :key="index" class="box-card-item">
-                  <span class="name">{{ item.name }}</span>
+                  <span class="name">{{ item.name }}:</span>
                   <el-tag v-for="(tag, i) in item.tag" :key="tag" class="mx-1" closable @close="handleClose(index, i)">
                     {{ tag }}
                   </el-tag>
@@ -52,16 +52,14 @@
               <el-table :data="skuTable" style="width: 100%" v-if="skuTable.length > 0">
                 <el-table-column v-for="(column, index) in columns" :key="index" :prop="column.prop"
                   :label="column.label"></el-table-column>
-                <el-table-column prop="sku_price" label="价格">
+                <el-table-column prop="skuPrice" label="价格">
                   <template #default="{ row }">
-                    <el-input v-model="row.sku_price"
-                      :rules="[{ required: true, message: '请输入价格', trigger: 'blur' }]"></el-input>
+                    <el-input v-model="row.skuPrice"></el-input>
                   </template>
                 </el-table-column>
-                <el-table-column prop="sku_stock" label="库存">
+                <el-table-column prop="skuStock" label="库存">
                   <template #default="{ row }">
-                    <el-input v-model="row.sku_stock"
-                      :rules="[{ required: true, message: '库存', trigger: 'blur' }]"></el-input>
+                    <el-input v-model="row.skuStock"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -117,24 +115,20 @@ import { Specification, Classification, Form, Columns } from './d'
 // 规格 
 const inputValue = ref('')
 const spacName = ref('')
-const specification = ref<Specification[]>([
-]);
+const specification = ref<Specification[]>([]);
 const inputVisible = ref(<boolean[]>[])
 const inputRefs = ref<(any)[]>([]);
 const skuTable = ref<[]>([])
-const columns = ref<Columns[]>([
-
-])
+const columns = ref<Columns[]>([])
 const handleAddSpecif = () => {
   if (spacName.value) {
     specification.value.push({
-      name: `${spacName.value}:`,
+      name: `${spacName.value}`,
       tag: []
     })
     spacName.value = ''
   }
 }
-
 const handleClose = (index: number, i: number) => {
   const row = specification.value[index]
   row.tag.splice(i, 1)[0]; // 删除指定位置的元素，并返回删除的元素
@@ -160,37 +154,31 @@ const handleInputConfirm = (index: number) => {
 
 function getColumns() {
   const labelName = specification.value.map(item => ({ name: item.name }));
-  columns.value = []
-  labelName.forEach((item, index) => {
-    columns.value.push({
-      prop: 'name' + index,
-      label: item.name
-    })
-  })
+  columns.value = labelName.map((item, index) => ({
+    prop: `name${index}`,
+    label: item.name
+  }))
 }
 
 const handleSku = () => {
   getColumns()
   // 将笛卡尔积转换为对象
-  skuTable.value = []
   skuTable.value = cartesian(...specification.value.map(item => item.tag))
-    .map((item) => {
-      const obj = {};
-      item.forEach((tag, i) => {
+    .map((item: any, index: number) => {
+      const obj: any = {};
+      item.forEach((tag: any, i: number) => {
         obj[`name${i}`] = tag;
-        obj[item.name] = tag;
       });
       return obj;
     });
-  console.log(skuTable.value, '----skuTable')
 }
 
 // 生成笛卡尔积
-const cartesian = function (...args) {
-  return args.reduce((prev, curr) => {
-    let res = [];
-    prev.forEach((p) => {
-      curr.forEach((c) => {
+const cartesian = function (...args: any) {
+  return args.reduce((prev: any, curr: any) => {
+    let res: any = [];
+    prev.forEach((p: any) => {
+      curr.forEach((c: any) => {
         res.push(p.concat(c));
       });
     });
@@ -218,18 +206,23 @@ const form: Form = reactive({
   quantity: '',
   order: '',
   pictureList: [],
-  volume: 0
+  volume: 0,
 });
 const id = router?.currentRoute?.value?.query?.id;
 const editor = ref(null);
+// 编辑
 if (id) {
   fetchGoodsGetDetails({
     id
   }).then(res => {
+    specification.value = JSON.parse(res?.data?.specification) || []
     Object.assign(form, res?.data, {
       classiFication: JSON.parse(res?.data?.classiFication)
     });
+    skuTable.value = res?.data?.sku || []
     instance.txt.html(res?.data?.introduction)
+    getColumns()
+
   })
 }
 const content = reactive({
@@ -294,6 +287,8 @@ const onSubmit = (formEl: FormInstance | undefined) => {
       content.html = instance.txt.html();
       const params = {
         ...form,
+        sku: skuTable.value,
+        specification: JSON.stringify(specification.value),
         introduction: content.html,
         classiFication: JSON.stringify(form.classiFication)
       }
