@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-23 10:15:51
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-05 15:36:06
+ * @LastEditTime: 2023-03-06 09:57:19
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/views/login/login.vue
@@ -83,7 +83,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
 				username: param.username,
 				password: md5(param.password)
 			}).then(res => {
-				console.log(res, '----res')
 				userInfo.increment(res?.data?.userInfo)
 			})
 			await fetchMenu().then(res => {

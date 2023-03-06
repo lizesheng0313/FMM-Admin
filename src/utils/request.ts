@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-04 22:36:49
+ * @LastEditTime: 2023-03-06 15:10:35
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/utils/request.ts
@@ -17,7 +17,7 @@ const service:AxiosInstance = axios.create({
 });
 
 service.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    (config: any) => {
         const token = sessionStorage.getItem('authorization')
         if (config && config.headers) {
             config.headers['authorization'] = token
@@ -38,7 +38,7 @@ service.interceptors.response.use(
             }
             return response.data
         } else {
-            if(response?.data?.code === 2007 || response?.data?.code === 401 || response?.data?.code === 403) {
+            if(response?.data?.code === 2007 || response?.data?.code === 403) {
                 router.replace('/login')
             }
             ElMessage.error(response?.data?.message || response?.data?.msg)
@@ -46,7 +46,7 @@ service.interceptors.response.use(
         }
     },
     (error: AxiosError) => {
-        ElMessage.error('Internal Server Error')
+        ElMessage.error(error?.message)
         return Promise.reject();
     }
 );

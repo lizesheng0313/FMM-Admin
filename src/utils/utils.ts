@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-28 14:34:16
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-01 14:06:04
+ * @LastEditTime: 2023-03-06 10:06:53
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/utils/utils.ts
@@ -23,7 +23,7 @@ export function isImageUrl(url:string) {
 
 
 export function formatDateTime(milliseconds:any) {
-  const date = new Date(milliseconds.createTime);
+  const date = new Date(milliseconds.createTime || milliseconds.create_time);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
