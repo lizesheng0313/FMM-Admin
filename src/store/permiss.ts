@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-27 10:46:23
+ * @LastEditTime: 2023-03-05 15:37:33
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/store/permiss.ts
@@ -28,11 +28,15 @@ export const useMenuStore = defineStore('menu', {
   },
 });
 
-export const useConstantStore = defineStore('constant', {
-	state: () => {
-		const constant = sessionStorage.getItem('constant');
-		return {
-			key: constant ? JSON.parse(constant) : <string[]>[],
-		};
-	},
+export const userInfoSet = defineStore('userInfo', {
+	state: () => ({
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo') || '{}'),
+  }),
+	actions: {
+    increment(value:any) {
+      this.userInfo = value
+			console.log(value,'添加')
+			sessionStorage.setItem('userInfo', JSON.stringify(value || {}));
+    },
+  },
 });

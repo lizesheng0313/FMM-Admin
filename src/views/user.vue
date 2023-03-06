@@ -65,7 +65,7 @@
 import { reactive, ref } from 'vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
-import avatar from '../assets/images/img.jpg';
+// import avatar from '../assets/images/img.jpg';
 
 const name = localStorage.getItem('ms_username');
 const form = reactive({
@@ -75,7 +75,7 @@ const form = reactive({
 });
 const onSubmit = () => { };
 
-const avatarImg = ref(avatar);
+const avatarImg = ref();
 const imgSrc = ref('');
 const cropImg = ref('');
 const dialogVisible = ref(false);

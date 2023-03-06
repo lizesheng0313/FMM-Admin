@@ -2,11 +2,11 @@
   <div>
     <div class="container">
       <div class="handle-box">
-        <el-select v-model="query.address" placeholder="品牌" class="handle-select mr10">
+        <el-select v-model="query.address" placeholder="订单状态" class="handle-select mr10">
           <el-option key="1" label="广东省" value="广东省"></el-option>
           <el-option key="2" label="湖南省" value="湖南省"></el-option>
         </el-select>
-        <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+        <el-input v-model="query.name" placeholder="支付状态" class="handle-input mr10"></el-input>
         <el-button type="primary" @click="handleSearch">查询</el-button>
       </div>
       <el-card>

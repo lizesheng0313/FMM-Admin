@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-23 10:15:51
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-27 10:44:21
+ * @LastEditTime: 2023-03-05 15:36:06
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/views/login/login.vue
@@ -13,14 +13,14 @@
 			<div class="ms-title">登录</div>
 			<el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
 				<el-form-item prop="username">
-					<el-input class="login-input" v-model="param.username" placeholder="username">
+					<el-input class="login-input" v-model="param.username" placeholder="请输入用户名">
 						<template #prepend>
 							<el-button :icon="User"></el-button>
 						</template>
 					</el-input>
 				</el-form-item>
 				<el-form-item prop="password">
-					<el-input class="login-input" type="password" placeholder="password" v-model="param.password"
+					<el-input class="login-input" type="password" placeholder="请输入密码" v-model="param.password"
 						@keyup.enter="submitForm(login)">
 						<template #prepend>
 							<el-button :icon="Lock"></el-button>
@@ -46,7 +46,9 @@ import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
 import { fetchMenu } from '../../api/permission/index'
-import { useMenuStore } from '../../store/permiss'
+import { fetchLogin } from '../../api/user/index'
+import { useMenuStore, userInfoSet } from '../../store/permiss'
+import md5 from 'js-md5'
 
 interface LoginInfo {
 	username: string;
@@ -72,10 +74,18 @@ const rules: FormRules = {
 const state = reactive({ flag: false })
 const login = ref<FormInstance>();
 const menuStore = useMenuStore()
+const userInfo = userInfoSet()
 const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async (valid: boolean) => {
 		if (valid) {
+			await fetchLogin({
+				username: param.username,
+				password: md5(param.password)
+			}).then(res => {
+				console.log(res, '----res')
+				userInfo.increment(res?.data?.userInfo)
+			})
 			await fetchMenu().then(res => {
 				menuStore.increment(res?.data?.list || [])
 			})
@@ -194,5 +204,9 @@ tags.clearTags();
 	width: 100%;
 	height: 50px;
 	cursor: pointer;
+}
+
+:deep(.el-form-item__error) {
+	left: 40px;
 }
 </style>

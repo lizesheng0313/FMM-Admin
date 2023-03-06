@@ -20,11 +20,11 @@
 					<span class="btn-bell-badge" v-if="message"></span>
 				</div>
 				<!-- 用户头像 -->
-				<el-avatar class="user-avator" :size="30" :src="imgurl" />
+				<el-avatar class="user-avator" :size="30" :src="userInfo.userInfo.avatar" />
 				<!-- 用户名下拉菜单 -->
 				<el-dropdown class="user-name" trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
-						{{ username }}
+						{{ userInfo.userInfo.username }} {{ role[userInfo.userInfo.role] }}
 						<el-icon class="el-icon--right">
 							<arrow-down />
 						</el-icon>
@@ -47,11 +47,17 @@
 import { onMounted } from 'vue';
 import { useSidebarStore } from '../store/sidebar';
 import { useRouter } from 'vue-router';
-import imgurl from '../assets/images/img.jpg';
+import { userInfoSet } from '../store/permiss'
 
-const username: string | null = localStorage.getItem('ms_username');
+const userInfo = userInfoSet()
 const message: number = 2;
-
+const role = {
+	0: '超级管理员',
+	1: '管理员',
+	2: '运营经理',
+	3: '销售经理',
+	4: '合作商'
+}
 const sidebar = useSidebarStore();
 // 侧边栏折叠
 const collapseChage = () => {

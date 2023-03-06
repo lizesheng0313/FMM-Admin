@@ -2,13 +2,15 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-02-27 10:17:44
+ * @LastEditTime: 2023-03-04 22:36:49
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/utils/request.ts
  */
-import axios, {AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig} from 'axios';
+import axios, {AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig} from 'axios'
 import { ElMessage } from 'element-plus'
+import router from '../router';
+
 
 const service:AxiosInstance = axios.create({
     timeout: 5000
@@ -16,6 +18,10 @@ const service:AxiosInstance = axios.create({
 
 service.interceptors.request.use(
     (config: AxiosRequestConfig) => {
+        const token = sessionStorage.getItem('authorization')
+        if (config && config.headers) {
+            config.headers['authorization'] = token
+          }
         return config;
     },
     (error: AxiosError) => {
@@ -27,14 +33,20 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     (response: AxiosResponse) => {
         if (response?.data?.code === 0) {
+            if(response?.config?.url === '/api/user/login'){
+                sessionStorage.setItem('authorization',response?.headers.authorization)
+            }
             return response.data
         } else {
-            ElMessage.error(response?.data?.msg || 'Internal Server Error')
+            if(response?.data?.code === 2007 || response?.data?.code === 401 || response?.data?.code === 403) {
+                router.replace('/login')
+            }
+            ElMessage.error(response?.data?.message || response?.data?.msg)
             return Promise.reject();
         }
     },
     (error: AxiosError) => {
-        ElMessage.error(error?.response?.data?.message || 'Internal Server Error')
+        ElMessage.error('Internal Server Error')
         return Promise.reject();
     }
 );
