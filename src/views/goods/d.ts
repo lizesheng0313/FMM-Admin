@@ -30,4 +30,5 @@ export interface Form {
   order: string;
   pictureList: string[]; // 明确指定为 string 类型的数组
   volume: number;
+  href:string
 }

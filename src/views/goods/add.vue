@@ -28,6 +28,9 @@
                 </el-input>
               </div>
             </el-form-item>
+            <el-form-item label="商品地址" prop="href">
+              <el-input v-model="form.href"></el-input>
+            </el-form-item>
             <el-form-item prop="specification" label="商品规格">
               <div class="box-card">
                 <div v-for="(item, index) in specification" :key="index" class="box-card-item">
@@ -52,6 +55,13 @@
               <el-table :data="skuTable" style="width: 100%" v-if="skuTable.length > 0">
                 <el-table-column v-for="(column, index) in columns" :key="index" :prop="column.prop"
                   :label="column.label"></el-table-column>
+                <el-table-column prop="goods_picture" label="图片" width="150">
+                  <template #default="{ row }">
+                    <el-image fit="contain" :src="row.goods_picture" v-if="row.goods_picture"></el-image>
+                    <el-input style="width:116px" :onblur="handleSetImageSku(row)" v-else placeholder="图片地址"
+                      v-model="row.goods_picture"></el-input>
+                  </template>
+                </el-table-column>
                 <el-table-column prop="skuPrice" label="价格">
                   <template #default="{ row }">
                     <el-input v-model="row.skuPrice"></el-input>
@@ -207,6 +217,7 @@ const form: Form = reactive({
   order: '',
   pictureList: [],
   volume: 0,
+  href: ''
 });
 const id = router?.currentRoute?.value?.query?.id;
 const editor = ref(null);
@@ -253,6 +264,15 @@ async function handleSetImage() {
   }
   form.pictureList.push(imageAddress?.value)
   imageAddress.value = ''
+}
+
+async function handleSetImageSku(row: any) {
+  if (!row.goods_picture) return
+  if (!await isImageUrl(row.goods_picture)) {
+    ElMessage.warning('图片地址不正确')
+    row.goods_picture = ''
+    return
+  }
 }
 
 function handleDeleteImg(index: number) {

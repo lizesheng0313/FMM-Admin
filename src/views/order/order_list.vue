@@ -40,7 +40,7 @@
           <template #default="scope">
             <div>
               <p>名称：{{ scope.row.name }}</p>
-              <p style="margin-top:10px;"> 规格：{{ scope.row.skuId }}</p>
+              <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
               <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.totao_quantity }}</p>
               <el-image fit="contain" :src="scope.row.goods_picture"></el-image>
             </div>
@@ -66,14 +66,11 @@
             <a :href="scope.row.href" target="_blank">商品链接</a>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column label="操作" align="center">
           <template #default="scope">
             <el-button v-if="scope.row.order_status === '0' && scope.row.pay_status === '1'" text :icon="SuitcaseLine"
-              @click="showDialog" v-permiss="15">
+              @click="showDialog(scope.row.id)" v-permiss="15">
               发货
-            </el-button>
-            <el-button text :icon="Delete" @click="handleDelete(scope.row.id)" v-permiss="16">
-              删除
             </el-button>
           </template>
         </el-table-column>
@@ -107,8 +104,9 @@
 
 <script setup lang="ts" name="basetable">
 import { ref, reactive } from 'vue';
+import { ElMessage } from 'element-plus'
 import { Delete, SuitcaseLine, } from '@element-plus/icons-vue';
-import { fetchOrderList } from '../../api/order/index';
+import { fetchOrderList, fetchShipGodos } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
 
 interface TableItem {
@@ -137,6 +135,16 @@ const logistics = reactive({
   logistics_company: '',
   logistics_no: '',
 })
+const logisticsCompanies = [
+  { value: 'ZTO', label: '中通快递' },
+  { value: 'SF', label: '顺丰快递' },
+  { value: 'STO', label: '申通快递' },
+  { value: 'YTO', label: '圆通快递' },
+  { value: 'EMS', label: 'EMS' },
+  { value: 'JD', label: '京东快递' },
+];
+const dialogVisible = ref(false);
+const orderId = ref('');
 // 获取表格数据
 const getData = () => {
   fetchOrderList(form).then(res => {
@@ -157,35 +165,10 @@ const handlePageChange = (val: number) => {
   getData();
 };
 
-// 删除操作
-const handleDelete = (id: number) => {
-  // // 二次确认删除
-  // ElMessageBox.confirm('确定要删除吗？', '提示', {
-  //   type: 'warning'
-  // })
-  //   .then(() => {
-  //     fetchDeleteGoodsInfo({
-  //       id
-  //     }).then(res => {
-  //       ElMessage.success('删除成功');
-  //       getData();
-  //     })
-  //   })
-  //   .catch(() => { });
-};
 
-const logisticsCompanies = [
-  { value: 'SF', label: '顺丰快递' },
-  { value: 'STO', label: '申通快递' },
-  { value: 'YTO', label: '圆通快递' },
-  { value: 'ZTO', label: '中通快递' },
-  { value: 'EMS', label: 'EMS' },
-  { value: 'JD', label: '京东快递' },
-];
-const dialogVisible = ref(false);
-
-const showDialog = () => {
+const showDialog = (id: string) => {
   dialogVisible.value = true;
+  orderId.value = id
 };
 const hideDialog = () => {
   dialogVisible.value = false;
@@ -193,8 +176,34 @@ const hideDialog = () => {
   logistics.logistics_no = ''
 }
 const handleSubmit = () => {
-
+  fetchShipGodos({
+    id: orderId.value,
+    ...logistics
+  }).then(res => {
+    dialogVisible.value = false;
+    ElMessage.success('发货成功');
+    getData();
+  })
 }
+
+// 删除操作
+// const handleDelete = (id: number) => {
+// // 二次确认删除
+// ElMessageBox.confirm('确定要删除吗？', '提示', {
+//   type: 'warning'
+// })
+//   .then(() => {
+//     fetchDeleteGoodsInfo({
+//       id
+//     }).then(res => {
+//       ElMessage.success('删除成功');
+//       getData();
+//     })
+//   })
+//   .catch(() => { });
+// };
+
+
 
 </script>
 
@@ -207,10 +216,10 @@ const handleSubmit = () => {
 }
 
 .table {
-  overflow: auto;
-  overflow-x: scroll;
   font-size: 14px;
+  max-width: calc(100vw - 150px);
 }
+
 
 .logistic-input {
   width: 190px;

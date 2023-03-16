@@ -174,6 +174,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import('../views/order/order_list.vue'),
             },
+            {
+               path:'/order/return',
+               name:'orderReturn',
+               meta:{
+                title:'退货列表',
+               },
+               component: () => import('../views/order/order_return_goods.vue'),
+            }
         ],
     },
     {

@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-06 09:56:39
+ * @LastEditTime: 2023-03-16 16:59:03
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/order/index.ts
@@ -18,11 +18,35 @@ export const fetchOrderList= (params:any) => {
     });
 };
 
-export const fetchDeleteGoodsInfo= (data:any) => {
+export const fetchShipGodos= (data:any) => {
     return request({
-        url: '/api/manage/deleteGoods',
+        url: '/api/order/shipGoods',
         method: 'post',
         data
     });
 };
+
+export const fetchReturnOrderList = (params:any) =>{
+    return request({
+        url:'/api/order/returnList',
+        method: 'get',
+        params
+    })
+}
+
+export const fetchAgreenOrder = (data:any) =>{
+    return request({
+        url:'/api/order/agreen',
+        method: 'post',
+        data
+    })
+}
+
+export const fetchRefuseOrder = (data:any) =>{
+    return request({
+        url:'/api/order/refuse',
+        method: 'post',
+        data
+    })
+}
 
