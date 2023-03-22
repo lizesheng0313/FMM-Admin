@@ -62,9 +62,19 @@
                       v-model="row.goods_picture"></el-input>
                   </template>
                 </el-table-column>
-                <el-table-column prop="skuPrice" label="价格">
+                <el-table-column prop="skuPrice" label="售价">
                   <template #default="{ row }">
                     <el-input v-model="row.skuPrice"></el-input>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="skuOriginPrice" label="原价">
+                  <template #default="{ row }">
+                    <el-input v-model="row.skuOriginPrice"></el-input>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="cost_price" label="成本">
+                  <template #default="{ row }">
+                    <el-input v-model="row.cost_price"></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column prop="skuStock" label="库存">
@@ -79,17 +89,11 @@
                 </el-table-column>
               </el-table>
             </el-form-item>
+            <el-form-item label="运费" prop="freight">
+              <el-input v-model="form.freight"></el-input>
+            </el-form-item>
             <el-form-item label="商品货号" prop="number">
               <el-input v-model="form.number"></el-input>
-            </el-form-item>
-            <el-form-item label="商品售价" prop="price">
-              <el-input v-model="form.price" type="number"></el-input>
-            </el-form-item>
-            <el-form-item label="商品原价" prop="originPrice">
-              <el-input v-model="form.originPrice" type="number"></el-input>
-            </el-form-item>
-            <el-form-item label="商品库存" prop="quantity">
-              <el-input v-model="form.quantity" type="number"></el-input>
             </el-form-item>
             <el-form-item label="排序" prop="order">
               <el-input v-model="form.order" type="number"></el-input>
@@ -211,13 +215,11 @@ const form: Form = reactive({
   name: '',
   introduction: '',
   number: '',
-  price: '',
-  originPrice: '',
-  quantity: '',
   order: '',
   pictureList: [],
   volume: 0,
-  href: ''
+  href: '',
+  freight: 0,
 });
 const id = router?.currentRoute?.value?.query?.id;
 const editor = ref(null);
@@ -283,10 +285,7 @@ const rules: FormRules = {
   classiFication: [{ required: true, message: '请选择分类', trigger: 'change' }],
   name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
   number: [{ required: true, message: '请输入商品货号', trigger: 'blur' }],
-  price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
-  originPrice: [{ required: true, message: '请输入商品原价', trigger: 'blur' }],
   order: [{ required: true, message: '请输入商品排序', trigger: 'blur' }],
-  quantity: [{ required: true, message: '请输入商品库存', trigger: 'blur' }],
   pictureList: [{
     required: true, message: '请上传至少一张图片', trigger: 'change', validator: (rule, value, callback) => {
       if (value && value.length > 0) {

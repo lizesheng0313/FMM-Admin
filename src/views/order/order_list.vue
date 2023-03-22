@@ -41,7 +41,7 @@
             <div>
               <p>名称：{{ scope.row.name }}</p>
               <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
-              <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.totao_quantity }}</p>
+              <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>
               <el-image fit="contain" :src="scope.row.goods_picture"></el-image>
             </div>
           </template>
