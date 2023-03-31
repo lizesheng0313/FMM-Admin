@@ -126,6 +126,8 @@ import { Plus } from '@element-plus/icons-vue';
 import { isImageUrl } from '../../utils/utils'
 import { Specification, Classification, Form, Columns } from './d'
 
+const outerSeparator = "|";
+const innerSeparator = "!";
 // 规格 
 const inputValue = ref('')
 const spacName = ref('')
@@ -200,8 +202,6 @@ const cartesian = function (...args: any) {
   }, [[]]);
 };
 
-
-
 function handleDelete(index: number) {
   skuTable.value.splice(index, 1)
 }
@@ -228,7 +228,20 @@ if (id) {
   fetchGoodsGetDetails({
     id
   }).then(res => {
-    specification.value = JSON.parse(res?.data?.specification) || []
+    // 将字符串转回数组
+    const items = res.data.specification.split('|');
+    const result = [];
+    for (let i = 0; i < items.length; i += 2) {
+      const name = items[i];
+      const tagStr = items[i + 1];
+      const tags = tagStr ? tagStr.split('!') : [];
+      result.push({
+        name,
+        tag: tags,
+      });
+    }
+    specification.value = result
+    // 反序列化
     Object.assign(form, res?.data, {
       classiFication: JSON.parse(res?.data?.classiFication)
     });
@@ -303,11 +316,17 @@ const onSubmit = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
+      // 将数组转成字符串
+      const str = specification.value.map(item => {
+        const tagStr = item.tag ? item.tag.join(innerSeparator) : ''; // 将tag数组拼接成一个字符串
+        return `${item.name}${outerSeparator}${tagStr}`;
+      }).join(outerSeparator); // 将每个对象的字符串拼接成一个总的字符串
+
       content.html = instance.txt.html();
       const params = {
         ...form,
         sku: skuTable.value,
-        specification: JSON.stringify(specification.value),
+        specification: str,
         introduction: content.html,
         classiFication: JSON.stringify(form.classiFication)
       }
