@@ -35,14 +35,18 @@
         </div>
       </template>
       <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-        <el-table-column prop="id" label="订单id" align="center"></el-table-column>
-        <el-table-column prop="name" label="商品" align="left" width="200">
+        <el-table-column prop="id" label="订单id" width="200" align="center"></el-table-column>
+        <el-table-column prop="name" label="商品" align="left" width="300">
           <template #default="scope">
             <div>
               <p>名称：{{ scope.row.name }}</p>
-              <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
-              <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>
-              <el-image fit="contain" :src="scope.row.goods_picture"></el-image>
+              <div style="display:flex;align-items: center;">
+                <img style="width:80px;height:80px" :src="scope.row.goods_picture" />
+                <div>
+                  <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
+                  <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>
+                </div>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -53,7 +57,8 @@
             <div>
               <p>收件人：{{ scope.row.address_name }}</p>
               <p style="margin-top:10px">联系电话：{{ scope.row.address_phone }}</p>
-              <p style="margin-top:10px">收件地址：{{ scope.row.address_detail }}</p>
+              <p style="margin-top:10px">收件地址：{{ scope.row?.province }}{{ scope.row?.city }}{{ scope.row?.streetName }}{{
+                scope.row.address_detail }}</p>
             </div>
           </template>
         </el-table-column>
@@ -108,6 +113,7 @@ import { ElMessage } from 'element-plus'
 import { Delete, SuitcaseLine, } from '@element-plus/icons-vue';
 import { fetchOrderList, fetchShipGodos } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
+import { some } from 'lodash';
 
 interface TableItem {
   id: number;

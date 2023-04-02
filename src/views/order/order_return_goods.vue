@@ -9,14 +9,6 @@
             <el-option key="2" label="已取消" value="2"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="订单状态">
-          <el-select v-model="form.orderStatus" placeholder="请选择订单状态" clearable>
-            <el-option key="0" label="待发货" value="0"></el-option>
-            <el-option key="1" label="已发货" value="1"></el-option>
-            <el-option key="2" label="已收货" value="2"></el-option>
-            <el-option key="3" label="已完成" value="3"></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="收件人">
           <el-input v-model="form.username" placeholder="收件人"></el-input>
         </el-form-item>
