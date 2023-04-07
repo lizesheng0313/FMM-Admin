@@ -135,6 +135,7 @@ const specification = ref<Specification[]>([]);
 const inputVisible = ref(<boolean[]>[])
 const inputRefs = ref<(any)[]>([]);
 const skuTable = ref<[]>([])
+const skuCopyTable = ref<[]>([])
 const columns = ref<Columns[]>([])
 const handleAddSpecif = () => {
   if (spacName.value) {
@@ -176,10 +177,26 @@ function getColumns() {
   }))
 }
 
+const matchAndMergeData = (skuTable: any, sku: any) => {
+  const result = skuTable.map((tableRow: any) => {
+    const matchedSku = sku.find((skuRow: any) => {
+      return Object.keys(tableRow).every((key) => {
+        return tableRow[key] === skuRow[key];
+      });
+    });
+    return {
+      ...tableRow,
+      ...matchedSku
+    };
+  });
+  return result;
+};
+
+
 const handleSku = () => {
   getColumns()
   // 将笛卡尔积转换为对象
-  skuTable.value = cartesian(...specification.value.map(item => item.tag))
+  const skuTableArr = cartesian(...specification.value.map(item => item.tag))
     .map((item: any, index: number) => {
       const obj: any = {};
       item.forEach((tag: any, i: number) => {
@@ -187,6 +204,10 @@ const handleSku = () => {
       });
       return obj;
     });
+  console.log(skuTableArr, 'skuTable')
+  console.log(skuCopyTable.value, 'skuCopyTable.value')
+  skuTable.value = matchAndMergeData(skuTableArr, skuCopyTable.value)
+  // skuTable.value = mergeSkuTable(skuCopyTable.value, arr) 
 }
 
 // 生成笛卡尔积
@@ -246,6 +267,7 @@ if (id) {
       classiFication: JSON.parse(res?.data?.classiFication)
     });
     skuTable.value = res?.data?.sku || []
+    skuCopyTable.value = res?.data?.sku || []
     instance.txt.html(res?.data?.introduction)
     getColumns()
 
