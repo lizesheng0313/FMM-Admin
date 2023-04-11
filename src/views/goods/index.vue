@@ -33,13 +33,13 @@
             <template #default="scope">
               <div class="label-box">
                 <el-switch inactive-text="上架" :active-value="1" :inactive-value="0"
-                  @click="handleUpdateGoods('online', scope.row.online, scope.row.id)"
+                  @click="() => { handleUpdateGoods('online', scope.row.online, scope.row.id) }"
                   v-model="scope.row.online"></el-switch>
                 <el-switch inactive-text="新品" :active-value="1" :inactive-value="0"
-                  @click="handleUpdateGoods('latest', scope.row.latest, scope.row.id)"
+                  @click="() => { handleUpdateGoods('latest', scope.row.latest, scope.row.id) }"
                   v-model="scope.row.latest"></el-switch>
                 <el-switch inactive-text="推荐" :active-value="1" :inactive-value="0"
-                  @click="handleUpdateGoods('recommend', scope.row.recommend, scope.row.id)"
+                  @click="() => { handleUpdateGoods('recommend', scope.row.recommend, scope.row.id) }"
                   v-model="scope.row.recommend"></el-switch>
               </div>
             </template>
@@ -49,10 +49,10 @@
           <el-table-column align="center" prop="volume" label="销量"></el-table-column>
           <el-table-column label="操作" width="220" align="center">
             <template #default="scope">
-              <el-button text :icon="Edit" @click="handleEdit(scope.row.id)" v-permiss="15">
+              <el-button text :icon="Edit" @click="() => { handleEdit(scope.row.id) }" v-permiss="15">
                 编辑
               </el-button>
-              <el-button text :icon="Delete" class="red" @click="handleDelete(scope.row.id)" v-permiss="16">
+              <el-button text :icon="Delete" class="red" @click="() => { handleDelete(scope.row.id) }" v-permiss="16">
                 删除
               </el-button>
             </template>
@@ -60,7 +60,7 @@
         </el-table>
         <div class="pagination">
           <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
-            :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
+            :page-size="query.pageSize" :total="pageTotal" @current-change="() => { handlePageChange }"></el-pagination>
         </div>
       </el-card>
     </div>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts" name="basetable">
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, } from '@element-plus/icons-vue';
 import { fetchGoodsList, fetchDeleteGoodsInfo, fetchUpdateGoods } from '../../api/goods/index';
@@ -96,18 +96,24 @@ const router = useRouter();
 
 // 获取表格数据
 const getData = () => {
+  console.log('执行次数')
   fetchGoodsList(query).then(res => {
     tableData.value = res.data.list;
     pageTotal.value = res.data.total;
   });
 };
-getData();
+
+
+onMounted(() => {
+  getData();
+})
 
 // 查询操作
-const handleSearch = () => {
-  query.pageIndex = 1;
-  getData();
-};
+// const handleSearch = () => {
+//   query.pageIndex = 1;
+//   getData();
+// };
+
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val;
@@ -124,6 +130,7 @@ const handleDelete = (id: number) => {
       fetchDeleteGoodsInfo({
         id
       }).then(res => {
+        console.log('删除')
         ElMessage.success('删除成功');
         getData();
       })

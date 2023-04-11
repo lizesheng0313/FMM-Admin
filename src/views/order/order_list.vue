@@ -41,7 +41,7 @@
             <div>
               <p>名称：{{ scope.row.name }}</p>
               <div style="display:flex;align-items: center;">
-                <img style="width:80px;height:80px" :src="scope.row.goods_picture" />
+                <img style="width:80px;height:80px;margin-right: 10px;" :src="scope.row.goods_picture" />
                 <div>
                   <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
                   <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>

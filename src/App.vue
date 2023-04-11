@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-04-07 14:01:11
+ * @LastEditTime: 2023-04-11 17:43:55
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/App.vue
@@ -28,4 +28,10 @@ onMounted(() => {
 <style>
 @import './assets/css/main.css';
 @import './assets/css/color-dark.css';
+
+.flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
 </style>

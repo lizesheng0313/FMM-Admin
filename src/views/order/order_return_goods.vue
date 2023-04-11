@@ -39,13 +39,17 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="商品" align="left" width="200">
+        <el-table-column prop="name" label="商品" align="left" width="300">
           <template #default="scope">
             <div>
               <p>名称：{{ scope.row.name }}</p>
-              <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
-              <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>
-              <el-image fit="contain" :src="scope.row.goods_picture"></el-image>
+              <div style="display:flex;align-items: center;">
+                <img style="width:80px;height:80px;margin-right: 10px;" :src="scope.row.goods_picture" />
+                <div>
+                  <p style="margin-top:10px;"> 规格：{{ scope.row.sku_id }}</p>
+                  <p style="color:#f56c6c;margin-top:10px;margin-bottom: 10px;">数量：{{ scope.row.quantity }}</p>
+                </div>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -59,8 +63,17 @@
           align="center"></el-table-column>
         <el-table-column prop="refund_time" label="退款时间" width="200" :formatter="formatDateTime"
           align="center"></el-table-column>
-        <el-table-column prop="memo" label="退货原因" width="200" align="center"></el-table-column>
-        <el-table-column prop="picture_list" label="退货原因" width="200" align="center"></el-table-column>
+        <el-table-column prop="reason" label="退货原因" width="200" align="center"></el-table-column>
+        <el-table-column prop="memo" label="退货备注" width="200" align="center"></el-table-column>
+        <el-table-column prop="picture_list" label="退货凭证" width="200" align="center">
+          <template #default="scope">
+            <div class="flex" v-if="scope.row?.picture_list?.length > 0">
+              <el-image v-for="item in scope.row.picture_list" class="table-td-thumb" :src="item"
+                style="width:60px;height:60px;" :preview-src-list="scope.row.picture_list" preview-teleported>
+              </el-image>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column prop="total_price" label="订单金额" width="100" align="center"></el-table-column>
         <el-table-column prop="order_status_str" label="订单状态" width="100" align="center"></el-table-column>
         <el-table-column prop="order_return_status_start" width="100" label="退货状态" align="center"></el-table-column>
