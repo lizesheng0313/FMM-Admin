@@ -60,7 +60,7 @@
         </el-table>
         <div class="pagination">
           <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
-            :page-size="query.pageSize" :total="pageTotal" @current-change="() => { handlePageChange }"></el-pagination>
+            :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
         </div>
       </el-card>
     </div>

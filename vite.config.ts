@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-04-11 15:13:39
+ * @LastEditTime: 2023-04-14 20:34:47
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/vite.config.ts
@@ -48,8 +48,8 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api': {
-        target: 'https://zjkdongao.com/qq',
-        // target: 'http://127.0.0.1:7002',
+        // target: 'https://zjkdongao.com/qq',
+        target: 'http://127.0.0.1:7002',
         changeOrigin: true,
       },
     },
