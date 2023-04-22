@@ -429,6 +429,7 @@ const onSubmit = (formEl: FormInstance | undefined) => {
 
   .box-card-item {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 
     :deep(.el-tag) {
