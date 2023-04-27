@@ -66,13 +66,12 @@
         <el-table-column prop="order_status_str" label="订单状态" align="center"></el-table-column>
         <el-table-column prop="pay_status_str" label="支付状态" align="center"></el-table-column>
         <el-table-column prop="cost_price" label="订单成本" align="center"></el-table-column>
-        <el-table-column prop="href" label="合作链接" align="center">
+        <el-table-column prop="href" label="合作链接" align="center" width="100">
           <template #default="scope">
             <a :href="scope.row.href" target="_blank">商品链接</a>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
-
+        <el-table-column label="操作" fixed="right" align="center" width="150">
           <template #default="scope">
             <el-button v-if="scope.row.order_status === '10' && scope.row.pay_status === '1'" text :icon="SuitcaseLine"
               @click="showDialog(scope.row.id)">
@@ -111,10 +110,9 @@
 <script setup lang="ts" name="basetable">
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
-import { Delete, SuitcaseLine, } from '@element-plus/icons-vue';
+import { SuitcaseLine, } from '@element-plus/icons-vue';
 import { fetchOrderList, fetchShipGodos } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
-import { some } from 'lodash';
 
 interface TableItem {
   id: number;
@@ -152,6 +150,7 @@ const logisticsCompanies = [
 ];
 const dialogVisible = ref(false);
 const orderId = ref('');
+
 // 获取表格数据
 const getData = () => {
   fetchOrderList(form).then(res => {
@@ -160,6 +159,8 @@ const getData = () => {
   });
 };
 getData();
+
+
 
 // 查询操作
 const handleSearch = () => {
@@ -192,26 +193,6 @@ const handleSubmit = () => {
     getData();
   })
 }
-
-// 删除操作
-// const handleDelete = (id: number) => {
-// // 二次确认删除
-// ElMessageBox.confirm('确定要删除吗？', '提示', {
-//   type: 'warning'
-// })
-//   .then(() => {
-//     fetchDeleteGoodsInfo({
-//       id
-//     }).then(res => {
-//       ElMessage.success('删除成功');
-//       getData();
-//     })
-//   })
-//   .catch(() => { });
-// };
-
-
-
 </script>
 
 <style scoped sass>

@@ -78,15 +78,19 @@
         <el-table-column prop="order_status_str" label="订单状态" width="100" align="center"></el-table-column>
         <el-table-column prop="order_return_status_start" width="100" label="退货状态" align="center"></el-table-column>
         <el-table-column prop="cost_price" width="100" label="订单成本" align="center"></el-table-column>
-        <el-table-column label="操作" align="center" width="200">
+        <el-table-column label="操作" align="center" width="250">
           <template #default="scope">
             <el-button v-if="scope.row.status === '1'" text :icon="SuitcaseLine" @click="showConfirmDialog(scope.row.id)"
               v-permiss="15">
-              同意
+              同意退货
             </el-button>
             <el-button v-if="scope.row.status === '1'" text :icon="SuitcaseLine" @click="showDialog(scope.row.id)"
               v-permiss="15">
-              拒绝
+              拒绝退货
+            </el-button>
+            <el-button v-if="scope.row.order_status === '80' && scope.row.pay_status === '1'" text :icon="SuitcaseLine"
+              @click="handleRefund(scope.row.id)">
+              同意退款
             </el-button>
           </template>
         </el-table-column>
@@ -129,7 +133,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { SuitcaseLine, } from '@element-plus/icons-vue';
-import { fetchReturnOrderList, fetchAgreenOrder, fetchRefuseOrder } from '../../api/order/index';
+import { fetchReturnOrderList, fetchAgreenOrder, fetchRefuseOrder, fetchRefundOrder } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
 import { ElMessageBox } from 'element-plus';
 
@@ -182,6 +186,21 @@ const handlePageChange = (val: number) => {
   getData()
 };
 
+const handleRefund = (id: string) => {
+  // 二次确认
+  ElMessageBox.confirm('确定要退款吗？', '提示', {
+    type: 'warning'
+  })
+    .then(() => {
+      fetchRefundOrder({
+        id
+      }).then(res => {
+        ElMessage.success('退款状态更改成功');
+        getData();
+      })
+    })
+    .catch(() => { });
+}
 
 const showDialog = (id: string) => {
   dialogVisible.value = true;

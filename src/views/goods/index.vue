@@ -1,14 +1,6 @@
 <template>
   <div>
     <div class="container">
-      <!-- <div class="handle-box">
-        <el-select v-model="query.address" placeholder="订单状态" class="handle-select mr10">
-          <el-option key="1" label="广东省" value="广东省"></el-option>
-          <el-option key="2" label="湖南省" value="湖南省"></el-option>
-        </el-select>
-        <el-input v-model="query.name" placeholder="支付状态" class="handle-input mr10"></el-input>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-      </div> -->
       <el-card>
         <template #header>
           <div class="card-header">
@@ -19,7 +11,6 @@
           </div>
         </template>
         <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-          <el-table-column prop="id" label="id" width="80" align="center"></el-table-column>
           <el-table-column label="商品图片" align="center">
             <template #default="scope">
               <el-image class="table-td-thumb" style="width: 80px; height: 80px"
@@ -45,9 +36,7 @@
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
-          <el-table-column label="货号" prop="number" align="center"></el-table-column>
-          <el-table-column align="center" prop="volume" label="销量"></el-table-column>
-          <el-table-column label="操作" width="220" align="center">
+          <el-table-column label="操作" fixed="right" width="220" align="center">
             <template #default="scope">
               <el-button text :icon="Edit" @click="() => { handleEdit(scope.row.id) }" v-permiss="15">
                 编辑
@@ -108,12 +97,6 @@ onMounted(() => {
   getData();
 })
 
-// 查询操作
-// const handleSearch = () => {
-//   query.pageIndex = 1;
-//   getData();
-// };
-
 // 分页导航
 const handlePageChange = (val: number) => {
   query.pageIndex = val;
@@ -160,9 +143,7 @@ function handleUpdateGoods(key: string, row: number, id: string) {
       ElMessage.success(`${map[key]}成功`) : ElMessage.success(`取消${map[key]}成功`)
   })
 }
-
 </script>
-
 <style scoped sass>
 .handle-box {
   margin-bottom: 20px;
