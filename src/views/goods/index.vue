@@ -35,6 +35,11 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column prop="href" label="合作链接" align="center" width="100">
+            <template #default="scope">
+              <a :href="scope.row.href" target="_blank">商品链接</a>
+            </template>
+          </el-table-column>
           <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
           <el-table-column label="操作" fixed="right" width="220" align="center">
             <template #default="scope">
