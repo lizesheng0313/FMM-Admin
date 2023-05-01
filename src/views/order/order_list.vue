@@ -62,10 +62,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="total_price" label="订单金额" align="center"></el-table-column>
-        <el-table-column prop="order_status_str" label="订单状态" align="center"></el-table-column>
-        <el-table-column prop="pay_status_str" label="支付状态" align="center"></el-table-column>
-        <el-table-column prop="cost_price" label="订单成本" align="center"></el-table-column>
+        <el-table-column prop="total_price" label="订单金额" width="100" align="center"></el-table-column>
+        <el-table-column prop="response_price" label="实际收款" width="100" align="center"></el-table-column>
+        <el-table-column prop="order_status_str" label="订单状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="pay_status_str" label="支付状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="cost_price" label="订单成本" align="center" width="100"></el-table-column>
         <el-table-column prop="href" label="合作链接" align="center" width="100">
           <template #default="scope">
             <a :href="scope.row.href" target="_blank">商品链接</a>

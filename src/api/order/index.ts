@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-04-27 17:19:01
+ * @LastEditTime: 2023-04-28 17:34:38
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/order/index.ts
@@ -52,6 +52,14 @@ export const fetchRefuseOrder = (data: any) => {
 export const fetchRefundOrder = (data: any) => {
   return request({
     url: '/api/order/approveRefund',
+    method: 'post',
+    data,
+  })
+}
+
+export const fetchReceivedGoods = (data: any) => {
+  return request({
+    url: '/api/order/receivedGoods',
     method: 'post',
     data,
   })
