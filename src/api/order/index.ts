@@ -2,7 +2,7 @@
  * @Author: lizesheng
  * @Date: 2023-02-22 16:41:23
  * @LastEditors: lizesheng
- * @LastEditTime: 2023-04-28 17:34:38
+ * @LastEditTime: 2023-05-06 14:50:08
  * @important: 重要提醒
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/order/index.ts
@@ -62,5 +62,12 @@ export const fetchReceivedGoods = (data: any) => {
     url: '/api/order/receivedGoods',
     method: 'post',
     data,
+  })
+}
+
+export const fetchGetLogList = () => {
+  return request({
+    url: '/api/order/getExpressList',
+    method: 'get',
   })
 }

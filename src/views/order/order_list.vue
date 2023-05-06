@@ -75,7 +75,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="150">
           <template #default="scope">
             <el-button v-if="scope.row.order_status === '10' && scope.row.pay_status === '1'" text :icon="SuitcaseLine"
-              @click="showDialog(scope.row.id)">
+              @click="showDialog(scope.row)">
               发货
             </el-button>
           </template>
@@ -87,14 +87,15 @@
       </div>
     </el-card>
     <el-dialog title="发货" v-model="dialogVisible" :close-on-click-modal="false" width="400" align-center="true">
-      <el-form :model="logistics" label-position="left" label-width="80px">
-        <el-form-item label="物流公司" prop="logistics_company">
-          <el-select v-model="logistics.logistics_company" placeholder="请选择物流公司">
-            <el-option v-for="company in logisticsCompanies" :key="company.value" :label="company.label"
-              :value="company.value" />
+      <el-form ref="form" :model="logistics" label-position="left" label-width="80px">
+        <el-form-item required label="物流公司" prop="logistics_company">
+          <el-select filterable :props="{ value: 'delivery_id', label: 'delivery_name' }"
+            v-model="logistics.logistics_company" placeholder="请选择物流公司">
+            <el-option v-for="company in logisticsCompanies" :key="company.delivery_id" :label="company.delivery_name"
+              :value="company.delivery_id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="物流单号" prop="logistics_no">
+        <el-form-item required label="物流单号" prop="logistics_no">
           <el-input class="logistic-input" v-model="logistics.logistics_no" placeholder="请输入物流单号"></el-input>
         </el-form-item>
       </el-form>
@@ -112,7 +113,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { SuitcaseLine, } from '@element-plus/icons-vue';
-import { fetchOrderList, fetchShipGodos } from '../../api/order/index';
+import { fetchOrderList, fetchShipGodos, fetchGetLogList } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
 
 interface TableItem {
@@ -141,17 +142,11 @@ const logistics = reactive({
   logistics_company: '',
   logistics_no: '',
 })
-const logisticsCompanies = [
-  { value: 'ZTO', label: '中通快递' },
-  { value: 'SF', label: '顺丰快递' },
-  { value: 'STO', label: '申通快递' },
-  { value: 'YTO', label: '圆通快递' },
-  { value: 'EMS', label: 'EMS' },
-  { value: 'JD', label: '京东快递' },
-];
+const logisticsCompanies = ref<any[]>([]);
 const dialogVisible = ref(false);
 const orderId = ref('');
-
+const userId = ref('');
+const address_phone = ref('')
 // 获取表格数据
 const getData = () => {
   fetchOrderList(form).then(res => {
@@ -160,8 +155,6 @@ const getData = () => {
   });
 };
 getData();
-
-
 
 // 查询操作
 const handleSearch = () => {
@@ -174,10 +167,14 @@ const handlePageChange = (val: number) => {
   getData();
 };
 
-
-const showDialog = (id: string) => {
+const showDialog = (row: any) => {
+  fetchGetLogList().then(res => {
+    logisticsCompanies.value = res.data
+  })
   dialogVisible.value = true;
-  orderId.value = id
+  orderId.value = row.id
+  userId.value = row.user_id
+  address_phone.value = row.address_phone
 };
 const hideDialog = () => {
   dialogVisible.value = false;
@@ -186,6 +183,8 @@ const hideDialog = () => {
 }
 const handleSubmit = () => {
   fetchShipGodos({
+    address_phone: address_phone.value,
+    user_id: userId.value,
     id: orderId.value,
     ...logistics
   }).then(res => {
