@@ -24,7 +24,7 @@
 				<!-- 用户名下拉菜单 -->
 				<el-dropdown class="user-name" trigger="click" @command="handleCommand">
 					<span class="el-dropdown-link">
-						{{ userInfo.userInfo.username }} {{ role[userInfo.userInfo.role] }}
+						{{ (userInfo as any).userInfo.username }} {{ (role as any)[(userInfo as any).userInfo.role] }}
 						<el-icon class="el-icon--right">
 							<arrow-down />
 						</el-icon>

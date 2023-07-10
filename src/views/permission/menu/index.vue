@@ -21,9 +21,6 @@ export default defineComponent({
   name: 'AddMenu',
   components: {
     ElForm,
-    ElButton: 'el-button',
-    ElInput: 'el-input',
-    ElFormItem: 'el-form-item',
   },
   setup() {
     const menuForm = reactive({
@@ -45,14 +42,14 @@ export default defineComponent({
     };
 
     function submitForm() {
-      const form = ($refs.menuForm as ElForm).validate((valid: boolean) => {
-        if (valid) {
-          // TODO: 发送添加菜单的请求
-          ElMessage.success('添加菜单成功');
-        } else {
-          return false;
-        }
-      });
+      // const form = ($refs.menuForm as ElForm).validate((valid: boolean) => {
+      //   if (valid) {
+      //     // TODO: 发送添加菜单的请求
+      //     ElMessage.success('添加菜单成功');
+      //   } else {
+      //     return false;
+      //   }
+      // });
     }
 
     return {

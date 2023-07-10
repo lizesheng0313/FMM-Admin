@@ -48,7 +48,8 @@ import { Lock, User } from '@element-plus/icons-vue';
 import { fetchMenu } from '../../api/permission/index'
 import { fetchLogin } from '../../api/user/index'
 import { useMenuStore, userInfoSet } from '../../store/permiss'
-import md5 from 'js-md5'
+// @ts-ignore
+import md5 from 'js-md5';
 
 interface LoginInfo {
 	username: string;
