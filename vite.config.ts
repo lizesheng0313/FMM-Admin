@@ -47,8 +47,8 @@ export default defineConfig({
     // 开启热更新
     hmr: true,
     proxy: {
-      '/api': {
-        target: 'https://zjkdongao.com/qq',
+      '/api/admin': {
+        target: 'https://zjkdongao.com',
         // target: 'http://127.0.0.1:7002',
         changeOrigin: true,
       },

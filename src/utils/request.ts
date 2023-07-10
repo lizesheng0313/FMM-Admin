@@ -32,7 +32,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response: AxiosResponse) => {
     if (response?.data?.code === 0) {
-      if (response?.config?.url === '/api/user/login') {
+      if (response?.config?.url === '/api/admin/user/login') {
         localStorage.setItem('authorization', response?.headers.authorization)
       }
       return response.data

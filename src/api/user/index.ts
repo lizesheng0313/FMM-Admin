@@ -11,7 +11,7 @@ import request from '../../utils/request';
 
 export const fetchLogin = (data:any) => {
     return request({
-        url: '/api/user/login',
+        url: '/api/admin/user/login',
         method: 'post',
         data
     });

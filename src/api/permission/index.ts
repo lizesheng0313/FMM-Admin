@@ -11,14 +11,14 @@ import request from '../../utils/request';
 
 export const fetchMenu = () => {
     return request({
-        url: '/api/manage/get/menu',
+        url: '/api/admin/manage/get/menu',
         method: 'get'
     });
 };
 
 export const fetchConstant = () => {
     return request({
-        url: '/api/get/constant',
+        url: '/api/admin/get/constant',
         method: 'get'
     });
 };

@@ -11,7 +11,7 @@ import request from '../../utils/request'
 
 export const fetchOrderList = (params: any) => {
   return request({
-    url: '/api/order/list',
+    url: '/api/admin/order/list',
     method: 'get',
     params,
   })
@@ -19,7 +19,7 @@ export const fetchOrderList = (params: any) => {
 
 export const fetchShipGodos = (data: any) => {
   return request({
-    url: '/api/order/shipGoods',
+    url: '/api/admin/order/shipGoods',
     method: 'post',
     data,
   })
@@ -27,7 +27,7 @@ export const fetchShipGodos = (data: any) => {
 
 export const fetchReturnOrderList = (params: any) => {
   return request({
-    url: '/api/order/returnList',
+    url: '/api/admin/order/returnList',
     method: 'get',
     params,
   })
@@ -35,7 +35,7 @@ export const fetchReturnOrderList = (params: any) => {
 
 export const fetchAgreenOrder = (data: any) => {
   return request({
-    url: '/api/order/agreen',
+    url: '/api/admin/order/agreen',
     method: 'post',
     data,
   })
@@ -43,7 +43,7 @@ export const fetchAgreenOrder = (data: any) => {
 
 export const fetchRefuseOrder = (data: any) => {
   return request({
-    url: '/api/order/refuse',
+    url: '/api/admin/order/refuse',
     method: 'post',
     data,
   })
@@ -51,7 +51,7 @@ export const fetchRefuseOrder = (data: any) => {
 
 export const fetchRefundOrder = (data: any) => {
   return request({
-    url: '/api/order/approveRefund',
+    url: '/api/admin/order/approveRefund',
     method: 'post',
     data,
   })
@@ -59,7 +59,7 @@ export const fetchRefundOrder = (data: any) => {
 
 export const fetchReceivedGoods = (data: any) => {
   return request({
-    url: '/api/order/receivedGoods',
+    url: '/api/admin/order/receivedGoods',
     method: 'post',
     data,
   })
@@ -67,7 +67,7 @@ export const fetchReceivedGoods = (data: any) => {
 
 export const fetchGetLogList = () => {
   return request({
-    url: '/api/order/getExpressList',
+    url: '/api/admin/order/getExpressList',
     method: 'get',
   })
 }
