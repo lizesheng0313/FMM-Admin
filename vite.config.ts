@@ -48,8 +48,8 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api': {
-        // target: 'https://zjkdongao.com/qq',
-        target: 'http://127.0.0.1:7002',
+        target: 'https://zjkdongao.com/qq',
+        // target: 'http://127.0.0.1:7002',
         changeOrigin: true,
       },
     },
