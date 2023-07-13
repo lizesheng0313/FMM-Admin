@@ -12,12 +12,12 @@
         </template>
         <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
           <el-table-column label="商品图片" align="center">
-            <template #default="scope">
+            <!-- <template #default="scope">
               <el-image class="table-td-thumb" style="width: 80px; height: 80px"
                 :src="scope.row.pictureList ? scope.row.pictureList[0] : ''" :z-index="10" fit="contain"
                 :preview-src-list="[scope.row.pictureList ? scope.row.pictureList[0] : '']" preview-teleported>
               </el-image>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column label="名称" prop="name" align="center"></el-table-column>
           <el-table-column label="标签" align="center">
@@ -37,7 +37,7 @@
           </el-table-column>
           <el-table-column prop="href" label="合作链接" align="center" width="100">
             <template #default="scope">
-              <a :href="scope.row.href" target="_blank">商品链接</a>
+              <a :href="scope.row?.href" target="_blank">商品链接</a>
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
