@@ -20,7 +20,7 @@
             </template> -->
           </el-table-column>
           <el-table-column label="名称" prop="name" align="center"></el-table-column>
-          <el-table-column label="标签" align="center">
+          <!-- <el-table-column label="标签" align="center">
             <template #default="scope">
               <div class="label-box">
                 <el-switch inactive-text="上架" :active-value="1" :inactive-value="0"
@@ -34,7 +34,7 @@
                   v-model="scope.row.recommend"></el-switch>
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="href" label="合作链接" align="center" width="100">
             <template #default="scope">
               <a :href="scope.row?.href" target="_blank">商品链接</a>
