@@ -10,8 +10,8 @@
             }">添加</el-button>
           </div>
         </template>
-        <!-- <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header"> -->
-          <!-- <el-table-column label="商品图片" align="center">
+        <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+          <el-table-column label="商品图片" align="center">
             <template #default="scope">
               <el-image class="table-td-thumb" style="width: 80px; height: 80px"
                 :src="scope.row.pictureList ? scope.row.pictureList[0] : ''" :z-index="10" fit="contain"
@@ -40,22 +40,22 @@
               <a :href="scope.row.href" target="_blank">商品链接</a>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column> -->
-          <!-- <el-table-column label="操作" fixed="right" width="220" align="center">
+          <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
+          <el-table-column label="操作" fixed="right" width="220" align="center">
             <template #default="scope">
-              <el-button text :icon="Edit" @click="() => { handleEdit(scope.row.id) }" v-permiss="15">
+              <el-button text :icon="Edit" @click="() => { handleEdit(scope.row.id) }" >
                 编辑
               </el-button>
-              <el-button text :icon="Delete" class="red" @click="() => { handleDelete(scope.row.id) }" v-permiss="16">
+              <el-button text :icon="Delete" class="red" @click="() => { handleDelete(scope.row.id) }" >
                 删除
               </el-button>
             </template>
           </el-table-column>
-        </el-table> -->
-        <!-- <div class="pagination">
+        </el-table>
+        <div class="pagination">
           <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
             :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
-        </div> -->
+        </div>
       </el-card>
     </div>
   </div>
