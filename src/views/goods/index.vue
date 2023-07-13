@@ -11,16 +11,16 @@
           </div>
         </template>
         <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
-          <el-table-column label="商品图片" align="center">
-            <!-- <template #default="scope">
+          <!-- <el-table-column label="商品图片" align="center">
+            <template #default="scope">
               <el-image class="table-td-thumb" style="width: 80px; height: 80px"
                 :src="scope.row.pictureList ? scope.row.pictureList[0] : ''" :z-index="10" fit="contain"
                 :preview-src-list="[scope.row.pictureList ? scope.row.pictureList[0] : '']" preview-teleported>
               </el-image>
-            </template> -->
+            </template>
           </el-table-column>
           <el-table-column label="名称" prop="name" align="center"></el-table-column>
-          <!-- <el-table-column label="标签" align="center">
+          <el-table-column label="标签" align="center">
             <template #default="scope">
               <div class="label-box">
                 <el-switch inactive-text="上架" :active-value="1" :inactive-value="0"
@@ -34,13 +34,13 @@
                   v-model="scope.row.recommend"></el-switch>
               </div>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column prop="href" label="合作链接" align="center" width="100">
             <template #default="scope">
-              <a :href="scope.row?.href" target="_blank">商品链接</a>
+              <a :href="scope.row.href" target="_blank">商品链接</a>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column>
+          <el-table-column label="创建时间" prop="createTime" :formatter="formatDateTime" align="center"></el-table-column> -->
           <el-table-column label="操作" fixed="right" width="220" align="center">
             <template #default="scope">
               <el-button text :icon="Edit" @click="() => { handleEdit(scope.row.id) }" v-permiss="15">
@@ -52,10 +52,10 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination">
+        <!-- <div class="pagination">
           <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
             :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
-        </div>
+        </div> -->
       </el-card>
     </div>
   </div>
