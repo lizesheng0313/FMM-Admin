@@ -12,7 +12,7 @@ import { ElMessage } from 'element-plus'
 import router from '../router'
 
 const service: AxiosInstance = axios.create({
-  timeout: 5000,
+  timeout: 60000,
 })
 
 service.interceptors.request.use(

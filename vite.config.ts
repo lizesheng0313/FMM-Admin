@@ -48,9 +48,10 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api/admin': {
-        target: 'https://zjkdongao.com',
-        // target: 'http://127.0.0.1:7002',
+        // target: 'https://zjkdongao.com',
+        target: 'http://127.0.0.1:7000',
         changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/admin/, '/api'),
       },
     },
   },

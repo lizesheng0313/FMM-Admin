@@ -52,3 +52,11 @@ export const fetchDeleteGoodsInfo = (data: any) => {
     data,
   })
 }
+
+export const fetchGetTargetInfo = (params: any) => {
+  return request({
+    url: '/api/admin/manage/getTargetInfo',
+    method: 'get',
+    params,
+  })
+}

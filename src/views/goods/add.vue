@@ -4,6 +4,10 @@
       <el-card>
         <div class="form-box">
           <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
+            <el-form-item label="商品地址" prop="href">
+              <el-input t v-model="form.href"></el-input>
+              <el-button type="primary" class="loading" :loading="loading" @click="handleGetAli">获取数据</el-button>
+            </el-form-item>
             <el-form-item label="商品分类" prop="classiFication">
               <el-cascader :options="options.list" v-model="form.classiFication"></el-cascader>
             </el-form-item>
@@ -27,9 +31,6 @@
                   </template>
                 </el-input>
               </div>
-            </el-form-item>
-            <el-form-item label="商品地址" prop="href">
-              <el-input v-model="form.href"></el-input>
             </el-form-item>
             <el-form-item prop="specification" label="商品规格">
               <div class="box-card">
@@ -120,12 +121,13 @@ import { reactive, ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import WangEditor from 'wangeditor';
 import { ElMessage, ElInput } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
-import { fetchClassiFication, fetchAddGoods, fetchGoodsGetDetails, fetchUpdateGoods } from '../../api/goods/index'
+import { fetchClassiFication, fetchAddGoods, fetchGoodsGetDetails, fetchUpdateGoods,fetchGetTargetInfo } from '../../api/goods/index'
 import { useRouter } from 'vue-router';
 import { Plus } from '@element-plus/icons-vue';
 import { isImageUrl } from '../../utils/utils'
 import { Specification, Classification, Form, Columns } from './d'
 
+const loading = ref(false)
 const outerSeparator = "|";
 const innerSeparator = "!";
 // 规格 
@@ -146,6 +148,30 @@ const handleAddSpecif = () => {
     spacName.value = ''
   }
 }
+
+// 获取阿里数据
+const handleGetAli = () =>{
+  if(!form.href){
+    ElMessage.warning('请填写网址');
+    return 
+  }
+  loading.value =  true
+  fetchGetTargetInfo({
+    targetUrl:form.href
+  }).then(res=>{
+    loading.value = false
+    form.pictureList = res?.data?.mainList
+    let content = '';
+    for (const url of res?.data?.detailsList) {
+        content += `<img src="${url}" alt="Image">`;
+    }
+    console.log(content,'---content')
+    instance.txt.html(content)
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
 const handleClose = (index: number, i: number) => {
   const row = specification.value[index]
   row.tag.splice(i, 1)[0]; // 删除指定位置的元素，并返回删除的元素
@@ -373,6 +399,10 @@ const onSubmit = (formEl: FormInstance | undefined) => {
 
 </script>
 <style lang="scss" scoped>
+.loading{
+  position: absolute;
+  right:0;
+}
 .add_image {
   background-color: #fbfdff;
   border: 1px dashed #c0ccda;
@@ -465,6 +495,6 @@ const onSubmit = (formEl: FormInstance | undefined) => {
 
   }
 }
-</style>>
+</style>
 
 
