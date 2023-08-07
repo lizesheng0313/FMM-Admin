@@ -1,12 +1,4 @@
-/*
- * @Author: lizesheng
- * @Date: 2023-03-03 11:17:32
- * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-19 12:18:52
- * @important: 重要提醒
- * @Description: 备注内容
- * @FilePath: /vue-manage-system/src/views/goods/d.ts
- */
+
 export interface Columns {
   prop:string,
   label:string

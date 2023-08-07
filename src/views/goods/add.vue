@@ -165,7 +165,6 @@ const handleGetAli = () =>{
     for (const url of res?.data?.detailsList) {
         content += `<img src="${url}" alt="Image">`;
     }
-    console.log(content,'---content')
     instance.txt.html(content)
   }).catch(() => {
     loading.value = false
@@ -230,10 +229,7 @@ const handleSku = () => {
       });
       return obj;
     });
-  console.log(skuTableArr, 'skuTable')
-  console.log(skuCopyTable.value, 'skuCopyTable.value')
   skuTable.value = matchAndMergeData(skuTableArr, skuCopyTable.value)
-  // skuTable.value = mergeSkuTable(skuCopyTable.value, arr) 
 }
 
 // 生成笛卡尔积

@@ -1,83 +1,75 @@
 <template>
 	<div>
 		<el-row :gutter="20">
-			<el-col :span="8">
-				<el-card shadow="hover" class="mgb20" style="height: 252px">
-					<div class="user-info">
-						<!-- <el-avatar :size="120" :src="imgurl" /> -->
-						<div class="user-info-cont">
-							<div class="user-info-name">{{ name }}</div>
-							<div>{{ role }}</div>
-						</div>
-					</div>
-					<div class="user-info-list">
-						上次登录时间：
-						<span>2022-10-01</span>
-					</div>
-					<div class="user-info-list">
-						上次登录地点：
-						<span>东莞</span>
-					</div>
-				</el-card>
-				<el-card shadow="hover" style="height: 252px">
-					<template #header>
-						<div class="clearfix">
-							<span>语言详情</span>
-						</div>
-					</template>
-					Vue
-					<el-progress :percentage="79.4" color="#42b983"></el-progress>
-					TypeScript
-					<el-progress :percentage="14" color="#f1e05a"></el-progress>
-					CSS
-					<el-progress :percentage="5.6"></el-progress>
-					HTML
-					<el-progress :percentage="1" color="#f56c6c"></el-progress>
-				</el-card>
-			</el-col>
-			<el-col :span="16">
+			<el-col :span="24">
 				<el-row :gutter="20" class="mgb20">
-					<el-col :span="8">
+					<el-col :span="5">
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-1">
 								<el-icon class="grid-con-icon">
-									<User />
+									<Money />
 								</el-icon>
 								<div class="grid-cont-right">
-									<div class="grid-num">1234</div>
-									<div>用户访问量</div>
+									<div class="grid-num">{{ orderDetails?.todayRevenue }}</div>
+									<div>今日营业总额</div>
 								</div>
 							</div>
 						</el-card>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="5" >
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-2">
 								<el-icon class="grid-con-icon">
-									<ChatDotRound />
+									<Present />
 								</el-icon>
 								<div class="grid-cont-right">
-									<div class="grid-num">321</div>
-									<div>系统消息</div>
+									<div class="grid-num">{{orderDetails?.todayProfit}}</div>
+									<div>今日利润</div>
 								</div>
 							</div>
 						</el-card>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="4" >
 						<el-card shadow="hover" :body-style="{ padding: '0px' }">
 							<div class="grid-content grid-con-3">
 								<el-icon class="grid-con-icon">
 									<Goods />
 								</el-icon>
 								<div class="grid-cont-right">
-									<div class="grid-num">5000</div>
-									<div>商品数量</div>
+									<div class="grid-num">{{orderDetails.todayOrdersCount}}</div>
+									<div>今日订单</div>
+								</div>
+							</div>
+						</el-card>
+					</el-col>
+					<el-col :span="5" >
+						<el-card shadow="hover" :body-style="{ padding: '0px' }">
+							<div class="grid-content grid-con-2">
+								<el-icon class="grid-con-icon">
+									<Sell />
+								</el-icon>
+								<div class="grid-cont-right">
+									<div class="grid-num">{{orderDetails.paidAndUnshippedOrdersCount}}</div>
+									<div>待发货</div>
+								</div>
+							</div>
+						</el-card>
+					</el-col>
+					<el-col :span="5">
+						<el-card shadow="hover" :body-style="{ padding: '0px' }">
+							<div class="grid-content grid-con-1">
+								<el-icon class="grid-con-icon">
+									<Help />
+								</el-icon>
+								<div class="grid-cont-right">
+									<div class="grid-num">{{orderDetails.pendingReturnOrdersCount}}</div>
+									<div>待退货</div>
 								</div>
 							</div>
 						</el-card>
 					</el-col>
 				</el-row>
-				<el-card shadow="hover" style="height: 403px">
+				<!-- <el-card shadow="hover" style="height: 403px">
 					<template #header>
 						<div class="clearfix">
 							<span>待办事项</span>
@@ -101,10 +93,10 @@
 							</template>
 						</el-table-column>
 					</el-table>
-				</el-card>
+				</el-card> -->
 			</el-col>
 		</el-row>
-		<el-row :gutter="20">
+		<!-- <el-row :gutter="20">
 			<el-col :span="12">
 				<el-card shadow="hover">
 					<schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
@@ -115,17 +107,26 @@
 					<schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
 				</el-card>
 			</el-col>
-		</el-row>
+		</el-row> -->
 	</div>
 </template>
 
 <script setup lang="ts" name="dashboard">
 import Schart from 'vue-schart';
-import { reactive } from 'vue';
-// import imgurl from '../assets/images/img.jpg';
+import { reactive, ref } from 'vue';
+import { fetchGetOrderCounts } from '../../api/dashboard'
+import { orderDetailsType } from "./d"
 
-const name = localStorage.getItem('ms_username');
-const role: string = name === 'admin' ? '超级管理员' : '普通用户';
+const orderDetails = ref<orderDetailsType>({
+	todayRevenue: 0,
+  todayProfit: 0,
+  todayOrdersCount: 0,
+  paidAndUnshippedOrdersCount: 0,
+  pendingReturnOrdersCount: 0,});
+
+	fetchGetOrderCounts().then((res) => {
+		orderDetails.value = res.data;
+	});
 
 const options = {
 	type: 'bar',

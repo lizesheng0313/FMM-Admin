@@ -1,12 +1,4 @@
-/*
- * @Author: lizesheng
- * @Date: 2023-02-22 16:41:23
- * @LastEditors: lizesheng
- * @LastEditTime: 2023-04-11 13:24:24
- * @important: 重要提醒
- * @Description: 备注内容
- * @FilePath: /vue-manage-system/src/api/goods/index.ts
- */
+
 import request from '../../utils/request'
 
 export const fetchGoodsList = (params: any) => {

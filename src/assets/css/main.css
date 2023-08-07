@@ -24,9 +24,8 @@ a {
     transition: all .8s ease-in-out;
     background: #fff;
     flex:1;
-    min-height: 100vh;
-
 }
+
 .content-collapse{
     max-width: calc(100vw - 250px);
     transition: all .8s ease-in-out;
@@ -36,7 +35,8 @@ a {
     width: auto;
     padding: 20px;
     box-sizing: border-box;
-    min-height: 100vh;
+    height: calc(100vh - 100px);
+    overflow: hidden;
 }
 
 

@@ -17,32 +17,32 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '系统首页',
         },
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
       },
-      {
-        path: '/permission/user_mangae',
-        name: 'userManage',
-        meta: {
-          title: '用户管理',
-        },
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
-      },
-      {
-        path: '/permission/menu_manage',
-        name: 'menuManage',
-        meta: {
-          title: '菜单管理',
-        },
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/permission/menu/index.vue'),
-      },
-      {
-        path: '/permission/role_manage',
-        name: 'roleManage',
-        meta: {
-          title: '角色管理',
-        },
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
-      },
+      // {
+      //   path: '/permission/user_mangae',
+      //   name: 'userManage',
+      //   meta: {
+      //     title: '用户管理',
+      //   },
+      //   component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+      // },
+      // {
+      //   path: '/permission/menu_manage',
+      //   name: 'menuManage',
+      //   meta: {
+      //     title: '菜单管理',
+      //   },
+      //   component: () => import(/* webpackChunkName: "dashboard" */ '../views/permission/menu/index.vue'),
+      // },
+      // {
+      //   path: '/permission/role_manage',
+      //   name: 'roleManage',
+      //   meta: {
+      //     title: '角色管理',
+      //   },
+      //   component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
+      // },
       {
         path: '/table',
         name: 'basetable',
