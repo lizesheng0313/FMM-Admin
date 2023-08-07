@@ -89,7 +89,7 @@
       </div>
     </el-card>
     <el-dialog title="发货" v-model="dialogVisible" :close-on-click-modal="false" width="400" align-center="true">
-      <el-form ref="form" :model="logistics" label-position="left" label-width="80px">
+      <el-form  :model="logistics" label-position="left" label-width="80px">
         <el-form-item required label="物流公司" prop="logistics_company">
           <el-select filterable :props="{ value: 'delivery_id', label: 'delivery_name' }"
             v-model="logistics.logistics_company" placeholder="请选择物流公司">
