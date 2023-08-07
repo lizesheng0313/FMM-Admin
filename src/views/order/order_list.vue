@@ -173,10 +173,17 @@ const showDialog = (row: any) => {
   // fetchGetLogList().then(res => {
   //   logisticsCompanies.value = res.data
   // })
+  console.log(row,'-row')
+  console.log(123,'123')
   dialogVisible.value = true;
+  console.log(456,'456')
   orderId.value = row.id
+  console.log(456,'789')
   userId.value = row.user_id
+  console.log(456,'789')
   address_phone.value = row.address_phone
+  console.log(456,'11,22')
+
 };
 const hideDialog = () => {
   dialogVisible.value = false;
