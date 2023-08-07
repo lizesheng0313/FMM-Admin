@@ -34,7 +34,7 @@
           <span class="title">订单列表</span>
         </div>
       </template>
-      <el-table :data="tableData" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+      <el-table :data="tableData" border class="table"  header-cell-class-name="table-header">
         <el-table-column prop="id" label="订单id" width="200" align="center"></el-table-column>
         <el-table-column prop="name" label="商品" align="left" width="300">
           <template #default="scope">
@@ -171,10 +171,10 @@ const showDialog = (row: any) => {
   // fetchGetLogList().then(res => {
   //   logisticsCompanies.value = res.data
   // })
-  dialogVisible.value = true;
-  orderId.value = row.id
-  userId.value = row.user_id
-  address_phone.value = row.address_phone
+  // dialogVisible.value = true;
+  // orderId.value = row.id
+  // userId.value = row.user_id
+  // address_phone.value = row.address_phone
 };
 const hideDialog = () => {
   dialogVisible.value = false;
