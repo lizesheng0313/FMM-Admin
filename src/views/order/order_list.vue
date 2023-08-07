@@ -75,7 +75,9 @@
         <el-table-column label="操作" fixed="right" align="center" width="150">
           <template #default="scope">
             <el-button v-if="scope.row.order_status === '10' && scope.row.pay_status === '1'" text :icon="SuitcaseLine"
-              @click="showDialog(scope.row)">
+              @click="()=>{
+                showDialog(scope?.row)
+              }">
               发货
             </el-button>
           </template>
@@ -171,10 +173,10 @@ const showDialog = (row: any) => {
   // fetchGetLogList().then(res => {
   //   logisticsCompanies.value = res.data
   // })
-  // dialogVisible.value = true;
-  // orderId.value = row.id
-  // userId.value = row.user_id
-  // address_phone.value = row.address_phone
+  dialogVisible.value = true;
+  orderId.value = row.id
+  userId.value = row.user_id
+  address_phone.value = row.address_phone
 };
 const hideDialog = () => {
   dialogVisible.value = false;
