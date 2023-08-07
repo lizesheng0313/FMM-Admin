@@ -18,6 +18,9 @@ import sass from 'sass'
 
 export default defineConfig({
   base: './',
+  build: {
+    sourcemap: true,
+  },
   plugins: [
     vue(),
     VueSetupExtend(),
