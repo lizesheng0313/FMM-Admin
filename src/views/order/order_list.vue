@@ -88,7 +88,7 @@
           :page-size="form.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
       </div>
     </el-card>
-    <el-dialog title="发货" v-model="dialogVisible" :close-on-click-modal="false" width="400" align-center="true">
+    <el-dialog title="发货" v-model="dialogVisible" :close-on-click-modal="false" style="width:400px" align-center="true">
       <el-form  :model="logistics" label-position="left" label-width="80px">
         <el-form-item required label="物流公司" prop="logistics_company">
           <el-select filterable :props="{ value: 'delivery_id', label: 'delivery_name' }"
@@ -173,16 +173,10 @@ const showDialog = (row: any) => {
   // fetchGetLogList().then(res => {
   //   logisticsCompanies.value = res.data
   // })
-  console.log(row,'-row')
-  console.log(123,'123')
   dialogVisible.value = true;
-  console.log(456,'456')
   orderId.value = row.id
-  console.log(456,'789')
   userId.value = row.user_id
-  console.log(456,'789')
   address_phone.value = row.address_phone
-  console.log(456,'11,22')
 
 };
 const hideDialog = () => {

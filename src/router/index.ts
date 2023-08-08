@@ -19,14 +19,14 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
       },
-      // {
-      //   path: '/permission/user_mangae',
-      //   name: 'userManage',
-      //   meta: {
-      //     title: '用户管理',
-      //   },
-      //   component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
-      // },
+      {
+        path: '/permission/user_mangae',
+        name: 'userManage',
+        meta: {
+          title: '用户管理',
+        },
+        component: () => import(/* webpackChunkName: "user" */ '../views/permission/user/index.vue'),
+      },
       // {
       //   path: '/permission/menu_manage',
       //   name: 'menuManage',
