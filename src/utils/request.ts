@@ -17,7 +17,7 @@ const service: AxiosInstance = axios.create({
 
 service.interceptors.request.use(
   (config: any) => {
-    const token = localStorage.getItem('authorization')
+    const token = sessionStorage.getItem('authorization')
     if (config && config.headers) {
       config.headers['authorization'] = token
     }
@@ -33,7 +33,7 @@ service.interceptors.response.use(
   (response: AxiosResponse) => {
     if (response?.data?.code === 0) {
       if (response?.config?.url === '/api/admin/user/login') {
-        localStorage.setItem('authorization', response?.headers.authorization)
+        sessionStorage.setItem('authorization', response?.headers.authorization)
       }
       return response.data
     } else {

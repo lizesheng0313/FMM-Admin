@@ -112,7 +112,6 @@
 </template>
 
 <script setup lang="ts" name="dashboard">
-import Schart from 'vue-schart';
 import { reactive, ref } from 'vue';
 import { fetchGetOrderCounts } from '../../api/dashboard'
 import { orderDetailsType } from "./d"

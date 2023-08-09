@@ -18,24 +18,24 @@ interface MyObject {
 
 export const useMenuStore = defineStore('menu', {
   state: () => ({
-    menu: JSON.parse(localStorage.getItem('menu') || '[]') as MyObject[],
+    menu: JSON.parse(sessionStorage.getItem('menu') || '[]') as MyObject[],
   }),
   actions: {
     increment(value: MyObject[]) {
       this.menu = value
-      localStorage.setItem('menu', JSON.stringify(value))
+      sessionStorage.setItem('menu', JSON.stringify(value))
     },
   },
 })
 
 export const userInfoSet = defineStore('userInfo', {
   state: () => ({
-    userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'),
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo') || '{}'),
   }),
   actions: {
     increment(value: any) {
       this.userInfo = value
-      localStorage.setItem('userInfo', JSON.stringify(value || {}))
+      sessionStorage.setItem('userInfo', JSON.stringify(value || {}))
     },
   },
 })

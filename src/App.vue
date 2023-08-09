@@ -20,7 +20,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 onMounted(() => {
-    if (!localStorage.getItem('authorization')) {
+    if (!sessionStorage.getItem('authorization')) {
         router.push('/login')
     }
 });
