@@ -42,10 +42,10 @@
         border class="table" height="550"  header-cell-class-name="table-header">
         <el-table-column prop="user_id" label="user_id" align="center"></el-table-column>
         <el-table-column prop="ch" label="来源" align="center"></el-table-column>
-        <el-table-column prop="a_create_time" label="注册时间" :formatter="formatDateTime"
+        <el-table-column prop="create_time" label="注册时间" :formatter="formatDateTime"
           align="center"></el-table-column>
         <el-table-column prop="order_id" label="订单id" align="center"></el-table-column>
-        <el-table-column prop="create_time" label="下单时间" :formatter="formatDateTime"
+        <el-table-column prop="order_create_time" label="下单时间" :formatter="formatDateTime"
           align="center"></el-table-column>
           <el-table-column prop="goods_name" label="下单商品" 
           align="center"></el-table-column>
