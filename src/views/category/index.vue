@@ -6,7 +6,7 @@
           <el-tree :data="categoryTree" :props="defaultProps" default-expand-all :highlight-current="true"
             :expand-on-click-node="false" @current-change="handleCurrentChange" >
             <template #default="{ node, data }">
-              <span class="custom-tree-node">
+              <span class="custom-tree-node" @click=handleEdit(node)>
                 <span>{{ data?.label }}</span>
                 <span class="tree-node-actions" >
                   <el-tooltip v-if="data?.parentId" :hide-after="0" content="删除">
@@ -20,13 +20,6 @@
                   <el-button type="text" size="mini" @click.stop="handleAdd(node)">
                       <el-icon>
                         <el-icon-plus />
-                      </el-icon>
-                    </el-button>
-                  </el-tooltip>
-                  <el-tooltip content="编辑" :hide-after="0" >
-                    <el-button  type="text" size="mini" @click.stop="handleEdit(node)">
-                      <el-icon>
-                        <el-icon-edit />
                       </el-icon>
                     </el-button>
                   </el-tooltip>
@@ -45,6 +38,9 @@
             <el-form-item :label="openInfo.type === 'edit' ? '分类名称':'名称'" prop="label" required>
               <el-input  v-model="currentCategory.label"  />
             </el-form-item>
+          <el-form-item label="分类图标" >
+            <el-input  v-model="currentCategory.icon"  />
+          </el-form-item>
             <el-form-item label="分类图标" prop="icon"  v-if="categoryTree?.length !== 0 && currentCategory.parentId">
               <el-upload
                 :headers="uploadHeaders"
@@ -72,6 +68,9 @@
             </el-form-item>
             <el-form-item label="展示首页" prop="is_show_home" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
               <el-switch :active-value="1" :inactive-value="0" v-model="currentCategory.is_show_home" />
+            </el-form-item>
+            <el-form-item label="推荐分类" prop="recommend_class" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
+              <el-switch :active-value="1" :inactive-value="0" v-model="currentCategory.recommend_class" />
             </el-form-item>
               <el-button type="primary" @click="handleSave">
                 提交
