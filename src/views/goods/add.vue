@@ -9,7 +9,9 @@
               <el-button type="primary" class="loading" :loading="loading" @click="handleGetAli">获取数据</el-button>
             </el-form-item>
             <el-form-item label="商品分类" prop="classiFication">
-              <el-cascader :options="options.list" v-model="form.classiFication"></el-cascader>
+              <el-cascader       
+              :props="{ label: 'label', value: 'id' }"
+              :options="options.list" v-model="form.classiFication"></el-cascader>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
               <el-input v-model="form.name"></el-input>
@@ -159,11 +161,31 @@ const handleGetAli = () =>{
   fetchGetTargetInfo({
     targetUrl:form.href
   }).then(res=>{
+    const min = 300;
+    const max = 3000;
+    const randomInteger = Math.floor(Math.random() * (max - min + 1)) + min;
     loading.value = false
+    skuTable.value = res?.data?.specTable
+    const arr:any = []
+    res?.data?.columnList.forEach((item:any)=>{
+      let tag:any = [] 
+      res?.data?.specTable.forEach((it:any)=>{
+       tag.push(it[item.prop])
+      })
+      arr.push({
+        name: item.label,
+        tag
+      })
+    })
+    columns.value = res?.data?.columnList
+    specification.value = arr
     form.pictureList = res?.data?.mainList
+    form.volume = randomInteger
+    form.order = '1'
+    form
     let content = '';
     for (const url of res?.data?.detailsList) {
-        content += `<img src="${url}" alt="Image">`;
+        content += `<img src="${url}" style="max-width:100%;" alt="Image"> `;
     }
     instance.txt.html(content)
   }).catch(() => {
@@ -341,7 +363,7 @@ function handleDeleteImg(index: number) {
 const rules: FormRules = {
   classiFication: [{ required: true, message: '请选择分类', trigger: 'change' }],
   name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-  number: [{ required: true, message: '请输入商品货号', trigger: 'blur' }],
+  number: [{ message: '请输入商品货号', trigger: 'blur' }],
   order: [{ required: true, message: '请输入商品排序', trigger: 'blur' }],
   pictureList: [{
     required: true, message: '请上传至少一张图片', trigger: 'change', validator: (rule, value, callback) => {
