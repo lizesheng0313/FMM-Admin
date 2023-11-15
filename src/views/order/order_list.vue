@@ -115,7 +115,7 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { SuitcaseLine, } from '@element-plus/icons-vue';
-import { fetchOrderList, fetchShipGodos } from '../../api/order/index';
+import { fetchOrderList, fetchShipGodos,fetchGetLogList } from '../../api/order/index';
 import { formatDateTime } from '../../utils/utils'
 
 interface TableItem {
@@ -170,9 +170,9 @@ const handlePageChange = (val: number) => {
 };
 
 const showDialog = (row: any) => {
-  // fetchGetLogList().then(res => {
-  //   logisticsCompanies.value = res.data
-  // })
+  fetchGetLogList().then(res => {
+    logisticsCompanies.value = res.data
+  })
   dialogVisible.value = true;
   orderId.value = row.id
   userId.value = row.user_id
