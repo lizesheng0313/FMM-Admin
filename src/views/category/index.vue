@@ -85,7 +85,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { ElMessageBox,ElMessage} from 'element-plus';
-import { fetchGetClassiFication,fetchAddCategory,fetchEditCategory,fetchDelCategory} from '../../api/category'
+import { fetchGetClassiFication,fetchAddCategory,fetchEditCategory,fetchDelCategory} from '@api/category'
 
 
 // 双向绑定当前选中的分类对象

@@ -1,5 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".", // 添加这一行
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "@api/*": ["src/api/*"],
+      "@views/*": ["src/views/*"],
+      "@router/*": ["src/router/*"],
+      "@components/*": ["src/components/*"],
+    },
     "allowJs": true,
     "target": "ESNext",
     "useDefineForClassFields": true,

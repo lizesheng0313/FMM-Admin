@@ -34,25 +34,42 @@
           <span class="title">用户列表</span>
         </div>
       </template>
-      <el-table :data="tableData"
+      <el-table
+        :data="tableData"
         row-key="user_id"
         default-expand-all
         :tree-props="{ children: 'children' }"
-        row-style=
-        border class="table" height="550"  header-cell-class-name="table-header">
+        row-style="border"
+        class="table"
+        height="550"
+        header-cell-class-name="table-header"
+      >
         <el-table-column prop="user_id" label="user_id" align="center"></el-table-column>
         <el-table-column prop="ch" label="来源" align="center"></el-table-column>
-        <el-table-column prop="create_time" label="注册时间" :formatter="formatDateTime"
-          align="center"></el-table-column>
+        <el-table-column
+          prop="create_time"
+          label="注册时间"
+          :formatter="formatDateTime"
+          align="center"
+        ></el-table-column>
         <el-table-column prop="order_id" label="订单id" align="center"></el-table-column>
-        <el-table-column prop="order_create_time" label="下单时间" :formatter="formatDateTime"
-          align="center"></el-table-column>
-          <el-table-column prop="goods_name" label="下单商品" 
-          align="center"></el-table-column>
+        <el-table-column
+          prop="order_create_time"
+          label="下单时间"
+          :formatter="formatDateTime"
+          align="center"
+        ></el-table-column>
+        <el-table-column prop="goods_name" label="下单商品" align="center"></el-table-column>
       </el-table>
       <div class="pagination">
-        <el-pagination background layout="total, prev, pager, next" :current-page="form.pageIndex"
-          :page-size="form.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
+        <el-pagination
+          background
+          layout="total, prev, pager, next"
+          :current-page="form.pageIndex"
+          :page-size="form.pageSize"
+          :total="pageTotal"
+          @current-change="handlePageChange"
+        ></el-pagination>
       </div>
     </el-card>
   </div>
@@ -60,10 +77,10 @@
 
 <script setup lang="ts" name="basetable">
 import { ref, reactive } from 'vue';
-import { fetchGetUserList } from '../../../api/permission/index';
-import { formatDateTime } from '../../../utils/utils'
+import { fetchGetUserList } from '@api/permission/index';
+import { formatDateTime } from '@utils/utils';
 
-interface TableItem { 
+interface TableItem {
   id: number;
   user_id: string;
   total_price: string;
@@ -79,11 +96,11 @@ const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
 const form = reactive({
   pageIndex: 1,
-  pageSize: 100
+  pageSize: 100,
 });
 // 获取表格数据
 const getData = () => {
-  fetchGetUserList(form).then(res => {
+  fetchGetUserList(form).then((res: any) => {
     tableData.value = res.data.list;
     pageTotal.value = res.data.total;
   });
@@ -104,7 +121,7 @@ const handlePageChange = (val: number) => {
 
 <style scoped sass>
 .el-table tr {
-  height: 40px; 
+  height: 40px;
 }
 .handle-box {
   margin-bottom: 20px;

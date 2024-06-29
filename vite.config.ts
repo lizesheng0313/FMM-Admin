@@ -7,14 +7,14 @@
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/vite.config.ts
  */
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import VueSetupExtend from 'vite-plugin-vue-setup-extend'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import { resolve } from 'path'
-import sass from 'sass'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import VueSetupExtend from 'vite-plugin-vue-setup-extend';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { resolve } from 'path';
+import sass from 'sass';
 
 export default defineConfig({
   base: './',
@@ -44,6 +44,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@api': resolve(__dirname, 'src/api'),
+      '@views': resolve(__dirname, 'src/views'),
+      '@utils': resolve(__dirname, 'src/utils'),
     },
   },
   server: {
@@ -51,10 +53,10 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api/admin': {
-        // target: 'https://zjkdongao.com',
-        target: 'http://127.0.0.1:7002',
+        target: 'https://zjkdongao.com',
+        // target: 'http://127.0.0.1:7002',
         changeOrigin: true,
       },
     },
   },
-})
+});

@@ -7,7 +7,7 @@
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/order/index.ts
  */
-import request from '../../utils/request'
+import request from '@utils/request'
 
 export const fetchOrderList = (params: any) => {
   return request({

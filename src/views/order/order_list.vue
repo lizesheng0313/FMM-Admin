@@ -3,22 +3,14 @@
     <div class="container">
       <el-form :model="form" :inline="true">
         <el-form-item label="支付状态" style="width: 250px">
-          <el-select
-            v-model="form.payStatus"
-            placeholder="请选择支付状态"
-            clearable
-          >
+          <el-select v-model="form.payStatus" placeholder="请选择支付状态" clearable>
             <el-option key="0" label="待支付" value="0"></el-option>
             <el-option key="1" label="已支付" value="1"></el-option>
             <el-option key="2" label="已取消" value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="订单状态" style="width: 250px">
-          <el-select
-            v-model="form.orderStatus"
-            placeholder="请选择订单状态"
-            clearable
-          >
+          <el-select v-model="form.orderStatus" placeholder="请选择订单状态" clearable>
             <el-option key="10" label="待发货" value="10"></el-option>
             <el-option key="20" label="已发货" value="20"></el-option>
             <el-option key="30" label="已收货" value="30"></el-option>
@@ -42,38 +34,17 @@
           <span class="title">订单列表</span>
         </div>
       </template>
-      <el-table
-        :data="tableData"
-        border
-        class="table"
-        header-cell-class-name="table-header"
-      >
-        <el-table-column
-          prop="id"
-          label="订单id"
-          width="200"
-          align="center"
-        ></el-table-column>
+      <el-table :data="tableData" border class="table" header-cell-class-name="table-header">
+        <el-table-column prop="id" label="订单id" width="200" align="center"></el-table-column>
         <el-table-column prop="name" label="商品" align="left" width="300">
           <template #default="scope">
             <div>
               <p>名称：{{ scope.row.name }}</p>
               <div style="display: flex; align-items: center">
-                <img
-                  style="width: 80px; height: 80px; margin-right: 10px"
-                  :src="scope.row.goods_picture"
-                />
+                <img style="width: 80px; height: 80px; margin-right: 10px" :src="scope.row.goods_picture" />
                 <div>
                   <p style="margin-top: 10px">规格：{{ scope.row.sku_id }}</p>
-                  <p
-                    style="
-                      color: #f56c6c;
-                      margin-top: 10px;
-                      margin-bottom: 10px;
-                    "
-                  >
-                    数量：{{ scope.row.quantity }}
-                  </p>
+                  <p style="color: #f56c6c; margin-top: 10px; margin-bottom: 10px">数量：{{ scope.row.quantity }}</p>
                 </div>
               </div>
             </div>
@@ -90,52 +61,20 @@
           <template #default="scope">
             <div>
               <p>收件人：{{ scope.row.address_name }}</p>
+              <p style="margin-top: 10px">联系电话：{{ scope.row.address_phone }}</p>
               <p style="margin-top: 10px">
-                联系电话：{{ scope.row.address_phone }}
-              </p>
-              <p style="margin-top: 10px">
-                收件地址：{{ scope.row?.province }}{{ scope.row?.city
-                }}{{ scope.row?.streetName }}{{ scope.row.address_detail }}
+                收件地址：{{ scope.row?.province }}{{ scope.row?.city }}{{ scope.row?.streetName
+                }}{{ scope.row.address_detail }}
               </p>
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="total_price"
-          label="订单金额"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="response_price"
-          label="实际收款"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="order_status_str"
-          label="订单状态"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="pay_status_str"
-          label="支付状态"
-          width="100"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="cost_price"
-          label="订单成本"
-          align="center"
-          width="100"
-        ></el-table-column>
-        <el-table-column
-          prop="href"
-          label="合作链接"
-          align="center"
-          width="100"
-        >
+        <el-table-column prop="total_price" label="订单金额" width="100" align="center"></el-table-column>
+        <el-table-column prop="response_price" label="实际收款" width="100" align="center"></el-table-column>
+        <el-table-column prop="order_status_str" label="订单状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="pay_status_str" label="支付状态" width="100" align="center"></el-table-column>
+        <el-table-column prop="cost_price" label="订单成本" align="center" width="100"></el-table-column>
+        <el-table-column prop="href" label="合作链接" align="center" width="100">
           <template #default="scope">
             <a :href="scope.row.href" target="_blank">商品链接</a>
           </template>
@@ -143,9 +82,7 @@
         <el-table-column label="操作" fixed="right" align="center" width="150">
           <template #default="scope">
             <el-button
-              v-if="
-                scope.row.order_status === '10' && scope.row.pay_status === '1'
-              "
+              v-if="scope.row.order_status === '10' && scope.row.pay_status === '1'"
               text
               :icon="SuitcaseLine"
               @click="
@@ -194,11 +131,7 @@
           </el-select>
         </el-form-item>
         <el-form-item required label="物流单号" prop="logistics_no">
-          <el-input
-            class="logistic-input"
-            v-model="logistics.logistics_no"
-            placeholder="请输入物流单号"
-          ></el-input>
+          <el-input class="logistic-input" v-model="logistics.logistics_no" placeholder="请输入物流单号"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -212,15 +145,11 @@
 </template>
 
 <script setup lang="ts" name="basetable">
-import { ref, reactive, onMounted } from "vue";
-import { ElMessage } from "element-plus";
-import { SuitcaseLine } from "@element-plus/icons-vue";
-import {
-  fetchOrderList,
-  fetchShipGodos,
-  fetchGetLogList,
-} from "../../api/order/index";
-import { formatDateTime } from "../../utils/utils";
+import { ref, reactive, onMounted } from 'vue';
+import { ElMessage } from 'element-plus';
+import { SuitcaseLine } from '@element-plus/icons-vue';
+import { fetchOrderList, fetchShipGodos, fetchGetLogList } from '@api/order/index';
+import { formatDateTime } from '@utils/utils';
 
 interface TableItem {
   id: number;
@@ -237,28 +166,27 @@ interface TableItem {
 const tableData = ref<TableItem[]>([]);
 const pageTotal = ref(0);
 const form = reactive({
-  orderStatus: "",
-  payStatus: "",
-  username: "",
-  orderId: "",
+  orderStatus: '',
+  payStatus: '',
+  username: '',
+  orderId: '',
   pageIndex: 1,
   pageSize: 10,
 });
 const logistics = reactive({
-  logistics_company: "",
-  logistics_no: "",
+  logistics_company: '',
+  logistics_no: '',
 });
 const logisticsCompanies = ref<any[]>([]);
 const dialogVisible = ref(false);
-const orderId = ref("");
-const userId = ref("");
-const address_phone = ref("");
+const orderId = ref('');
+const userId = ref('');
+const address_phone = ref('');
 // 获取表格数据
 const getData = () => {
   fetchOrderList(form).then((res) => {
     tableData.value = res.data.list;
     pageTotal.value = res.data.total;
-    console.log(res.data.total, "----res");
   });
 };
 
@@ -288,8 +216,8 @@ const showDialog = (row: any) => {
 };
 const hideDialog = () => {
   dialogVisible.value = false;
-  logistics.logistics_company = "";
-  logistics.logistics_no = "";
+  logistics.logistics_company = '';
+  logistics.logistics_no = '';
 };
 const handleSubmit = () => {
   fetchShipGodos({
@@ -299,7 +227,7 @@ const handleSubmit = () => {
     ...logistics,
   }).then((res) => {
     dialogVisible.value = false;
-    ElMessage.success("发货成功");
+    ElMessage.success('发货成功');
     getData();
   });
 };

@@ -9,9 +9,11 @@
               <el-button type="primary" class="loading" :loading="loading" @click="handleGetAli">获取数据</el-button>
             </el-form-item>
             <el-form-item label="商品分类" prop="classiFication">
-              <el-cascader       
-              :props="{ label: 'label', value: 'id' }"
-              :options="options.list" v-model="form.classiFication"></el-cascader>
+              <el-cascader
+                :props="{ label: 'label', value: 'id' }"
+                :options="options.list"
+                v-model="form.classiFication"
+              ></el-cascader>
             </el-form-item>
             <el-form-item label="商品名称" prop="name">
               <el-input v-model="form.name"></el-input>
@@ -23,8 +25,13 @@
                     <Delete />
                   </el-icon>
                 </div>
-                <el-image :preview-src-list="form.pictureList" fit="contain" style="width: 148px; height: 148px"
-                  :src="imageUrl" :initial-index="index"></el-image>
+                <el-image
+                  :preview-src-list="form.pictureList"
+                  fit="contain"
+                  style="width: 148px; height: 148px"
+                  :src="imageUrl"
+                  :initial-index="index"
+                ></el-image>
               </div>
               <div class="add_image">
                 <el-input :onblur="handleSetImage" v-model="imageAddress" placeholder="图片地址">
@@ -41,13 +48,19 @@
                   <el-tag v-for="(tag, i) in item.tag" :key="tag" class="mx-1" closable @close="handleClose(index, i)">
                     {{ tag }}
                   </el-tag>
-                  <el-input v-if="inputVisible[index]" :ref="inputRef => inputRefs[index] = inputRef" v-model="inputValue"
-                    class="spce-input" size="small" @keyup.enter="handleInputConfirm(index)"
-                    @blur="handleInputConfirm(index)" />
-                  <el-button v-else size="small" @click="showInput(index)">
-                    + New Tag
-                  </el-button>
-                  <el-button size="small" class="del-margin" type="danger" @click="handleDeleteSpec(index)">删除</el-button>
+                  <el-input
+                    v-if="inputVisible[index]"
+                    :ref="(inputRef) => (inputRefs[index] = inputRef)"
+                    v-model="inputValue"
+                    class="spce-input"
+                    size="small"
+                    @keyup.enter="handleInputConfirm(index)"
+                    @blur="handleInputConfirm(index)"
+                  />
+                  <el-button v-else size="small" @click="showInput(index)"> + New Tag </el-button>
+                  <el-button size="small" class="del-margin" type="danger" @click="handleDeleteSpec(index)"
+                    >删除</el-button
+                  >
                 </div>
                 <div class="footer-group">
                   <el-input size="small" v-model="spacName" placeholder="请输入规格"></el-input>
@@ -56,13 +69,22 @@
                 </div>
               </div>
               <el-table :data="skuTable" style="width: 100%" v-if="skuTable.length > 0">
-                <el-table-column v-for="(column, index) in columns" :key="index" :prop="column.prop"
-                  :label="column.label"></el-table-column>
+                <el-table-column
+                  v-for="(column, index) in columns"
+                  :key="index"
+                  :prop="column.prop"
+                  :label="column.label"
+                ></el-table-column>
                 <el-table-column prop="goods_picture" label="图片" width="150">
                   <template #default="{ row }">
                     <el-image fit="contain" :src="row.goods_picture" v-if="row.goods_picture"></el-image>
-                    <el-input style="width:116px" :onblur="handleSetImageSku(row)" v-else placeholder="图片地址"
-                      v-model="row.goods_picture"></el-input>
+                    <el-input
+                      style="width: 116px"
+                      :onblur="handleSetImageSku(row)"
+                      v-else
+                      placeholder="图片地址"
+                      v-model="row.goods_picture"
+                    ></el-input>
                   </template>
                 </el-table-column>
                 <el-table-column prop="skuPrice" label="售价">
@@ -108,7 +130,7 @@
               <div class="mgb20" ref="editor"></div>
             </el-form-item>
             <el-form-item>
-              <el-button plain @click=router.back()>取消</el-button>
+              <el-button plain @click="router.back()">取消</el-button>
               <el-button type="primary" @click="onSubmit(formRef)">提交</el-button>
             </el-form-item>
           </el-form>
@@ -118,110 +140,118 @@
   </div>
 </template>
 
-<script setup lang="ts" >
+<script setup lang="ts">
 import { reactive, ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import WangEditor from 'wangeditor';
 import { ElMessage, ElInput } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
-import { fetchClassiFication, fetchAddGoods, fetchGoodsGetDetails, fetchUpdateGoods,fetchGetTargetInfo } from '../../api/goods/index'
+import {
+  fetchClassiFication,
+  fetchAddGoods,
+  fetchGoodsGetDetails,
+  fetchUpdateGoods,
+  fetchGetTargetInfo,
+} from '@api/goods';
 import { useRouter } from 'vue-router';
 import { Plus } from '@element-plus/icons-vue';
-import { isImageUrl } from '../../utils/utils'
-import { Specification, Classification, Form, Columns } from './d'
+import { isImageUrl } from '@utils/utils';
+import { Specification, Classification, Form, Columns } from './d';
 
-const loading = ref(false)
-const outerSeparator = "|";
-const innerSeparator = "!";
-// 规格 
-const inputValue = ref('')
-const spacName = ref('')
+const loading = ref(false);
+const outerSeparator = '|';
+const innerSeparator = '!';
+// 规格
+const inputValue = ref('');
+const spacName = ref('');
 const specification = ref<Specification[]>([]);
-const inputVisible = ref(<boolean[]>[])
-const inputRefs = ref<(any)[]>([]);
-const skuTable = ref<[]>([])
-const skuCopyTable = ref<[]>([])
-const columns = ref<Columns[]>([])
+const inputVisible = ref(<boolean[]>[]);
+const inputRefs = ref<any[]>([]);
+const skuTable = ref<[]>([]);
+const skuCopyTable = ref<[]>([]);
+const columns = ref<Columns[]>([]);
 const handleAddSpecif = () => {
   if (spacName.value) {
     specification.value.push({
       name: `${spacName.value}`,
-      tag: []
-    })
-    spacName.value = ''
+      tag: [],
+    });
+    spacName.value = '';
   }
-}
+};
 
 // 获取阿里数据
-const handleGetAli = () =>{
-  if(!form.href){
+const handleGetAli = () => {
+  if (!form.href) {
     ElMessage.warning('请填写网址');
-    return 
+    return;
   }
-  loading.value =  true
+  loading.value = true;
   fetchGetTargetInfo({
-    targetUrl:form.href
-  }).then(res=>{
-    const min = 300;
-    const max = 3000;
-    const randomInteger = Math.floor(Math.random() * (max - min + 1)) + min;
-    loading.value = false
-    skuTable.value = res?.data?.specTable
-    const arr:any = []
-    res?.data?.columnList.forEach((item:any)=>{
-      let tag:any = [] 
-      res?.data?.specTable.forEach((it:any)=>{
-       tag.push(it[item.prop])
-      })
-      arr.push({
-        name: item.label,
-        tag
-      })
-    })
-    columns.value = res?.data?.columnList
-    specification.value = arr
-    form.pictureList = res?.data?.mainList
-    form.volume = randomInteger
-    form.order = '1'
-    form
-    let content = '';
-    for (const url of res?.data?.detailsList) {
-        content += `<img src="${url}" style="max-width:100%;" alt="Image"> `;
-    }
-    instance.txt.html(content)
-  }).catch(() => {
-    loading.value = false
+    targetUrl: form.href,
   })
-}
+    .then((res) => {
+      const min = 300;
+      const max = 3000;
+      const randomInteger = Math.floor(Math.random() * (max - min + 1)) + min;
+      loading.value = false;
+      skuTable.value = res?.data?.specTable;
+      const arr: any = [];
+      res?.data?.columnList.forEach((item: any) => {
+        let tag: any = [];
+        res?.data?.specTable.forEach((it: any) => {
+          tag.push(it[item.prop]);
+        });
+        arr.push({
+          name: item.label,
+          tag,
+        });
+      });
+      columns.value = res?.data?.columnList;
+      specification.value = arr;
+      form.pictureList = res?.data?.mainList;
+      form.volume = randomInteger;
+      form.order = '1';
+      form;
+      let content = '';
+      for (const url of res?.data?.detailsList) {
+        content += `<img src="${url}" style="max-width:100%;" alt="Image"> `;
+      }
+      instance.txt.html(content);
+    })
+    .catch(() => {
+      loading.value = false;
+    });
+};
 
 const handleClose = (index: number, i: number) => {
-  const row = specification.value[index]
+  const row = specification.value[index];
   row.tag.splice(i, 1)[0]; // 删除指定位置的元素，并返回删除的元素
-}
+};
 
 const showInput = (index: number) => {
-  inputVisible.value[index] = true
+  inputVisible.value[index] = true;
   nextTick(() => {
     inputRefs.value[index]?.focus();
   });
-}
+};
 const handleDeleteSpec = (index: number) => {
-  specification.value.splice(index, 1)
-}
+  specification.value.splice(index, 1);
+};
 const handleInputConfirm = (index: number) => {
-  const row = specification.value[index]
+  const row = specification.value[index];
   if (inputValue.value) {
-    row.tag.push(inputValue.value)
+    row.tag.push(inputValue.value);
   }
-  inputVisible.value[index] = false
-  inputValue.value = ''
-}
+  inputVisible.value[index] = false;
+  inputValue.value = '';
+};
 
 function getColumns() {
-  const labelName = specification.value.map(item => ({ name: item.name }));
+  const labelName = specification.value.map((item) => ({ name: item.name }));
   columns.value = labelName.map((item, index) => ({
     prop: `name${index}`,
-    label: item.name
-  }))
+    label: item.name,
+  }));
 }
 
 const matchAndMergeData = (skuTable: any, sku: any) => {
@@ -233,47 +263,48 @@ const matchAndMergeData = (skuTable: any, sku: any) => {
     });
     return {
       ...tableRow,
-      ...matchedSku
+      ...matchedSku,
     };
   });
   return result;
 };
 
-
 const handleSku = () => {
-  getColumns()
+  getColumns();
   // 将笛卡尔积转换为对象
-  const skuTableArr = cartesian(...specification.value.map(item => item.tag))
-    .map((item: any, index: number) => {
-      const obj: any = {};
-      item.forEach((tag: any, i: number) => {
-        obj[`name${i}`] = tag;
-      });
-      return obj;
+  const skuTableArr = cartesian(...specification.value.map((item) => item.tag)).map((item: any, index: number) => {
+    const obj: any = {};
+    item.forEach((tag: any, i: number) => {
+      obj[`name${i}`] = tag;
     });
-  skuTable.value = matchAndMergeData(skuTableArr, skuCopyTable.value)
-}
+    return obj;
+  });
+  skuTable.value = matchAndMergeData(skuTableArr, skuCopyTable.value);
+};
 
 // 生成笛卡尔积
 const cartesian = function (...args: any) {
-  return args.reduce((prev: any, curr: any) => {
-    let res: any = [];
-    prev.forEach((p: any) => {
-      curr.forEach((c: any) => {
-        res.push(p.concat(c));
+  return args.reduce(
+    (prev: any, curr: any) => {
+      let res: any = [];
+      prev.forEach((p: any) => {
+        curr.forEach((c: any) => {
+          res.push(p.concat(c));
+        });
       });
-    });
-    return res;
-  }, [[]]);
+      return res;
+    },
+    [[]]
+  );
 };
 
 function handleDelete(index: number) {
-  skuTable.value.splice(index, 1)
+  skuTable.value.splice(index, 1);
 }
 // 规格结束
 const options = reactive<{ list: Classification[] }>({ list: [] });
 const router = useRouter();
-const imageAddress = ref('')
+const imageAddress = ref('');
 const formRef = ref<FormInstance>();
 const form: Form = reactive({
   classiFication: '',
@@ -291,8 +322,8 @@ const editor = ref(null);
 // 编辑
 if (id) {
   fetchGoodsGetDetails({
-    id
-  }).then(res => {
+    id,
+  }).then((res) => {
     // 将字符串转回数组
     const items = res.data.specification.split('|');
     const result = [];
@@ -305,21 +336,20 @@ if (id) {
         tag: tags,
       });
     }
-    specification.value = result
+    specification.value = result;
     // 反序列化
     Object.assign(form, res?.data, {
-      classiFication: JSON.parse(res?.data?.classiFication)
+      classiFication: JSON.parse(res?.data?.classiFication),
     });
-    skuTable.value = res?.data?.sku || []
-    skuCopyTable.value = res?.data?.sku || []
-    instance.txt.html(res?.data?.introduction)
-    getColumns()
-
-  })
+    skuTable.value = res?.data?.sku || [];
+    skuCopyTable.value = res?.data?.sku || [];
+    instance.txt.html(res?.data?.introduction);
+    getColumns();
+  });
 }
 const content = reactive({
   html: '',
-  text: ''
+  text: '',
 });
 let instance: any;
 
@@ -333,31 +363,31 @@ onBeforeUnmount(() => {
   instance = null;
 });
 
-fetchClassiFication().then(res => {
+fetchClassiFication().then((res) => {
   options.list = res.data.list;
-})
+});
 
 async function handleSetImage() {
-  if (!imageAddress.value) return
-  if (!await isImageUrl(imageAddress.value)) {
-    ElMessage.warning('图片地址不正确')
-    return
+  if (!imageAddress.value) return;
+  if (!(await isImageUrl(imageAddress.value))) {
+    ElMessage.warning('图片地址不正确');
+    return;
   }
-  form.pictureList.push(imageAddress?.value)
-  imageAddress.value = ''
+  form.pictureList.push(imageAddress?.value);
+  imageAddress.value = '';
 }
 
 async function handleSetImageSku(row: any) {
-  if (!row.goods_picture) return
-  if (!await isImageUrl(row.goods_picture)) {
-    ElMessage.warning('图片地址不正确')
-    row.goods_picture = ''
-    return
+  if (!row.goods_picture) return;
+  if (!(await isImageUrl(row.goods_picture))) {
+    ElMessage.warning('图片地址不正确');
+    row.goods_picture = '';
+    return;
   }
 }
 
 function handleDeleteImg(index: number) {
-  form.pictureList.splice(index, 1)
+  form.pictureList.splice(index, 1);
 }
 
 const rules: FormRules = {
@@ -365,28 +395,35 @@ const rules: FormRules = {
   name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
   number: [{ message: '请输入商品货号', trigger: 'blur' }],
   order: [{ required: true, message: '请输入商品排序', trigger: 'blur' }],
-  pictureList: [{
-    required: true, message: '请上传至少一张图片', trigger: 'change', validator: (rule, value, callback) => {
-      if (value && value.length > 0) {
-        callback();
-      } else {
-        callback(new Error('请上传至少一张图片'));
-      }
+  pictureList: [
+    {
+      required: true,
+      message: '请上传至少一张图片',
+      trigger: 'change',
+      validator: (rule, value, callback) => {
+        if (value && value.length > 0) {
+          callback();
+        } else {
+          callback(new Error('请上传至少一张图片'));
+        }
+      },
     },
-  }]
+  ],
 };
 
 // 提交
 const onSubmit = (formEl: FormInstance | undefined) => {
   // 表单校验
   if (!formEl) return;
-  formEl.validate(async (valid) => {
+  formEl.validate(async (valid: boolean) => {
     if (valid) {
       // 将数组转成字符串
-      const str = specification.value.map(item => {
-        const tagStr = item.tag ? item.tag.join(innerSeparator) : ''; // 将tag数组拼接成一个字符串
-        return `${item.name}${outerSeparator}${tagStr}`;
-      }).join(outerSeparator); // 将每个对象的字符串拼接成一个总的字符串
+      const str = specification.value
+        .map((item) => {
+          const tagStr = item.tag ? item.tag.join(innerSeparator) : ''; // 将tag数组拼接成一个字符串
+          return `${item.name}${outerSeparator}${tagStr}`;
+        })
+        .join(outerSeparator); // 将每个对象的字符串拼接成一个总的字符串
 
       content.html = instance.txt.html();
       const params = {
@@ -394,32 +431,28 @@ const onSubmit = (formEl: FormInstance | undefined) => {
         sku: skuTable.value,
         specification: str,
         introduction: content.html,
-        classiFication: JSON.stringify(form.classiFication)
-      }
+        classiFication: JSON.stringify(form.classiFication),
+      };
       if (id) {
-        await fetchUpdateGoods(params).then(res => {
+        await fetchUpdateGoods(params).then((res) => {
           ElMessage.success('修改成功！');
-          router.back()
-        })
-      }
-      else {
-        await fetchAddGoods(params).then(res => {
+          router.back();
+        });
+      } else {
+        await fetchAddGoods(params).then((res) => {
           ElMessage.success('新增成功！');
-          router.back()
-        })
+          router.back();
+        });
       }
-
-    } else {
-      return false;
     }
+    return;
   });
 };
-
 </script>
 <style lang="scss" scoped>
-.loading{
+.loading {
   position: absolute;
-  right:0;
+  right: 0;
 }
 .add_image {
   background-color: #fbfdff;
@@ -489,7 +522,6 @@ const onSubmit = (formEl: FormInstance | undefined) => {
       height: 24px;
     }
   }
-
 }
 
 .spce-input {
@@ -510,9 +542,6 @@ const onSubmit = (formEl: FormInstance | undefined) => {
     width: 80px;
     height: 24px;
     margin-right: 5px;
-
   }
 }
 </style>
-
-

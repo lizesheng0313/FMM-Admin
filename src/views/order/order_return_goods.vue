@@ -137,8 +137,8 @@
 import { ref, reactive } from 'vue';
 import { ElMessage } from 'element-plus'
 import { SuitcaseLine, } from '@element-plus/icons-vue';
-import { fetchReturnOrderList, fetchAgreenOrder, fetchRefuseOrder, fetchRefundOrder, fetchReceivedGoods } from '../../api/order/index';
-import { formatDateTime } from '../../utils/utils'
+import { fetchReturnOrderList, fetchAgreenOrder, fetchRefuseOrder, fetchRefundOrder, fetchReceivedGoods } from '@api/order/index';
+import { formatDateTime } from '@utils/utils'
 import { ElMessageBox } from 'element-plus';
 
 interface TableItem {

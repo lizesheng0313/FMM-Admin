@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/home.vue'
+import Home from '@views/home.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '系统首页',
         },
-        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/index.vue'),
+        component: () => import(/* webpackChunkName: "dashboard" */ '@views/dashboard/index.vue'),
       },
       {
         path: '/permission/user_mangae',
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '用户管理',
         },
-        component: () => import(/* webpackChunkName: "user" */ '../views/permission/user/index.vue'),
+        component: () => import(/* webpackChunkName: "user" */ '@views/permission/user/index.vue'),
       },
       {
         path: '/goods/goods_list',
@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '商品列表',
         },
-        component: () => import(/* webpackChunkName: "import" */ '../views/goods/index.vue'),
+        component: () => import(/* webpackChunkName: "import" */ '@views/goods/index.vue'),
       },
       {
         path: '/goods/add',
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '添加商品',
         },
-        component: () => import(/* webpackChunkName: "import" */ '../views/goods/add.vue'),
+        component: () => import(/* webpackChunkName: "import" */ '@views/goods/add.vue'),
       },
       {
         path: '/order/list',
@@ -49,7 +49,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '订单列表',
         },
-        component: () => import('../views/order/order_list.vue'),
+        component: () => import('@views/order/order_list.vue'),
       },
       {
         path: '/order/return',
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '退货列表',
         },
-        component: () => import('../views/order/order_return_goods.vue'),
+        component: () => import('@views/order/order_return_goods.vue'),
       },
       {
         path: '/category',
@@ -65,7 +65,23 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: '分类管理',
         },
-        component: () => import('../views/category/index.vue'),
+        component: () => import('@views/category/index.vue'),
+      },
+      {
+        path: '/adv',
+        name: 'adv',
+        meta: {
+          title: '广告位管理',
+        },
+        component: () => import('@views/adv/index.vue'),
+      },
+      {
+        path: '/system/user-manage',
+        name: 'userManagement',
+        meta: {
+          title: '后台用户管理',
+        },
+        component: () => import('@views/system/userManagement/index.vue'),
       },
     ],
   },
@@ -75,7 +91,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '登录',
     },
-    component: () => import(/* webpackChunkName: "login" */ '../views/login/login.vue'),
+    component: () => import(/* webpackChunkName: "login" */ '@views/login/login.vue'),
   },
   {
     path: '/403',
@@ -83,7 +99,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '没有权限',
     },
-    component: () => import(/* webpackChunkName: "403" */ '../views/403.vue'),
+    component: () => import(/* webpackChunkName: "403" */ '@views/403.vue'),
   },
 ]
 

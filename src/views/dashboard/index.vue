@@ -113,7 +113,7 @@
 
 <script setup lang="ts" name="dashboard">
 import { reactive, ref } from 'vue';
-import { fetchGetOrderCounts } from '../../api/dashboard'
+import { fetchGetOrderCounts } from '@api/dashboard'
 import { orderDetailsType } from "./d"
 
 const orderDetails = ref<orderDetailsType>({

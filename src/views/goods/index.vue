@@ -65,9 +65,9 @@
 import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, } from '@element-plus/icons-vue';
-import { fetchGoodsList, fetchDeleteGoodsInfo, fetchUpdateGoods } from '../../api/goods/index';
+import { fetchGoodsList, fetchDeleteGoodsInfo, fetchUpdateGoods } from '@api/goods/index';
 import { useRouter } from 'vue-router';
-import { formatDateTime } from '../../utils/utils'
+import { formatDateTime } from '@utils/utils'
 
 interface TableItem {
   id: number;

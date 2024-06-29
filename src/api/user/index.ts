@@ -7,7 +7,7 @@
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/api/user/index.ts
  */
-import request from '../../utils/request';
+import request from '@utils/request';
 
 export const fetchLogin = (data:any) => {
     return request({
