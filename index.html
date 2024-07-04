@@ -9,19 +9,32 @@
 -->
 <!DOCTYPE html>
 <html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>电商后台管理系统</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_830376_qzecyukz0s.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>电商后台管理系统</title>
-  <link rel="stylesheet" href="https://at.alicdn.com/t/font_830376_qzecyukz0s.css">
-</head>
-
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/main.ts"></script>
-  <!-- built files will be auto injected -->
-</body>
-
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+    <!-- built files will be auto injected -->
+    <script src="http://192.168.96.52:5173/yss-ai-agent.js"></script>
+    <script>
+      window.onload = function () {
+        yssAIAgentInit({
+          url: 'http://192.168.96.52:5173', // url为iframe要加载的地址
+          type: 'USER_INFO', // type固定USER_INFO
+          userName: '小明', // userName为三方的登录用户名
+          tokenValue: 'xxxxxxxxx', // tokenValue为三方登录token
+          callback: () => {
+            // 切换主题的方法
+            window.setYssAgentPosition('bottom-left');
+          },
+        });
+      };
+    </script>
+  </body>
 </html>

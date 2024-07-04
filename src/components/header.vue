@@ -1,169 +1,162 @@
 <template>
-	<div class="header">
-		<!-- 折叠按钮 -->
-		<div class="collapse-btn" @click="collapseChage">
-			<el-icon v-if="sidebar.collapse">
-				<Expand />
-			</el-icon>
-			<el-icon v-else>
-				<Fold />
-			</el-icon>
-		</div>
-		<div class="logo">后台管理系统</div>
-		<div class="header-right">
-			<div class="header-user-con">
-				<!-- 消息中心 -->
-				<!-- <div class="btn-bell" @click="router.push('/tabs')">
+  <div class="header">
+    <!-- 折叠按钮 -->
+    <div class="collapse-btn" @click="collapseChage">
+      <el-icon v-if="sidebar.collapse">
+        <Expand />
+      </el-icon>
+      <el-icon v-else>
+        <Fold />
+      </el-icon>
+    </div>
+    <div class="logo">后台管理系统</div>
+    <div class="header-right">
+      <div class="header-user-con">
+        <!-- 消息中心 -->
+        <!-- <div class="btn-bell" @click="router.push('/tabs')">
 					<el-tooltip effect="dark" :content="message ? `有${message}条未读消息` : `消息中心`" placement="bottom">
 						<i class="el-icon-lx-notice"></i>
 					</el-tooltip>
 					<span class="btn-bell-badge" v-if="message"></span>
 				</div> -->
-				<!-- 用户头像 -->
-				<el-avatar class="user-avator" :size="30" :src="userInfo.userInfo.avatar" />
-				<!-- 用户名下拉菜单 -->
-				<el-dropdown class="user-name" trigger="click" @command="handleCommand">
-					<span class="el-dropdown-link">
-						{{ (userInfo as any).userInfo.username }} {{ (role as any)[(userInfo as any).userInfo.role] }}
-						<el-icon class="el-icon--right">
-							<arrow-down />
-						</el-icon>
-					</span>
-					<template #dropdown>
-						<el-dropdown-menu>
-							<el-dropdown-item command="user">个人中心</el-dropdown-item>
-							<el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
-						</el-dropdown-menu>
-					</template>
-				</el-dropdown>
-			</div>
-		</div>
-	</div>
+        <!-- 用户头像 -->
+        <el-avatar class="user-avator" :size="30" :src="userInfo.userInfo.avatar" />
+        <!-- 用户名下拉菜单 -->
+        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+          <span class="el-dropdown-link">
+            {{ userInfo.userInfo.username }} {{ ROLE[userInfo.userInfo.role as keyof typeof ROLE] }}
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="user">个人中心</el-dropdown-item>
+              <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useSidebarStore } from '../store/sidebar';
 import { useRouter } from 'vue-router';
-import { userInfoSet } from '../store/permiss'
+import { userInfoSet } from '../store/permiss';
+import { ROLE } from '../constant';
 
-const userInfo = userInfoSet()
-const message: number = 2;
-const role = {
-	0: '超级管理员',
-	1: '管理员',
-	2: '运营经理',
-	3: '销售经理',
-	4: '合作商'
-}
+const userInfo = userInfoSet();
 const sidebar = useSidebarStore();
 // 侧边栏折叠
 const collapseChage = () => {
-	sidebar.handleCollapse();
+  sidebar.handleCollapse();
 };
 
 onMounted(() => {
-	if (document.body.clientWidth < 1500) {
-		collapseChage();
-	}
+  if (document.body.clientWidth < 1500) {
+    collapseChage();
+  }
 });
 
 // 用户名下拉菜单选择事件
 const router = useRouter();
 const handleCommand = (command: string) => {
-	if (command == 'loginout') {
-		sessionStorage.removeItem('ms_username');
-		router.push('/login');
-	} else if (command == 'user') {
-		router.push('/user');
-	}
+  if (command == 'loginout') {
+    sessionStorage.removeItem('ms_username');
+    router.push('/login');
+  } else if (command == 'user') {
+    router.push('/user');
+  }
 };
 </script>
 <style scoped>
 .header {
-	position: relative;
-	box-sizing: border-box;
-	width: 100%;
-	height: 70px;
-	font-size: 22px;
-	color: #fff;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 70px;
+  font-size: 22px;
+  color: #fff;
 }
 
 .collapse-btn {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	float: left;
-	padding: 0 21px;
-	cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  float: left;
+  padding: 0 21px;
+  cursor: pointer;
 }
 
 .header .logo {
-	float: left;
-	width: 250px;
-	line-height: 70px;
+  float: left;
+  width: 250px;
+  line-height: 70px;
 }
 
 .header-right {
-	float: right;
-	padding-right: 50px;
+  float: right;
+  padding-right: 50px;
 }
 
 .header-user-con {
-	display: flex;
-	height: 70px;
-	align-items: center;
+  display: flex;
+  height: 70px;
+  align-items: center;
 }
 
 .btn-fullscreen {
-	transform: rotate(45deg);
-	margin-right: 5px;
-	font-size: 24px;
+  transform: rotate(45deg);
+  margin-right: 5px;
+  font-size: 24px;
 }
 
 .btn-bell,
 .btn-fullscreen {
-	position: relative;
-	width: 30px;
-	height: 30px;
-	text-align: center;
-	border-radius: 15px;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .btn-bell-badge {
-	position: absolute;
-	right: 4px;
-	top: 0px;
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	background: #f56c6c;
-	color: #fff;
+  position: absolute;
+  right: 4px;
+  top: 0px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #f56c6c;
+  color: #fff;
 }
 
 .btn-bell .el-icon-lx-notice {
-	color: #fff;
+  color: #fff;
 }
 
 .user-name {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 .user-avator {
-	margin-left: 20px;
+  margin-left: 20px;
 }
 
 .el-dropdown-link {
-	color: #fff;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .el-dropdown-menu__item {
-	text-align: center;
+  text-align: center;
 }
 </style>

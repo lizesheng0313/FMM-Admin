@@ -1,19 +1,40 @@
-/*
- * @Author: lizesheng
- * @Date: 2023-02-22 16:41:23
- * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-04 21:06:05
- * @important: 重要提醒
- * @Description: 备注内容
- * @FilePath: /vue-manage-system/src/api/user/index.ts
- */
 import request from '@utils/request';
 
-export const fetchLogin = (data:any) => {
-    return request({
-        url: '/api/admin/user/login',
-        method: 'post',
-        data
-    });
+export const fetchLogin = (data: any) => {
+  return request({
+    url: '/api/admin/user/login',
+    method: 'post',
+    data,
+  });
 };
 
+export const fetchUserList = () => {
+  return request({
+    url: '/api/admin/user/get',
+    method: 'get',
+  });
+};
+
+export const fetchAddUser = (data: any) => {
+  return request({
+    url: '/api/admin/user/add',
+    method: 'post',
+    data,
+  });
+};
+
+export const fetchUpdateUser = (data: any) => {
+  return request({
+    url: '/api/admin/user/update',
+    method: 'post',
+    data,
+  });
+};
+
+export const fetchDeleteUser = (data: any) => {
+  return request({
+    url: '/api/admin/user/delete',
+    method: 'post',
+    data,
+  });
+};

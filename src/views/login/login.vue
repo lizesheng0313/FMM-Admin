@@ -26,7 +26,9 @@
         <div class="login-box" @click="submitForm(login)">
           <div class="login-btn-wrap">
             <div class="login-btn" :style="{ left: state.flag == true ? '0' : '-100%' }"></div>
-            <div class="btn" @mouseenter="toggleHover(true)" @mouseleave="toggleHover(false)">登录</div>
+            <div class="btn" @mouseenter="toggleHover(true)" @mouseleave="toggleHover(false)">
+              登录<el-icon class="loading-icon round-animation" v-if="loading"><Loading /></el-icon>
+            </div>
           </div>
         </div>
       </el-form>
@@ -56,7 +58,7 @@ const param = reactive<LoginInfo>({
   username: '',
   password: '',
 });
-
+const loading = ref(false);
 const rules: FormRules = {
   username: [
     {
@@ -72,16 +74,22 @@ const login = ref<FormInstance>();
 const menuStore = useMenuStore();
 const userInfo = userInfoSet();
 const submitForm = (formEl: FormInstance | undefined) => {
+  if (loading.value) return;
   if (!formEl) return;
   formEl.validate(async (valid: boolean) => {
     if (valid) {
+      loading.value = true;
       await fetchLogin({
         username: param.username,
         // @ts-ignore
         password: md5(param.password),
-      }).then((res) => {
-        userInfo.increment(res?.data?.userInfo);
-      });
+      })
+        .then((res) => {
+          userInfo.increment(res?.data?.userInfo);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
       await fetchMenu().then((res) => {
         menuStore.increment(res?.data?.list || []);
       });
@@ -99,6 +107,9 @@ tags.clearTags();
 </script>
 
 <style scoped>
+.loading-icon {
+  margin-left: 10px;
+}
 * {
   margin: 0px;
   padding: 0px;

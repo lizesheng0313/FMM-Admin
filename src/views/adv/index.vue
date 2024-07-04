@@ -26,17 +26,17 @@
     </el-table>
 
     <el-dialog :title="dialogTitle" v-model="dialogVisible">
-      <el-form :model="adForm" ref="formRef">
-        <el-form-item required label="图片URL" :label-width="formLabelWidth">
+      <el-form :model="adForm" ref="formRef" :rules="rules">
+        <el-form-item label="图片URL" prop="url" :label-width="formLabelWidth">
           <el-input v-model="adForm.url" placeholder="输入图片URL"></el-input>
         </el-form-item>
-        <el-form-item label="名称" :label-width="formLabelWidth">
+        <el-form-item label="名称" prop="title" :label-width="formLabelWidth">
           <el-input v-model="adForm.title" placeholder="输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="跳转路径" :label-width="formLabelWidth">
+        <el-form-item label="跳转路径" prop="path" :label-width="formLabelWidth">
           <el-input v-model="adForm.path" placeholder="输入跳转路径"></el-input>
         </el-form-item>
-        <el-form-item label="显示状态" :label-width="formLabelWidth">
+        <el-form-item label="显示状态" prop="display" :label-width="formLabelWidth">
           <el-switch v-model="adForm.display" :active-value="1" :inactive-value="0"> </el-switch>
         </el-form-item>
       </el-form>
@@ -61,6 +61,12 @@ const ads = ref([]);
 const dialogVisible = ref(false);
 const dialogTitle = ref('');
 const formRef = ref<FormInstance>();
+const rules = ref<FormRules>({
+  url: [{ required: true, message: '请输入图片URL', trigger: 'blur' }],
+  title: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+  path: [{ required: true, message: '请输入跳转路径', trigger: 'blur' }],
+});
+
 const adForm = ref({
   id: null,
   url: '',

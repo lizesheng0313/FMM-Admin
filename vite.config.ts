@@ -1,12 +1,3 @@
-/*
- * @Author: lizesheng
- * @Date: 2023-02-22 16:41:23
- * @LastEditors: lizesheng
- * @LastEditTime: 2023-05-06 14:36:31
- * @important: 重要提醒
- * @Description: 备注内容
- * @FilePath: /vue-manage-system/vite.config.ts
- */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import VueSetupExtend from 'vite-plugin-vue-setup-extend';
@@ -46,6 +37,9 @@ export default defineConfig({
       '@api': resolve(__dirname, 'src/api'),
       '@views': resolve(__dirname, 'src/views'),
       '@utils': resolve(__dirname, 'src/utils'),
+      '@components': resolve(__dirname, 'src/components'),
+      '@constant': resolve(__dirname, 'src/constant'),
+      '@store': resolve(__dirname, 'src/store'),
     },
   },
   server: {
@@ -53,8 +47,8 @@ export default defineConfig({
     hmr: true,
     proxy: {
       '/api/admin': {
-        target: 'https://zjkdongao.com',
-        // target: 'http://127.0.0.1:7002',
+        // target: 'https://zjkdongao.com',
+        target: 'http://127.0.0.1:7002',
         changeOrigin: true,
       },
     },

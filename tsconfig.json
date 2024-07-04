@@ -7,6 +7,8 @@
       "@views/*": ["src/views/*"],
       "@router/*": ["src/router/*"],
       "@components/*": ["src/components/*"],
+      "@constant/*": ["src/constant/*"],
+      "@store/*": ["src/store/*"]
     },
     "allowJs": true,
     "target": "ESNext",
@@ -22,6 +24,6 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts","src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

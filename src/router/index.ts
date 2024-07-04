@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '@views/home.vue'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import Home from '@views/home.vue';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -76,12 +76,20 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@views/adv/index.vue'),
       },
       {
-        path: '/system/user-manage',
+        path: '/user',
         name: 'userManagement',
         meta: {
           title: '后台用户管理',
         },
-        component: () => import('@views/system/userManagement/index.vue'),
+        component: () => import('@views/user/index.vue'),
+      },
+      {
+        path: '/basic',
+        name: 'basic',
+        meta: {
+          title: '基础设置',
+        },
+        component: () => import('@views/basic/index.vue'),
       },
     ],
   },
@@ -101,15 +109,15 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import(/* webpackChunkName: "403" */ '@views/403.vue'),
   },
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-})
+});
 
 router.beforeEach((to, from, next) => {
-  next()
-})
+  next();
+});
 
-export default router
+export default router;

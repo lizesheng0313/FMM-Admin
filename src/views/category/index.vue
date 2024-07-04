@@ -3,12 +3,18 @@
     <el-row>
       <el-col :span="10">
         <div class="category-tree">
-          <el-tree :data="categoryTree" :props="defaultProps" default-expand-all :highlight-current="true"
-            :expand-on-click-node="false" @current-change="handleCurrentChange" >
+          <el-tree
+            :data="categoryTree"
+            :props="defaultProps"
+            default-expand-all
+            :highlight-current="true"
+            :expand-on-click-node="false"
+            @current-change="handleCurrentChange"
+          >
             <template #default="{ node, data }">
-              <span class="custom-tree-node" @click=handleEdit(node)>
+              <span class="custom-tree-node" @click="handleEdit(node)">
                 <span>{{ data?.label }}</span>
-                <span class="tree-node-actions" >
+                <span class="tree-node-actions">
                   <el-tooltip v-if="data?.parentId" :hide-after="0" content="删除">
                     <el-button type="text" size="mini" @click.stop="handleDelete(node)">
                       <el-icon>
@@ -16,8 +22,8 @@
                       </el-icon>
                     </el-button>
                   </el-tooltip>
-                  <el-tooltip content="添加" :hide-after="0" >
-                  <el-button type="text" size="mini" @click.stop="handleAdd(node)">
+                  <el-tooltip content="添加" :hide-after="0">
+                    <el-button type="text" size="mini" @click.stop="handleAdd(node)">
                       <el-icon>
                         <el-icon-plus />
                       </el-icon>
@@ -31,50 +37,70 @@
       </el-col>
       <el-col :span="14">
         <div class="category-detail">
-          <el-form ref="myForm" :model="currentCategory" label-width="80px" style="width: 80%; margin: 0 auto;" v-if="openInfo?.type || categoryTree?.length === 0">
+          <el-form
+            ref="myForm"
+            :model="currentCategory"
+            label-width="80px"
+            style="width: 80%; margin: 0 auto"
+            v-if="openInfo?.type || categoryTree?.length === 0"
+          >
             <el-form-item label="父级名称" prop="parentLabel" required v-if="openInfo.type === 'add'">
               <el-input v-model="currentCategory.parentLabel" :disabled="openInfo?.type === 'add'" />
             </el-form-item>
-            <el-form-item :label="openInfo.type === 'edit' ? '分类名称':'名称'" prop="label" required>
-              <el-input  v-model="currentCategory.label"  />
+            <el-form-item :label="openInfo.type === 'edit' ? '分类名称' : '名称'" prop="label" required>
+              <el-input v-model="currentCategory.label" />
             </el-form-item>
-          <el-form-item label="分类图标" >
-            <el-input  v-model="currentCategory.icon"  />
-          </el-form-item>
-            <el-form-item label="分类图标" prop="icon"  v-if="categoryTree?.length !== 0 && currentCategory.parentId">
+            <el-form-item label="分类图标">
+              <el-input v-model="currentCategory.icon" />
+            </el-form-item>
+            <el-form-item label="分类图标" prop="icon" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
               <el-upload
                 :headers="uploadHeaders"
                 class="avatar-uploader"
-                action="/api/admin/uploadTypeImage"
+                action="/api/admin/upload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
               >
                 <div>
                   <img v-if="currentCategory.icon" :src="currentCategory.icon" class="avatar" />
-                    <el-icon v-else class="avatar-uploader-icon el-upload-list__item-thumbnail"><Plus /></el-icon>
-                  <span v-if="currentCategory.icon" :src="currentCategory.icon"  class="el-upload-list__item-actions" @click.stop="handleRemove">
-                    <span
-                      class="el-upload-list__item-preview"
-                    >
+                  <el-icon v-else class="avatar-uploader-icon el-upload-list__item-thumbnail"><Plus /></el-icon>
+                  <span
+                    v-if="currentCategory.icon"
+                    :src="currentCategory.icon"
+                    class="el-upload-list__item-actions"
+                    @click.stop="handleRemove"
+                  >
+                    <span class="el-upload-list__item-preview">
                       <el-icon><delete /></el-icon>
                     </span>
                   </span>
                 </div>
               </el-upload>
-            </el-form-item >
-            <el-form-item label="排序" prop="order" required v-if="categoryTree?.length !== 0 && currentCategory.parentId">
+            </el-form-item>
+            <el-form-item
+              label="排序"
+              prop="order"
+              required
+              v-if="categoryTree?.length !== 0 && currentCategory.parentId"
+            >
               <el-input-number v-model="currentCategory.order" />
             </el-form-item>
-            <el-form-item label="展示首页" prop="is_show_home" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
+            <el-form-item
+              label="展示首页"
+              prop="is_show_home"
+              v-if="categoryTree?.length !== 0 && currentCategory.parentId"
+            >
               <el-switch :active-value="1" :inactive-value="0" v-model="currentCategory.is_show_home" />
             </el-form-item>
-            <el-form-item label="推荐分类" prop="recommend_class" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
+            <el-form-item
+              label="推荐分类"
+              prop="recommend_class"
+              v-if="categoryTree?.length !== 0 && currentCategory.parentId"
+            >
               <el-switch :active-value="1" :inactive-value="0" v-model="currentCategory.recommend_class" />
             </el-form-item>
-              <el-button type="primary" @click="handleSave">
-                提交
-              </el-button>
+            <el-button type="primary" @click="handleSave"> 提交 </el-button>
           </el-form>
         </div>
       </el-col>
@@ -83,173 +109,165 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { ElMessageBox,ElMessage} from 'element-plus';
-import { fetchGetClassiFication,fetchAddCategory,fetchEditCategory,fetchDelCategory} from '@api/category'
-
+import { ref, computed } from 'vue';
+import { ElMessageBox, ElMessage } from 'element-plus';
+import { fetchGetClassiFication, fetchAddCategory, fetchEditCategory, fetchDelCategory } from '@api/category';
 
 // 双向绑定当前选中的分类对象
-const currentCategory = ref({})
-const openInfo = ref({})
+const currentCategory = ref({});
+const openInfo = ref({});
 const defaultProps = {
   children: 'children',
   label: 'label',
-}
+};
+const myForm = ref(null);
 
 // 计算属性：上传请求头
 const uploadHeaders = computed(() => {
   const authorization = sessionStorage.getItem('authorization');
   return {
-    authorization: authorization ? authorization : ''
+    type: 'categoryImage',
+    authorization: authorization ? authorization : '',
   };
 });
 
-
-const handleAvatarSuccess = (
-  _,
-  uploadFile
-) => {
-  currentCategory.value.icon = URL.createObjectURL(uploadFile?.raw)
-}
+const handleAvatarSuccess = (_, uploadFile) => {
+  currentCategory.value.icon = URL.createObjectURL(uploadFile?.raw);
+};
 
 const beforeAvatarUpload = (rawFile) => {
-   if (rawFile.size / 1024 / 1024 > 5) {
-    ElMessage.error('分类图标不能超过5MB')
-    return false
+  if (rawFile.size / 1024 / 1024 > 5) {
+    ElMessage.error('分类图标不能超过5MB');
+    return false;
   }
-  return true
-}
-const myForm = ref(null);
+  return true;
+};
 
-const handleRemove = ()=>{
-  currentCategory.value.icon = ''
-}
+const handleRemove = () => {
+  currentCategory.value.icon = '';
+};
 
 // 树结构数据
-let categoryTree = ref([])
-const fetchTree = () =>{
-  fetchGetClassiFication().then(res=>{
-    categoryTree.value= res.data?.list
-  })
-}
-fetchTree()
+let categoryTree = ref([]);
+const fetchTree = () => {
+  fetchGetClassiFication().then((res) => {
+    categoryTree.value = res.data?.list;
+  });
+};
+fetchTree();
 
 // 点击分类树节点时触发
 const handleAdd = (data) => {
-  openInfo.value = {type:'add'}
+  openInfo.value = { type: 'add' };
   currentCategory.value = {
-    parentId:data?.data?.id,
-    parentLabel:data?.label
-  }
-}
+    parentId: data?.data?.id,
+    parentLabel: data?.label,
+  };
+};
 
 const handleEdit = (data) => {
-  openInfo.value = {type:'edit'}
-  currentCategory.value = {...data?.data}
- }
+  openInfo.value = { type: 'edit' };
+  currentCategory.value = { ...data?.data };
+};
 
 const handleDelete = (data) => {
-  openInfo.value = false
+  openInfo.value = false;
   ElMessageBox.confirm('确认删除吗?', '确认', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
-  })
-  .then(() => {
+    type: 'warning',
+  }).then(() => {
     fetchDelCategory({
-      id:data?.data?.id
-    }).then(res=>{
-      ElMessage.success('删除成功')
-      fetchTree()
-    })
-  })
- }
+      id: data?.data?.id,
+    }).then((res) => {
+      ElMessage.success('删除成功');
+      fetchTree();
+    });
+  });
+};
 
- const handleSave = () =>{
-
+const handleSave = () => {
   myForm.value.validate(async (valid) => {
-      if (valid) {
-        let res
-        if(openInfo.value.type === 'edit'){
-          res = await fetchEditCategory({
-            ...currentCategory?.value
-          })
-        }
-        else{
-          res = await fetchAddCategory({
-            ...currentCategory?.value
-          })
-        }
-        if(res){
-          ElMessage.success(openInfo.value.type === 'add'?'新增成功':'修改成功')
-          fetchTree()
-        }
-      } 
-   });
- }
-
+    if (valid) {
+      let res;
+      if (openInfo.value.type === 'edit') {
+        res = await fetchEditCategory({
+          ...currentCategory?.value,
+        });
+      } else {
+        res = await fetchAddCategory({
+          ...currentCategory?.value,
+        });
+      }
+      if (res) {
+        ElMessage.success(openInfo.value.type === 'add' ? '新增成功' : '修改成功');
+        fetchTree();
+      }
+    }
+  });
+};
 </script>
 <style lang="scss">
-.add-category{
-.avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
- .el-upload {
-  border: 1px dashed #dcdfe6;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: .2s;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color:#409eff;
-}
-.el-upload-list__item-actions{
-  display: none;
-}
-.avatar-uploader:hover { 
-  .el-upload-list__item-actions{
-    background:rgba(0,0,0,0.4);
-    display:flex;
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    align-items:center;
-    justify-content:center;
+.add-category {
+  .avatar-uploader .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
-}
+  .el-upload {
+    border: 1px dashed #dcdfe6;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: 0.2s;
+  }
 
-.el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
-}
-  .category-tree{
-    font-size:12px;
-    .custom-tree-node{
-      display:flex;
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .el-upload-list__item-actions {
+    display: none;
+  }
+  .avatar-uploader:hover {
+    .el-upload-list__item-actions {
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       align-items: center;
-      width:100%;
-      justify-content:space-between;
+      justify-content: center;
     }
-    .tree-node-actions{
+  }
+
+  .el-icon.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    text-align: center;
+  }
+  .category-tree {
+    font-size: 12px;
+    .custom-tree-node {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .tree-node-actions {
       display: none;
     }
-    .tree-node-actions{
-      margin-right:20px;
+    .tree-node-actions {
+      margin-right: 20px;
     }
-    .el-tree-node__content:hover{
-      .tree-node-actions{
-         display: block; 
-     }
+    .el-tree-node__content:hover {
+      .tree-node-actions {
+        display: block;
+      }
     }
   }
 }
