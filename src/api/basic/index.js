@@ -7,6 +7,14 @@ export const fetchBasic = () => {
   });
 };
 
+export const fetchAddBasic = (data) => {
+  return request({
+    url: '/api/admin/basic/add',
+    method: 'post',
+    data,
+  });
+};
+
 export const fetchUpdateBasic = (data) => {
   return request({
     url: '/api/admin/basic/update',

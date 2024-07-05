@@ -2,7 +2,7 @@
   <div>
     <el-button type="primary" @click="openDialog('add')" class="add-btn">添加小程序</el-button>
     <el-table :data="users" style="width: 100%">
-      <el-table-column prop="eid" label="AppID" width="80" />
+      <el-table-column prop="eid" label="AppID" />
       <el-table-column prop="username" label="用户名" />
       <el-table-column prop="role" label="角色">
         <template #default="{ row }">
@@ -15,8 +15,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="mchid" label="商户ID" />
-      <el-table-column prop="public_key" label="商户证书" />
-      <el-table-column prop="private_key" label="商户密钥" />
+      <el-table-column prop="public_key" label="商户证书" show-overflow-tooltip />
+      <el-table-column prop="private_key" label="商户密钥" show-overflow-tooltip />
       <el-table-column prop="created_time" label="创建时间" :formatter="formatDateTime" />
       <el-table-column prop="updated_time" label="更新时间" :formatter="formatDateTime" />
       <el-table-column label="操作">
