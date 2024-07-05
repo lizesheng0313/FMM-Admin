@@ -4,11 +4,8 @@
       <div slot="header">
         <span>基本信息</span>
       </div>
-      <el-form-item label="ID" :label-width="formLabelWidth" prop="id">
-        <el-input v-model="form.id" placeholder="请输入ID" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="小程序域名" :label-width="formLabelWidth" prop="domin">
-        <el-input v-model="form.domin" placeholder="请输入小程序域名"></el-input>
+      <el-form-item label="小程序请求域名" :label-width="formLabelWidth" prop="domin">
+        <el-input v-model="form.domin" placeholder="例:https://zjkdongao.com"></el-input>
       </el-form-item>
       <el-form-item label="隐私政策" :label-width="formLabelWidth" prop="privacy_policy">
         <el-input type="textarea" v-model="form.privacy_policy" placeholder="请输入隐私政策"></el-input>
@@ -57,7 +54,7 @@ const form = ref({
 const formLabelWidth = '120px';
 
 const rules = {
-  domin: [{ required: true, message: '请输入小程序域名', trigger: 'blur' }],
+  domin: [{ required: true, message: '请输入小程序请求域名', trigger: 'blur' }],
   privacy_policy: [{ required: true, message: '请输入隐私政策', trigger: 'blur' }],
   user_agreement: [{ required: true, message: '请输入用户协议', trigger: 'blur' }],
   contact_phone: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],

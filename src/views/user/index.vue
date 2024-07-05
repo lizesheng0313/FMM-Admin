@@ -2,7 +2,7 @@
   <div>
     <el-button type="primary" @click="openDialog('add')" class="add-btn">添加小程序</el-button>
     <el-table :data="users" style="width: 100%">
-      <el-table-column prop="appid" label="AppID" width="80" />
+      <el-table-column prop="eid" label="AppID" width="80" />
       <el-table-column prop="username" label="用户名" />
       <el-table-column prop="role" label="角色">
         <template #default="{ row }">
