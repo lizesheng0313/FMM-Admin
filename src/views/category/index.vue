@@ -13,7 +13,7 @@
             <template #default="{ node, data }">
               <span class="custom-tree-node" @click="handleEdit(node)">
                 <span>{{ data?.label }}</span>
-                <span>
+                <span :class="node.level !== 1 ? 'tree-node-actions' : 'mr-20'">
                   <el-tooltip v-if="data?.parentId" :hide-after="0" content="删除">
                     <el-button type="text" size="small" @click.stop="handleDelete(node)">
                       <el-icon>
@@ -132,8 +132,7 @@ const uploadHeaders = computed(() => {
 });
 
 const handleAvatarSuccess = (_, uploadFile) => {
-  console.log(basicInfo?.basicInfo);
-  currentCategory.value.icon = `${basicInfo?.basicInfo?.domain}/category_images/${uploadFile?.response?.data.fileName}`;
+  currentCategory.value.icon = `${basicInfo?.basicInfo?.domin}/showImage/category_images/${uploadFile?.response?.data.fileName}`;
 };
 
 const beforeAvatarUpload = (rawFile) => {
@@ -262,7 +261,8 @@ const handleSave = () => {
     .tree-node-actions {
       display: none;
     }
-    .tree-node-actions {
+    .tree-node-actions,
+    .mr-20 {
       margin-right: 20px;
     }
     .el-tree-node__content:hover {
