@@ -19,7 +19,7 @@
       <el-table-column prop="private_key" label="商户密钥" show-overflow-tooltip />
       <el-table-column prop="created_time" label="创建时间" :formatter="formatDateTime" />
       <el-table-column prop="updated_time" label="更新时间" :formatter="formatDateTime" />
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="150">
         <template #default="{ row }">
           <el-button size="small" type="primary" @click="openDialog('edit', row)">编辑</el-button>
           <el-button size="small" type="danger" @click="handleDelete(row.eid)">删除</el-button>
@@ -63,7 +63,7 @@ const getUsers = async () => {
 const openDialog = (action: string, row?: any) => {
   dialogTitle.value = action === 'add' ? '添加小程序' : '编辑小程序';
   if (action === 'edit') {
-    userForm.value = { ...row };
+    userForm.value = { ...row, originPassword: row.password };
   } else {
     userForm.value = { ...initForm };
   }

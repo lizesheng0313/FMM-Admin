@@ -45,7 +45,8 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
 import { fetchMenu } from '@api/permission/index';
 import { fetchLogin } from '@api/user/index';
-import { useMenuStore, userInfoSet } from '@store/permiss';
+import { fetchBasic } from '@api/basic/index';
+import { useMenuStore, userInfoSet, useBasciInfo } from '@store/permiss';
 import md5 from 'js-md5';
 
 interface LoginInfo {
@@ -73,6 +74,7 @@ const state = reactive({ flag: false });
 const login = ref<FormInstance>();
 const menuStore = useMenuStore();
 const userInfo = userInfoSet();
+const basicInfo = useBasciInfo();
 const submitForm = (formEl: FormInstance | undefined) => {
   if (loading.value) return;
   if (!formEl) return;
@@ -84,8 +86,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
         // @ts-ignore
         password: md5(param.password),
       })
-        .then((res) => {
+        .then(async (res) => {
           userInfo.increment(res?.data?.userInfo);
+          const result = await fetchBasic();
+          basicInfo.increment(result?.data);
         })
         .finally(() => {
           loading.value = false;

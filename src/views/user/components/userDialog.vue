@@ -142,6 +142,11 @@ const handleSave = async (formEl: any) => {
   try {
     formEl?.validate(async (valid: boolean) => {
       if (valid) {
+        // 如果是新用户，或者编辑时密码变更了，就进行加密
+        if (!form.value.id || form.value.password !== form.value.originPassword) {
+          // @ts-ignore
+          form.value.password = md5(form.value.password);
+        }
         if (form.value.id) {
           await fetchUpdateUser(form.value);
         } else {

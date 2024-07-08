@@ -7,13 +7,13 @@
  * @Description: 备注内容
  * @FilePath: /vue-manage-system/src/store/permiss.ts
  */
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 interface MyObject {
-  title: string
-  menuUrl: string
-  id: string
-  icon: string
-  children: Array<MyObject>
+  title: string;
+  menuUrl: string;
+  id: string;
+  icon: string;
+  children: Array<MyObject>;
 }
 
 export const useMenuStore = defineStore('menu', {
@@ -22,11 +22,11 @@ export const useMenuStore = defineStore('menu', {
   }),
   actions: {
     increment(value: MyObject[]) {
-      this.menu = value
-      sessionStorage.setItem('menu', JSON.stringify(value))
+      this.menu = value;
+      sessionStorage.setItem('menu', JSON.stringify(value));
     },
   },
-})
+});
 
 export const userInfoSet = defineStore('userInfo', {
   state: () => ({
@@ -34,8 +34,20 @@ export const userInfoSet = defineStore('userInfo', {
   }),
   actions: {
     increment(value: any) {
-      this.userInfo = value
-      sessionStorage.setItem('userInfo', JSON.stringify(value || {}))
+      this.userInfo = value;
+      sessionStorage.setItem('userInfo', JSON.stringify(value || {}));
     },
   },
-})
+});
+
+export const useBasciInfo = defineStore('basciInfo', {
+  state: () => ({
+    basicInfo: JSON.parse(sessionStorage.getItem('basicInfo') || '{}'),
+  }),
+  actions: {
+    increment(value: any) {
+      this.basicInfo = value;
+      sessionStorage.setItem('basicInfo', JSON.stringify(value || {}));
+    },
+  },
+});

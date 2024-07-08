@@ -1,12 +1,3 @@
-<!--
- * @Author: lizesheng
- * @Date: 2023-02-22 16:41:23
- * @LastEditors: lizesheng
- * @LastEditTime: 2023-03-06 15:22:16
- * @important: 重要提醒
- * @Description: 备注内容
- * @FilePath: /vue-manage-system/index.html
--->
 <!DOCTYPE html>
 <html lang="">
   <head>
@@ -20,21 +11,5 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
-    <!-- built files will be auto injected -->
-    <script src="http://192.168.96.52:5173/yss-ai-agent.js"></script>
-    <script>
-      window.onload = function () {
-        yssAIAgentInit({
-          url: 'http://192.168.96.52:5173', // url为iframe要加载的地址
-          type: 'USER_INFO', // type固定USER_INFO
-          userName: '小明', // userName为三方的登录用户名
-          tokenValue: 'xxxxxxxxx', // tokenValue为三方登录token
-          callback: () => {
-            // 切换主题的方法
-            window.setYssAgentPosition('bottom-left');
-          },
-        });
-      };
-    </script>
   </body>
 </html>

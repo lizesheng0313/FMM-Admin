@@ -9,21 +9,20 @@
             default-expand-all
             :highlight-current="true"
             :expand-on-click-node="false"
-            @current-change="handleCurrentChange"
           >
             <template #default="{ node, data }">
               <span class="custom-tree-node" @click="handleEdit(node)">
                 <span>{{ data?.label }}</span>
-                <span class="tree-node-actions">
+                <span>
                   <el-tooltip v-if="data?.parentId" :hide-after="0" content="删除">
-                    <el-button type="text" size="mini" @click.stop="handleDelete(node)">
+                    <el-button type="text" size="small" @click.stop="handleDelete(node)">
                       <el-icon>
                         <el-icon-delete />
                       </el-icon>
                     </el-button>
                   </el-tooltip>
                   <el-tooltip content="添加" :hide-after="0">
-                    <el-button type="text" size="mini" @click.stop="handleAdd(node)">
+                    <el-button style="margin-left: 0" type="text" size="small" @click.stop="handleAdd(node)">
                       <el-icon>
                         <el-icon-plus />
                       </el-icon>
@@ -51,7 +50,7 @@
               <el-input v-model="currentCategory.label" />
             </el-form-item>
             <el-form-item label="分类图标">
-              <el-input v-model="currentCategory.icon" />
+              <el-input v-model="currentCategory.icon" placeholder="请输入线上链接" />
             </el-form-item>
             <el-form-item label="分类图标" prop="icon" v-if="categoryTree?.length !== 0 && currentCategory.parentId">
               <el-upload
@@ -112,8 +111,9 @@
 import { ref, computed } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { fetchGetClassiFication, fetchAddCategory, fetchEditCategory, fetchDelCategory } from '@api/category';
+import { useBasciInfo } from '@store/permiss';
 
-// 双向绑定当前选中的分类对象
+const basicInfo = useBasciInfo();
 const currentCategory = ref({});
 const openInfo = ref({});
 const defaultProps = {
@@ -132,7 +132,8 @@ const uploadHeaders = computed(() => {
 });
 
 const handleAvatarSuccess = (_, uploadFile) => {
-  currentCategory.value.icon = URL.createObjectURL(uploadFile?.raw);
+  console.log(basicInfo?.basicInfo);
+  currentCategory.value.icon = `${basicInfo?.basicInfo?.domain}/category_images/${uploadFile?.response?.data.fileName}`;
 };
 
 const beforeAvatarUpload = (rawFile) => {

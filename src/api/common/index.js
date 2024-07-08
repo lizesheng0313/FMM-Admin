@@ -1,8 +1,9 @@
 import request from '@utils/request';
 
-export const getAppIdList = () => {
+export const getAppIdList = (params) => {
   return request({
     url: '/api/admin/common/getAppIdList',
     method: 'get',
+    params,
   });
 };

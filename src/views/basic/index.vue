@@ -4,10 +4,8 @@
       <div slot="header">
         <span>基本信息</span>
       </div>
-      <el-form-item label="appid" :label-width="formLabelWidth" prop="appid">
-        <el-select v-model="form.eid" placeholder="请选择appid">
-          <el-option v-for="item in appidList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
+      <el-form-item label="小程序名称" :label-width="formLabelWidth" prop="title">
+        <el-input v-model="form.title" placeholder="请输入小程序名称"></el-input>
       </el-form-item>
       <el-form-item label="小程序请求域名" :label-width="formLabelWidth" prop="domin">
         <el-input v-model="form.domin" placeholder="例:https://zjkdongao.com"></el-input>
@@ -18,11 +16,11 @@
       <el-form-item label="联系邮箱" :label-width="formLabelWidth" prop="contact_email">
         <el-input v-model="form.contact_email" placeholder="请输入联系邮箱"></el-input>
       </el-form-item>
-      <el-form-item label="公司地址" :label-width="formLabelWidth" prop="company_addres">
-        <el-input v-model="form.company_addres" placeholder="请输入公司地址"></el-input>
+      <el-form-item label="公司地址" :label-width="formLabelWidth" prop="company_address">
+        <el-input v-model="form.company_address" placeholder="请输入公司地址"></el-input>
       </el-form-item>
-      <el-form-item label="公司简介" :label-width="formLabelWidth" prop="company_descri">
-        <el-input v-model="form.company_descri" placeholder="请输入公司简介"></el-input>
+      <el-form-item label="公司简介" :label-width="formLabelWidth" prop="company_description">
+        <el-input v-model="form.company_description" placeholder="请输入公司简介"></el-input>
       </el-form-item>
     </el-card>
     <el-card style="margin-top: 10px">
@@ -46,33 +44,32 @@
 import { ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
 import { fetchBasic, fetchUpdateBasic, fetchAddBasic } from '@api/basic';
-import { getAppIdList } from '@api/common';
+import { useBasciInfo } from '@store/permiss';
+
+const basicInfo = useBasciInfo();
 
 const form = ref({
-  id: '',
   eid: '',
+  title: '',
   domin: '',
   privacy_policy: '',
   user_agreement: '',
   contact_phone: '',
   contact_email: '',
-  company_addres: '',
-  company_descri: '',
+  company_address: '',
+  company_description: '',
 });
 const formRef = ref();
 const formLabelWidth = '160px';
-const appidList = ref<AppIdList[]>([]);
 
 onMounted(() => {
   fetchBasic().then((res) => {
     form.value = res.data;
   });
-  getAppIdList().then((res) => {
-    appidList.value = res.data;
-  });
 });
 
 const rules = {
+  title: [{ required: true, message: '请输入小程序名称', trigger: 'blur' }],
   domin: [{ required: true, message: '请输入小程序请求域名', trigger: 'blur' }],
   privacy_policy: [{ required: true, message: '请输入隐私政策', trigger: 'blur' }],
   user_agreement: [{ required: true, message: '请输入用户协议', trigger: 'blur' }],
@@ -81,9 +78,10 @@ const rules = {
 const handleSave = (formRef: any) => {
   formRef.validate((valid: boolean) => {
     if (valid) {
-      const apiCall = form.value.id ? fetchUpdateBasic : fetchAddBasic;
+      const apiCall = form.value.eid ? fetchUpdateBasic : fetchAddBasic;
       apiCall(form.value)
         .then(() => {
+          basicInfo.increment(form.value);
           ElMessage.success('保存成功');
         })
         .catch(() => {
