@@ -5,8 +5,8 @@
         <div slot="header">
           <span>基本信息</span>
         </div>
-        <el-form-item label="AppID" :label-width="formLabelWidth" prop="appid">
-          <el-input v-model="form.appid" placeholder="请输入AppID"></el-input>
+        <el-form-item label="AppID" :label-width="formLabelWidth" prop="eid">
+          <el-input v-model="form.eid" placeholder="请输入AppID"></el-input>
         </el-form-item>
         <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
@@ -112,7 +112,7 @@ const validateConfirmPassword = (rule: any, value: any, callback: any) => {
 
 // 表单验证规则
 const rules = {
-  appid: [{ required: true, message: '请输入AppID', trigger: 'blur' }],
+  eid: [{ required: true, message: '请输入AppID', trigger: 'blur' }],
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
   confirmPassword: [
@@ -143,7 +143,7 @@ const handleSave = async (formEl: any) => {
     formEl?.validate(async (valid: boolean) => {
       if (valid) {
         // 如果是新用户，或者编辑时密码变更了，就进行加密
-        if (!form.value.id || form.value.password !== form.value.originPassword) {
+        if (!form.value.id || form.value.password !== form.value.confirmPassword) {
           // @ts-ignore
           form.value.password = md5(form.value.password);
         }

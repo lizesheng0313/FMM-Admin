@@ -43,7 +43,7 @@ const users = ref([]);
 const dialogVisible = ref(false);
 const dialogTitle = ref('');
 const initForm = {
-  appid: '',
+  eid: '',
   username: '',
   password: '',
   role: '',
@@ -63,7 +63,7 @@ const getUsers = async () => {
 const openDialog = (action: string, row?: any) => {
   dialogTitle.value = action === 'add' ? '添加小程序' : '编辑小程序';
   if (action === 'edit') {
-    userForm.value = { ...row, originPassword: row.password };
+    userForm.value = { ...row, confirmPassword: row.password };
   } else {
     userForm.value = { ...initForm };
   }

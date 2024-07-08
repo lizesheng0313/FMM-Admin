@@ -132,7 +132,7 @@ const uploadHeaders = computed(() => {
 });
 
 const handleAvatarSuccess = (_, uploadFile) => {
-  currentCategory.value.icon = `${basicInfo?.basicInfo?.domin}/showImage/category_images/${uploadFile?.response?.data.fileName}`;
+  currentCategory.value.icon = `${basicInfo?.basicInfo?.domin}/images/category_images/${uploadFile?.response?.data.fileName}`;
 };
 
 const beforeAvatarUpload = (rawFile) => {
