@@ -6,5 +6,4 @@ declare module '*.vue' {
   export default component;
 }
 
-declare module 'vue-schart';
 declare module 'vue-cropperjs';

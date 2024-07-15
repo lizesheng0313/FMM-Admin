@@ -1,52 +1,59 @@
 <template>
   <div class="dashboard">
-    <el-row :gutter="20">
-      <!-- 顶部统计信息卡片 -->
+    <el-row :gutter="24">
       <el-col :span="6">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>总销售额</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>总销售额</span>
+            </div>
+          </template>
           <div>
-            <h2>¥ 126,560</h2>
-            <div>今日销售额 ¥12,423</div>
-            <div id="sales-mini-chart" style="height: 60px"></div>
+            <h2>¥ {{ dashboard?.turnover }}</h2>
+            <div>今日销售额 ¥{{ dashboard?.todayTurnover }}</div>
+            <div id="sales-mini-chart" class="chart-box"></div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>访问量</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>订单统计</span>
+            </div>
+          </template>
           <div>
-            <h2>8,856</h2>
-            <div>今日访问量 12,34</div>
-            <div id="visits-mini-chart" style="height: 60px"></div>
+            <h2>{{ dashboard?.totalOrder }}</h2>
+            <div>今日订单量 {{ dashboard?.todayOrder }}</div>
+            <div id="orders-mini-chart" class="chart-box"></div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>订单统计</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>新用户数</span>
+            </div>
+          </template>
           <div>
-            <h2>65,560</h2>
-            <div>今日订单量 234</div>
-            <div id="orders-mini-chart" style="height: 60px"></div>
+            <h2>{{ dashboard?.todayUser }}</h2>
+            <div>总用户量 {{ dashboard?.totalUser }}</div>
+            <div id="new-users-mini-chart" class="chart-box"></div>
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>新用户数</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>今日新增商品</span>
+            </div>
+          </template>
           <div>
-            <h2>560</h2>
-            <div>总用户量 31,235</div>
-            <div id="new-users-mini-chart" style="height: 60px"></div>
+            <h2>{{ dashboard?.todayGoods }}</h2>
+            <div>总商品数 {{ dashboard?.totalGoods }}</div>
+            <div id="goods-mini-chart" class="chart-box"></div>
           </div>
         </el-card>
       </el-col>
@@ -56,177 +63,258 @@
       <!-- 销售分析图表 -->
       <el-col :span="12">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>销售分析</span>
-          </div>
-          <div id="sales-chart" style="height: 400px"></div>
-          <div class="mt-2">
-            <div>距离目标 ¥10,345</div>
-            <div>同比上周 ¥7,589</div>
-            <div>同比上月 ¥1,476</div>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>销售分析</span>
+            </div>
+          </template>
+          <div id="sales-chart" style="height: 400px; width: 120%"></div>
         </el-card>
       </el-col>
 
       <!-- 订单分析图表 -->
       <el-col :span="12">
         <el-card>
-          <div slot="header" class="clearfix">
-            <span>订单分析</span>
-          </div>
-          <div id="order-chart" style="height: 400px"></div>
-          <div class="mt-2">
-            <div>距离目标 645</div>
-            <div>同比上周 289</div>
-            <div>同比上月 3,476</div>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>订单分析</span>
+            </div>
+          </template>
+          <div id="order-chart" style="height: 400px; width: 120%"></div>
         </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import * as echarts from 'echarts';
+import { fetchGetCharts } from '@api/dashboard';
+import type { dashboardType } from './d';
 
-export default {
-  name: 'Dashboard',
-  mounted() {
-    this.initMiniCharts();
-    this.initSalesChart();
-    this.initOrderChart();
-  },
-  methods: {
-    initMiniCharts() {
-      this.initLineChart('sales-mini-chart', [120, 132, 101, 134, 90, 230, 210], '#FF4D4F');
-      this.initLineChart('visits-mini-chart', [220, 182, 191, 234, 290, 330, 310], '#722ED1');
-      this.initBarChart('orders-mini-chart', [150, 232, 201, 154, 190, 330, 410], '#1890FF');
-      this.initLineChart('new-users-mini-chart', [320, 332, 301, 334, 390, 330, 320], '#52C41A');
-    },
-    initLineChart(id, data, color) {
-      const chart = echarts.init(document.getElementById(id));
-      const option = {
-        grid: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          show: false,
-        },
-        yAxis: {
-          type: 'value',
-          show: false,
-        },
-        series: [
-          {
-            data,
-            type: 'line',
-            areaStyle: {},
-            itemStyle: {
-              color: color,
-            },
-          },
-        ],
-      };
-      chart.setOption(option);
-    },
-    initBarChart(id, data, color) {
-      const chart = echarts.init(document.getElementById(id));
-      const option = {
-        grid: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-        },
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          show: false,
-        },
-        yAxis: {
-          type: 'value',
-          show: false,
-        },
-        series: [
-          {
-            data,
-            type: 'bar',
-            itemStyle: {
-              color: color,
-            },
-          },
-        ],
-      };
-      chart.setOption(option);
-    },
-    initSalesChart() {
-      const chart = echarts.init(document.getElementById('sales-chart'));
-      const option = {
-        // 配置销售分析图表
-        tooltip: {},
-        legend: {
-          data: ['PC端', '移动端', '平板端'],
-        },
-        xAxis: {
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-        },
-        yAxis: {},
-        series: [
-          {
-            name: 'PC端',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20, 40, 20, 36, 10, 10, 20],
-          },
-          {
-            name: '移动端',
-            type: 'bar',
-            data: [15, 25, 36, 20, 30, 20, 50, 30, 36, 20, 20, 20],
-          },
-          {
-            name: '平板端',
-            type: 'line',
-            data: [30, 40, 55, 60, 70, 80, 90, 100, 110, 120, 130, 140],
-          },
-        ],
-      };
-      chart.setOption(option);
-    },
-    initOrderChart() {
-      const chart = echarts.init(document.getElementById('order-chart'));
-      const option = {
-        // 配置订单分析图表
-        tooltip: {},
-        xAxis: {
-          type: 'category',
-          data: ['1', '143', '286', '429', '571', '713'],
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'scatter',
-          },
-        ],
-      };
-      chart.setOption(option);
-    },
-  },
+const dashboard = ref<dashboardType>();
+const initMiniCharts = () => {
+  const xAxisData: any[] = [];
+  const seriesData: any[] = [];
+  dashboard?.value?.dailyTurnover.forEach((item: any) => {
+    xAxisData.push(item.date);
+    seriesData.push(item.total_price);
+  });
+  initLineChart('sales-mini-chart', xAxisData, seriesData, '#FF4D4F');
+  const xOrderData: any[] = [];
+  const seriesOrderData: any[] = [];
+  dashboard?.value?.dailyOrder.forEach((item: any) => {
+    xOrderData.push(item.date);
+    seriesOrderData.push(item.total_order);
+  });
+  initLineChart('orders-mini-chart', xOrderData, seriesOrderData, '#722ED1');
+  const xUserData: any[] = [];
+  const seriesUserData: any[] = [];
+  dashboard?.value?.dailyUser.forEach((item: any) => {
+    xUserData.push(item.date);
+    seriesUserData.push(item.total_user);
+  });
+  initBarChart('new-users-mini-chart', xUserData, seriesUserData, '#1890FF');
+  initSalesChart();
+  initOrderChart();
+  initChart();
 };
+
+const initLineChart = (id: string, xAxisData: any[], seriesData: any[], color: string) => {
+  const chart = echarts.init(document.getElementById(id));
+  const option = {
+    grid: {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: xAxisData,
+      show: false,
+    },
+    yAxis: {
+      type: 'value',
+      show: false,
+    },
+    tooltip: {
+      trigger: 'axis',
+    },
+    series: [
+      {
+        data: seriesData,
+        type: 'line',
+        areaStyle: {},
+        itemStyle: {
+          color: color,
+        },
+      },
+    ],
+  };
+  chart.setOption(option);
+};
+
+const initBarChart = (id: string, xAxisData: any[], seriesData: any[], color: string) => {
+  const chart = echarts.init(document.getElementById(id));
+  const option = {
+    grid: {
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+    },
+    tooltip: {
+      trigger: 'axis',
+    },
+    xAxis: {
+      type: 'category',
+      data: xAxisData,
+      show: false,
+    },
+    yAxis: {
+      type: 'value',
+      show: false,
+    },
+    series: [
+      {
+        data: seriesData,
+        type: 'bar',
+        itemStyle: {
+          color: color,
+        },
+      },
+    ],
+  };
+  chart.setOption(option);
+};
+// 销售分析图表
+const initSalesChart = () => {
+  const legendData: any[] = [];
+  const series: any[] = [];
+  const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+  dashboard?.value?.monthlyTurnover?.forEach((item: any) => {
+    legendData.push(item.title);
+    series.push({
+      name: item.title,
+      type: 'bar', // 可以根据需要选择 'line', 'bar' 等图表类型
+      data: item.monthly_data,
+    });
+  });
+
+  const chart = echarts.init(document.getElementById('sales-chart'));
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+    },
+    legend: {
+      data: legendData,
+    },
+    xAxis: {
+      type: 'category',
+      data: months,
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series,
+  };
+
+  chart.setOption(option);
+};
+//
+const initOrderChart = () => {
+  const legendData: any[] = [];
+  const series: any[] = [];
+
+  dashboard?.value?.monthlyOrder.forEach((item: any) => {
+    legendData.push(item.title);
+    series.push({
+      name: item.title,
+      type: 'scatter',
+      data: item.monthly_data.map((total_order: any, index: any) => [index + 1, total_order]),
+    });
+  });
+
+  const chart = echarts.init(document.getElementById('order-chart'));
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      showDelay: 0,
+      formatter: (params: any) => {
+        const data = params[0].data;
+        return `月份: ${data[0]}<br/>订单总计: ${data[1]}`;
+      },
+    },
+    legend: {
+      data: legendData,
+    },
+    xAxis: {
+      type: 'category',
+      data: Array.from({ length: 12 }, (_, i) => `${i + 1}`),
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series,
+  };
+
+  chart.setOption(option);
+};
+
+const initChart = () => {
+  const chart = echarts.init(document.getElementById('goods-mini-chart'));
+  const option = {
+    series: [
+      {
+        name: '商品总数',
+        type: 'bar',
+        data: [dashboard?.value?.totalGoods || 0], // 确保有值，即使 totalGoods 为 undefined
+        barWidth: '100%',
+        itemStyle: {
+          color: '#4caf50', // 自定义颜色
+          borderRadius: [5, 5, 5, 5], // 圆角
+        },
+      },
+    ],
+    xAxis: {
+      type: 'category',
+      show: false,
+      data: ['商品总数'],
+    },
+    yAxis: {
+      type: 'value',
+      show: false,
+    },
+    grid: {
+      top: '60%',
+      left: '-10%',
+      bottom: '-30%',
+      right: '0%',
+      containLabel: true,
+    },
+  };
+  chart.setOption(option);
+};
+
+onMounted(() => {
+  fetchGetCharts().then((res) => {
+    dashboard.value = res.data;
+    initMiniCharts();
+  });
+});
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .dashboard {
-  padding: 20px;
+  .chart-box {
+    height: 60px;
+    width: 120%;
+  }
 }
-
 .mt-4 {
   margin-top: 20px;
 }

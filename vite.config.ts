@@ -29,9 +29,6 @@ export default defineConfig({
       },
     },
   },
-  optimizeDeps: {
-    include: ['schart.js'],
-  },
   resolve: {
     alias: {
       '@api': resolve(__dirname, 'src/api'),
