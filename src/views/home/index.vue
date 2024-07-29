@@ -68,7 +68,7 @@
               <span>销售分析</span>
             </div>
           </template>
-          <div id="sales-chart" style="height: 400px; width: 120%"></div>
+          <div id="sales-chart" style="height: 400px; width: 100%"></div>
         </el-card>
       </el-col>
 
@@ -80,7 +80,7 @@
               <span>订单分析</span>
             </div>
           </template>
-          <div id="order-chart" style="height: 400px; width: 120%"></div>
+          <div id="order-chart" style="height: 400px; width: 100%"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -312,7 +312,7 @@ onMounted(() => {
 .dashboard {
   .chart-box {
     height: 60px;
-    width: 120%;
+    width: 100%;
   }
 }
 .mt-4 {

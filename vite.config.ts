@@ -42,6 +42,7 @@ export default defineConfig({
   server: {
     // 开启热更新
     hmr: true,
+    host: '0.0.0.0',
     proxy: {
       '/api/admin': {
         // target: 'https://zjkdongao.com',

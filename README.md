@@ -54,49 +54,6 @@
 - 我的订单
 - 个人中心
 
-管理端：
-
-- 登录 JWT 认证
-- 会员中心
-- 广告位管理
-- 商品列表
-- 商品详情
-- 商品分类
-- 订单管理
-- 退货管理
-- 基础设置
-- 后台用户管理
-
-### 演示图
-
-#### 用户端
-
-| 模块     | 演示图                                                    |
-| -------- | --------------------------------------------------------- |
-| 首页     | <img src="https://zjkdongao.com/images/default/w1.jpg" /> |
-| 分类     | <img src="https://zjkdongao.com/images/default/w3.jpg" /> |
-| 商品详情 | <img src="https://zjkdongao.com/images/default/w5.jpg" /> |
-| 购物车   | <img src="https://zjkdongao.com/images/default/w2.jpg" /> |
-| 支付页   | <img src="https://zjkdongao.com/images/default/w6.jpg" /> |
-| 个人中心 | <img src="https://zjkdongao.com/images/default/w9.jpg" /> |
-| 我的订单 | <img src="https://zjkdongao.com/images/default/w7.jpg" /> |
-| 订单详情 | <img src="https://zjkdongao.com/images/default/w8.jpg" /> |
-
-...请在小程序中观看
-
-#### 管理端
-
-| 模块         | 演示图                                                        |
-| ------------ | ------------------------------------------------------------- |
-| 登录         | <img src="https://zjkdongao.com/images/default/admin0.png" /> |
-| 会员中心     | <img src="https://zjkdongao.com/images/default/admin5.png" /> |
-| 广告管理     | <img src="https://zjkdongao.com/images/default/admin3.png" /> |
-| 分类管理     | <img src="https://zjkdongao.com/images/default/admin2.png" /> |
-| 商品管理     | <img src="https://zjkdongao.com/images/default/admin4.png" /> |
-| 订单管理     | <img src="https://zjkdongao.com/images/default/admin1.png" /> |
-| 基础设置     | <img src="https://zjkdongao.com/images/default/admin7.png" /> |
-| 后台用户管理 | <img src="https://zjkdongao.com/images/default/admin8.png" /> |
-
 ## 环境搭建与部署
 
 ### 开发环境
@@ -136,4 +93,4 @@
 
 [MIT](https://github.com/huanghanzhilian/c-shopping/blob/main/LICENSE)
 
-Copyright (c) 2024 ze
+Copyright (c) 2024 xiaoze
