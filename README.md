@@ -40,19 +40,16 @@
 
 ### 功能
 
-用户端：
-
 - 登录 JWT 认证
-- 首页（Banner、新品、热卖、推荐）
-- 搜索
-- 商品分类
+- 会员中心
+- 广告位管理
 - 商品列表
 - 商品详情
-- 支付页
-- 地址管理
-- 订单详情
-- 我的订单
-- 个人中心
+- 商品分类
+- 订单管理
+- 退货管理
+- 基础设置
+- 后台用户管理
 
 ## 环境搭建与部署
 
@@ -93,4 +90,4 @@
 
 [MIT](https://github.com/huanghanzhilian/c-shopping/blob/main/LICENSE)
 
-Copyright (c) 2024 xiaoze
+Copyright (c) 2024 ze
