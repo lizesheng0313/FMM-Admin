@@ -1,11 +1,6 @@
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">FMM-Admin v1.0.0</h1>
 <h4 align="center">基于Vue3+ElementPlus开发的SAAS电商后台管理系统</h4>
 
-## README.md
-
-- en [English](README.md)
-- zh_CN [简体中文](README.zh_CN.md)
-
 ## 前言
 
 `FMM-Admin`是一个 SAAS 电商后台管理系统，界面优雅，功能丰富，小巧迅速，包含一个电商平台完整功能，具备良好的审美风格与编码设计。一套代码支持多商城管理
@@ -19,10 +14,9 @@
   演示账号：anshunli
   演示密码：anshunli1994
 - 对应前端小程序
+
   <img src="https://zjkdongao.com/images/default/fmm1.jpg" width="300">
   <img src="https://zjkdongao.com/images/default/fmm2.jpg" width="300">
-
-项目传送门: [https://github.com/lizesheng0313/FMM-Admin](https://github.com/lizesheng0313/FMM-Admin)
 
 **Taro Vue 版本 小程序应用:**
 
