@@ -9,14 +9,14 @@
 
 **项目在线演示地址：**
 
-- 部署文档：[https://zjkdongao.com/](https://zjkdongao.com/)
-- 在线演示地址：[https://zjkdongao.com/feimaomao/admin/#/login](https://zjkdongao.com/feimaomao/admin/#/login)
+- 部署文档：[https://zjkdongao.cn/](https://zjkdongao.cn/)
+- 在线演示地址：[https://zjkdongao.cn/feimaomao/admin/#/login](https://zjkdongao.cn/feimaomao/admin/#/login)
   演示账号：anshunli
   演示密码：anshunli1994
 - 对应前端小程序
 
-  <img src="https://zjkdongao.com/images/default/fmm1.jpg" width="300">
-  <img src="https://zjkdongao.com/images/default/fmm2.jpg" width="300">
+  <img src="https://zjkdongao.cn/images/default/fmm1.jpg" width="300">
+  <img src="https://zjkdongao.cn/images/default/fmm2.jpg" width="300">
 
 **Taro Vue 版本 小程序应用:**
 
@@ -76,9 +76,9 @@
 
 关注公众号获得更多资讯，有任何意见或建议都欢迎提 issue，或者到公众号留言；也欢迎加我微信交流。
 
-| 我的公众号                                                          | 我的微信      |
-| ------------------------------------------------------------------- | ------------- |
-| <img alt="心语心听" src="https://zjkdongao.com/qr.jpg" width="150"> | lizesheng1234 |
+| 我的公众号                                                         | 我的微信      |
+| ------------------------------------------------------------------ | ------------- |
+| <img alt="心语心听" src="https://zjkdongao.cn/qr.jpg" width="150"> | lizesheng1234 |
 
 ## License
 
