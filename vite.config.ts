@@ -42,11 +42,11 @@ export default defineConfig({
   server: {
     // 开启热更新
     hmr: true,
+    port: 8089,
     host: '0.0.0.0',
     proxy: {
-      '/api/admin': {
-        // target: 'https://zjkdongao.com',
-        target: 'http://127.0.0.1:7002',
+      '/cursor': {
+        target: 'http://127.0.0.1:7005',
         changeOrigin: true,
       },
     },

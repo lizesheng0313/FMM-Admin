@@ -11,7 +11,8 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 onMounted(() => {
-  if (!sessionStorage.getItem('authorization')) {
+  const currentRoute = router.currentRoute.value.path;
+  if (!localStorage.getItem('authorization') && currentRoute !== '/login') {
     router.push('/login');
   }
 });

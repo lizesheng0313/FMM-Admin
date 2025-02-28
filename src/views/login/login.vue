@@ -43,9 +43,7 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { Lock, User } from '@element-plus/icons-vue';
-import { fetchMenu } from '@api/permission/index';
 import { fetchLogin } from '@api/user/index';
-import { fetchBasic } from '@api/basic/index';
 import { useMenuStore, userInfoSet, useBasciInfo } from '@store/permiss';
 import md5 from 'js-md5';
 
@@ -85,20 +83,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
         username: param.username,
         // @ts-ignore
         password: md5(param.password),
-      })
-        .then(async (res) => {
-          userInfo.increment(res?.data?.userInfo);
-          const result = await fetchBasic();
-          basicInfo.increment(result?.data);
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-      await fetchMenu().then((res) => {
-        menuStore.increment(res?.data?.list || []);
+      }).finally(() => {
+        loading.value = false;
       });
       ElMessage.success('登录成功');
-      router.push('/dashboard');
+      router.push('/auth');
     }
   });
 };
