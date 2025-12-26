@@ -42,6 +42,7 @@ export default defineConfig({
   server: {
     // 开启热更新
     hmr: true,
+    port: 8088,
     host: '0.0.0.0',
     proxy: {
       '/api/admin': {
