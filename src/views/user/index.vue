@@ -63,7 +63,8 @@ const getUsers = async () => {
 const openDialog = (action: string, row?: any) => {
   dialogTitle.value = action === 'add' ? '添加小程序' : '编辑小程序';
   if (action === 'edit') {
-    userForm.value = { ...row, confirmPassword: row.password };
+    // 编辑时密码和确认密码设为空,如果用户不输入就表示不修改密码
+    userForm.value = { ...row, password: '', confirmPassword: '' };
   } else {
     userForm.value = { ...initForm };
   }

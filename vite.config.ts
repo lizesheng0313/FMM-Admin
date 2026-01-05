@@ -8,7 +8,7 @@ import { resolve } from 'path';
 import sass from 'sass';
 
 export default defineConfig({
-  base: './',
+  base: '/fmm/admin/',
   build: {
     sourcemap: true,
   },

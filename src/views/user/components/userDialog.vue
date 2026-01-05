@@ -6,7 +6,7 @@
           <span>基本信息</span>
         </div>
         <el-form-item label="AppID" :label-width="formLabelWidth" prop="eid">
-          <el-input v-model="form.eid" placeholder="请输入AppID"></el-input>
+          <el-input v-model="form.eid" placeholder="请输入AppID" :disabled="!!form.id"></el-input>
         </el-form-item>
         <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
           <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
@@ -111,16 +111,17 @@ const validateConfirmPassword = (rule: any, value: any, callback: any) => {
 };
 
 // 表单验证规则
-const rules = {
+const rules = computed(() => ({
   eid: [{ required: true, message: '请输入AppID', trigger: 'blur' }],
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  // 新增时密码必填,编辑时可选
+  password: [{ required: !form.value.id, message: '请输入密码', trigger: 'blur' }],
   confirmPassword: [
-    { required: true, message: '请输入确认密码', trigger: 'blur' },
+    { required: !form.value.id, message: '请输入确认密码', trigger: 'blur' },
     { validator: validateConfirmPassword, trigger: 'blur' },
   ],
   role: [{ required: true, message: '请选择角色', trigger: 'change' }],
-};
+}));
 
 const uploadHeaders = computed(() => {
   const authorization = sessionStorage.getItem('authorization');
@@ -142,18 +143,31 @@ const handleSave = async (formEl: any) => {
   try {
     formEl?.validate(async (valid: boolean) => {
       if (valid) {
-        // 如果是新用户，或者编辑时密码变更了，就进行加密
-        if (!form.value.id || form.value.password !== form.value.confirmPassword) {
+        const submitData = { ...form.value };
+        console.log('========== 前端准备提交数据 ==========');
+        console.log('原始form.value:', form.value);
+        console.log('submitData包含id吗?', 'id' in submitData, 'id值:', submitData.id);
+        console.log('submitData.eid值:', submitData.eid);
+
+        // 如果是编辑且没有输入密码,删除password字段(表示不修改密码)
+        if (submitData.id && !submitData.password) {
+          delete submitData.password;
+          delete submitData.confirmPassword;
+        } else if (submitData.password) {
+          // 如果有密码,进行MD5加密
           // @ts-ignore
-          form.value.password = md5(form.value.password);
+          submitData.password = md5(submitData.password);
+          delete submitData.confirmPassword;
         }
-        if (form.value.id) {
-          await fetchUpdateUser(form.value);
+
+        console.log('最终提交的数据:', submitData);
+        if (submitData.id) {
+          await fetchUpdateUser(submitData);
         } else {
-          await fetchAddUser(form.value);
+          await fetchAddUser(submitData);
         }
         handleClose();
-        emit('save', form.value);
+        emit('save', submitData);
       }
     });
   } catch (error) {

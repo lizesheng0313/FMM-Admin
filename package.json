@@ -19,6 +19,7 @@
     "vue": "^3.4.29",
     "vue-cropperjs": "^5.0.0",
     "vue-router": "^4.3.3",
+    "vuedraggable": "^4.1.0",
     "wangeditor": "^4.7.15",
     "xlsx": "^0.18.5"
   },
